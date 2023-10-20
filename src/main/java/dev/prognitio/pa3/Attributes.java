@@ -58,7 +58,7 @@ public class Attributes {
     }
 
     public void addXP(double experience) {
-        //if experience is not enough to level up, add to experience. else, level up, zero out epxerience, add the amount extra after leveling up to experience
+        //if experience is not enough to level up, add to experience. else, level up, zero out experience, add the amount extra after leveling up to experience
         double levelUpDistance = calculateLevelUpRequirement() - this.experience;
         if (levelUpDistance > experience) {
             //add xp, don't level up

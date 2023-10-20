@@ -13,7 +13,7 @@ import org.jetbrains.annotations.Nullable;
 
 public class AttributesProvider implements ICapabilityProvider, INBTSerializable<CompoundTag> {
 
-    public static Capability<Attributes> ATTRIBUTES = CapabilityManager.get(new CapabilityToken<Attributes>() {});
+    public static Capability<Attributes> ATTRIBUTES = CapabilityManager.get(new CapabilityToken<>() {});
 
     private Attributes attributeCapability = null;
 

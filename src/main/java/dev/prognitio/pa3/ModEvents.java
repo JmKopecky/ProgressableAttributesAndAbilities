@@ -17,9 +17,7 @@ public class ModEvents {
     @SubscribeEvent
     public static void onBlockBreak(BlockEvent.BreakEvent event) {
         if (event.getPlayer() != null) {
-           event.getPlayer().getCapability(AttributesProvider.ATTRIBUTES).ifPresent((attributes -> {
-                attributes.addXP(5.0);
-            }));
+           event.getPlayer().getCapability(AttributesProvider.ATTRIBUTES).ifPresent((attributes -> attributes.addXP(5.0)));
         }
     }
     /*
@@ -47,11 +45,7 @@ public class ModEvents {
     public static void onPlayerCloned(PlayerEvent.Clone event) {
         if (event.isWasDeath()) {
             event.getOriginal().reviveCaps();
-            event.getOriginal().getCapability(AttributesProvider.ATTRIBUTES).ifPresent(original -> {
-                event.getEntity().getCapability(AttributesProvider.ATTRIBUTES).ifPresent(cloned -> {
-                    cloned.copyFrom(original);
-                });
-            });
+            event.getOriginal().getCapability(AttributesProvider.ATTRIBUTES).ifPresent(original -> event.getEntity().getCapability(AttributesProvider.ATTRIBUTES).ifPresent(cloned -> cloned.copyFrom(original)));
         }
     }
 
