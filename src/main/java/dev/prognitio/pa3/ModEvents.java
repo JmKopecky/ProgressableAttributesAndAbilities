@@ -12,9 +12,9 @@ import net.minecraftforge.fml.common.Mod;
 public class ModEvents {
 
     @SubscribeEvent
-    public static void onAttachCapabilitiesPlayer(AttachCapabilitiesEvent event) {
-        if (event.getObject() instanceof Player) {
-            if (!((Player) event.getObject()).getCapability(AttributesProvider.ATTRIBUTES).isPresent()) {
+    public static void onAttachCapabilitiesPlayer(AttachCapabilitiesEvent<Player> event) {
+        if (event.getObject() != null) {
+            if (!(event.getObject()).getCapability(AttributesProvider.ATTRIBUTES).isPresent()) {
                 event.addCapability(new ResourceLocation(pa3.MODID, "properties_attribute_system"), new AttributesProvider());
             }
 

@@ -18,9 +18,6 @@ public class pa3
 {
     // Define mod id in a common place for everything to reference
     public static final String MODID = "pa3";
-    // Directly reference a slf4j logger
-    private static final Logger LOGGER = LogUtils.getLogger();
-
     public pa3()
     {
         IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
