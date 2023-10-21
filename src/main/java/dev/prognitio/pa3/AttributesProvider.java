@@ -13,15 +13,15 @@ import org.jetbrains.annotations.Nullable;
 
 public class AttributesProvider implements ICapabilityProvider, INBTSerializable<CompoundTag> {
 
-    public static Capability<Attributes> ATTRIBUTES = CapabilityManager.get(new CapabilityToken<>() {});
+    public static Capability<AttributesCompatabililty> ATTRIBUTES = CapabilityManager.get(new CapabilityToken<>() {});
 
-    private Attributes attributeCapability = null;
+    private AttributesCompatabililty attributeCapability = null;
 
-    private final LazyOptional<Attributes> optional = LazyOptional.of(this::createAttributes);
+    private final LazyOptional<AttributesCompatabililty> optional = LazyOptional.of(this::createAttributes);
 
-    private Attributes createAttributes() {
+    private AttributesCompatabililty createAttributes() {
         if (this.attributeCapability == null) {
-            this.attributeCapability = new Attributes();
+            this.attributeCapability = new AttributesCompatabililty();
         }
         return this.attributeCapability;
     }
