@@ -1,6 +1,7 @@
 package dev.prognitio.pa3;
 
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
@@ -14,6 +15,7 @@ public class AttributesCompatabililty {
     private int experience = 0;
     private int level = 0;
     private int availablePoints = 0;
+    private int abilityCooldown = 0;
 
     Supplier<ArrayList<Double>> fitnessSupp = () -> {
         ArrayList<Double> list = new ArrayList<>();
@@ -58,6 +60,13 @@ public class AttributesCompatabililty {
     };
     AttributeType strategy = new AttributeType("strategy", 20,
             "5f14399f-df13-4007-bd76-7f5cbad40f9f", strategySupp.get(), 2);
+
+    //abilities
+    AbilityType dash = new AbilityType("dash", 5, 10, -1, 3, 1);
+    AbilityType arrowSalvo = new AbilityType("arrowsalvo", 5, 20, -2, 4, 2);
+
+    String primaryAbility = "dash";
+    String secondaryAbility = "arrowsalvo";
 
     public void applyApplicableAttributes(Player player) {
         //fitness
@@ -166,6 +175,38 @@ public class AttributesCompatabililty {
         return true;
     }
 
+    public void setPrimaryAbility(String primaryAbility) {
+        this.primaryAbility = primaryAbility;
+    }
+
+    public void setSecondaryAbility(String secondaryAbility) {
+        this.secondaryAbility = secondaryAbility;
+    }
+
+    public void firePrimaryAbility(Player player) {
+        if (abilityCooldown <= 0) {
+            getAbilityFromString(primaryAbility).runAbility(player);
+        } else {
+            player.sendSystemMessage(Component.literal("Cooldown Remaining: " + abilityCooldown / 20));
+        }
+    }
+
+    public void fireSecondaryAbility(Player player) {
+        if (abilityCooldown <= 0) {
+            getAbilityFromString(secondaryAbility).runAbility(player);
+        } else {
+            player.sendSystemMessage(Component.literal("Cooldown Remaining: " + abilityCooldown / 20));
+        }
+    }
+
+    public AbilityType getAbilityFromString(String input) {
+        switch (input) {
+            case "dash" -> {return dash;}
+            case "arrowsalvo" -> {return arrowSalvo;}
+        }
+        return null;
+    }
+
     public int calculateLevelUpRequirement() {
         //for each level, make it 10% harder to get another level
         int initialXPRequirement = 10000; //what should the base xp requirement be to go from level 0 to level 1
@@ -202,6 +243,7 @@ public class AttributesCompatabililty {
         this.resilience = source.resilience;
         this.nimbleness = source.nimbleness;
         this.strategy = source.strategy;
+        this.abilityCooldown = source.abilityCooldown;
     }
 
     public void saveNBTData(CompoundTag nbt) {
@@ -213,6 +255,7 @@ public class AttributesCompatabililty {
         nbt.putString("combat", combat.toString());
         nbt.putString("nimbleness", nimbleness.toString());
         nbt.putString("strategy", strategy.toString());
+        nbt.putInt("cooldown", abilityCooldown);
     }
 
     public void loadNBTData(CompoundTag nbt) {
@@ -224,6 +267,7 @@ public class AttributesCompatabililty {
         this.resilience = AttributeType.fromString(nbt.getString("resilience"));
         this.nimbleness = AttributeType.fromString(nbt.getString("nimbleness"));
         this.strategy = AttributeType.fromString(nbt.getString("strategy"));
+        this.abilityCooldown = nbt.getInt("cooldown");
     }
 
     //getter and setter methods
@@ -248,4 +292,6 @@ public class AttributesCompatabililty {
         this.availablePoints = availablePoints;
     }
 
+    public int getAbilityCooldown() { return abilityCooldown; }
+    public void setAbilityCooldown(int abilityCooldown) { this.abilityCooldown = abilityCooldown; }
 }

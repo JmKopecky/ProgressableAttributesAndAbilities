@@ -30,7 +30,7 @@ public class pa3
     private void commonSetup(final FMLCommonSetupEvent event)
     {
         // Some common setup code
-
+        ModNetworking.register();
     }
 
     // You can use SubscribeEvent and let the Event Bus discover methods to call

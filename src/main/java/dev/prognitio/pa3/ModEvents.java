@@ -1,9 +1,7 @@
 package dev.prognitio.pa3;
 
 
-import dev.prognitio.pa3.commands.AddXpCommand;
-import dev.prognitio.pa3.commands.CheckXpCommand;
-import dev.prognitio.pa3.commands.LevelUpAttrCommand;
+import dev.prognitio.pa3.commands.*;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
@@ -11,6 +9,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.common.capabilities.RegisterCapabilitiesEvent;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.event.RegisterCommandsEvent;
+import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.event.entity.player.AdvancementEvent;
@@ -94,6 +93,10 @@ public class ModEvents {
         new CheckXpCommand(event.getDispatcher());
         new AddXpCommand(event.getDispatcher());
         new LevelUpAttrCommand(event.getDispatcher());
+        new LevelAbilityCommand(event.getDispatcher());
+        new UnlockAbilityCommand(event.getDispatcher());
+        new SetPrimaryAbilityCommand(event.getDispatcher());
+        new SetSecondaryAbilityCommand(event.getDispatcher());
 
         ConfigCommand.register(event.getDispatcher());
     }
@@ -101,6 +104,15 @@ public class ModEvents {
     @SubscribeEvent
     public static void onPlayerJoin(PlayerEvent.PlayerLoggedInEvent event) {
         event.getEntity().getCapability(AttributesProvider.ATTRIBUTES).ifPresent(cap -> cap.applyApplicableAttributes(event.getEntity()));
+    }
+
+    @SubscribeEvent
+    public static void onPlayerTick(TickEvent.PlayerTickEvent event) {
+        event.player.getCapability(AttributesProvider.ATTRIBUTES).ifPresent(cap -> {
+            if (cap.getAbilityCooldown() > 0) {
+                cap.setAbilityCooldown(cap.getAbilityCooldown() - 1);
+            }
+        });
     }
 
     @SubscribeEvent
