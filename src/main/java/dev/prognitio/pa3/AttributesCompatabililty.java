@@ -169,7 +169,7 @@ public class AttributesCompatabililty {
     public int calculateLevelUpRequirement() {
         //for each level, make it 10% harder to get another level
         int initialXPRequirement = 10000; //what should the base xp requirement be to go from level 0 to level 1
-        float perLevelScaling = 1.1f; //how much the exp requirement should increase each level.
+        float perLevelScaling = 1.05f; //how much the exp requirement should increase each level.
         return (int) (initialXPRequirement * (Math.pow(perLevelScaling, level)));
     }
 
