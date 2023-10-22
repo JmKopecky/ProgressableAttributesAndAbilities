@@ -11,7 +11,9 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.common.capabilities.RegisterCapabilitiesEvent;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.event.RegisterCommandsEvent;
+import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
+import net.minecraftforge.event.entity.player.AdvancementEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.level.BlockEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -23,24 +25,38 @@ import java.util.Random;
 @Mod.EventBusSubscriber(modid=pa3.MODID)
 public class ModEvents {
 
-
     //example for adding xp for breaking blocks
     @SubscribeEvent
     public static void onBlockBreak(BlockEvent.BreakEvent event) {
         if (event.getPlayer() != null) {
             event.getPlayer().getCapability(AttributesProvider.ATTRIBUTES).ifPresent((attributes ->
-                    attributes.addXP(5)));
+                    attributes.addXP(10)));
         }
     }
-    /*
-    other ideas:
-    AdvancementEvent
-    EntityPlaceEvent
-    ItemCraftedEvent
-    ItemSmeltedEvent
-    LivingDeathEvent
-     */
 
+    @SubscribeEvent
+    public static void onEntityPlace(BlockEvent.EntityPlaceEvent event) {
+        if (event.getEntity() != null && event.getEntity() instanceof Player) {
+            event.getEntity().getCapability(AttributesProvider.ATTRIBUTES).ifPresent((attributes ->
+                    attributes.addXP(10)));
+        }
+    }
+
+    @SubscribeEvent
+    public static void onEntityKilled(LivingDeathEvent event) {
+        if (event.getSource().getEntity() != null && event.getSource().getEntity() instanceof Player) {
+            event.getSource().getEntity().getCapability(AttributesProvider.ATTRIBUTES).ifPresent((attributes ->
+                    attributes.addXP(50)));
+        }
+    }
+
+    @SubscribeEvent
+    public static void onAdvancementEarned(AdvancementEvent.AdvancementEarnEvent event) {
+        if (event.getEntity() != null) {
+            event.getEntity().getCapability(AttributesProvider.ATTRIBUTES).ifPresent((attributes ->
+                    attributes.addXP(100)));
+        }
+    }
 
 
     @SubscribeEvent
