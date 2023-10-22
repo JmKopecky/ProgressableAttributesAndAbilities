@@ -4,33 +4,114 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
+import net.minecraftforge.common.ForgeMod;
+
+import java.util.ArrayList;
+import java.util.function.Supplier;
 
 public class AttributesCompatabililty {
 
     private int experience = 0;
     private int level = 0;
     private int availablePoints = 0;
-    AttributeType health = new AttributeType("health", 20,
-            "5c93580c-84a1-4583-83a9-3c29ca3abb3e", 1.0);
-    AttributeType toughness = new AttributeType("toughness", 20,
-            "e19e60ec-c913-433b-b38a-3801834be5cf", 1.0);
-    AttributeType strength = new AttributeType("strength", 20,
-            "b7b13584-e7d3-4dea-9d09-f6c36b9bef2c", 1.0);
+
+    Supplier<ArrayList<Double>> fitnessSupp = () -> {
+        ArrayList<Double> list = new ArrayList<>();
+        list.add(1.0);
+        return list;
+    };
+    AttributeType fitness = new AttributeType("fitness", 20,
+            "5c93580c-84a1-4583-83a9-3c29ca3abb3e", fitnessSupp.get(), 1);
+
+    Supplier<ArrayList<Double>> resilienceSupp = () -> {
+        ArrayList<Double> list = new ArrayList<>();
+        list.add(1.0);
+        list.add(1.0);
+        return list;
+    };
+    AttributeType resilience = new AttributeType("resilience", 20,
+            "e19e60ec-c913-433b-b38a-3801834be5cf", resilienceSupp.get(), 1);
+
+    Supplier<ArrayList<Double>> combatSupp = () -> {
+        ArrayList<Double> list = new ArrayList<>();
+        list.add(0.5);
+        list.add(50.0/20.0); //parry amount per level, start at 25, max at 75
+        return list;
+    };
+    AttributeType combat = new AttributeType("combat", 20,
+            "b7b13584-e7d3-4dea-9d09-f6c36b9bef2c", combatSupp.get(), 1);
+
+    Supplier<ArrayList<Double>> nimblenessSupp = () -> {
+        ArrayList<Double> list = new ArrayList<>();
+        list.add(0.05);
+        list.add(50.0/20.0);
+        return list;
+    };
+    AttributeType nimbleness = new AttributeType("nimbleness", 20,
+            "db7daa72-f2e0-40b0-8120-5816bf0ba274", nimblenessSupp.get(), 1);
+
+    Supplier<ArrayList<Double>> strategySupp = () -> {
+        ArrayList<Double> list = new ArrayList<>();
+        list.add(0.25);
+        list.add(2.0);
+        return list;
+    };
+    AttributeType strategy = new AttributeType("strategy", 20,
+            "5f14399f-df13-4007-bd76-7f5cbad40f9f", strategySupp.get(), 2);
 
     public void applyApplicableAttributes(Player player) {
-        if (player == null) {return;}
-        AttributeModifier healthModifier = health.buildModifier();
-        if (!player.getAttribute(Attributes.MAX_HEALTH).hasModifier(healthModifier)) {
-            player.getAttribute(Attributes.MAX_HEALTH).addTransientModifier(healthModifier);
+        //fitness
+        AttributeModifier fitnessModifier = fitness.buildModifier(0, null);
+        if (player.getAttribute(Attributes.MAX_HEALTH).hasModifier(fitnessModifier)) {
+            player.getAttribute(Attributes.MAX_HEALTH).removeModifier(fitnessModifier);
         }
-        AttributeModifier toughnessModifier = toughness.buildModifier();
-        if (!player.getAttribute(Attributes.ARMOR).hasModifier(toughnessModifier)) {
-            player.getAttribute(Attributes.ARMOR).addTransientModifier(toughnessModifier);
+        player.getAttribute(Attributes.MAX_HEALTH).addTransientModifier(fitnessModifier);
+
+        //resilience
+        AttributeModifier resilienceModifier = resilience.buildModifier(0, null);
+        if (player.getAttribute(Attributes.ARMOR).hasModifier(resilienceModifier)) {
+            player.getAttribute(Attributes.ARMOR).removeModifier(resilienceModifier);
         }
-        AttributeModifier strengthModifier = strength.buildModifier();
-        if (!player.getAttribute(Attributes.ATTACK_DAMAGE).hasModifier(strengthModifier)) {
-            player.getAttribute(Attributes.ATTACK_DAMAGE).addTransientModifier(strengthModifier);
+        player.getAttribute(Attributes.ARMOR).addTransientModifier(resilienceModifier);
+        AttributeModifier resilienceToughnessModifier = resilience.buildModifier(1,
+                "74d66138-0f55-459c-95de-2c29560a0000");
+        if (player.getAttribute(Attributes.ARMOR_TOUGHNESS).hasModifier(resilienceToughnessModifier)) {
+            player.getAttribute(Attributes.ARMOR_TOUGHNESS).removeModifier(resilienceToughnessModifier);
         }
+        player.getAttribute(Attributes.ARMOR_TOUGHNESS).addTransientModifier(resilienceToughnessModifier);
+
+        //combat
+        AttributeModifier combatModifier = combat.buildModifier(0, null);
+        if (player.getAttribute(Attributes.ATTACK_DAMAGE).hasModifier(combatModifier)) {
+            player.getAttribute(Attributes.ATTACK_DAMAGE).removeModifier(combatModifier);
+        }
+        player.getAttribute(Attributes.ATTACK_DAMAGE).addTransientModifier(combatModifier);
+        AttributeModifier combatSpeedModifier = combat.buildModifier(1,
+                "a0b4fa02-421d-4332-995f-974cc51f7378");
+        if (player.getAttribute(Attributes.ATTACK_SPEED).hasModifier(combatSpeedModifier)) {
+            player.getAttribute(Attributes.ATTACK_SPEED).removeModifier(combatSpeedModifier);
+        }
+        player.getAttribute(Attributes.ATTACK_SPEED).addTransientModifier(combatSpeedModifier);
+
+        //nimbleness
+        AttributeModifier nimbleModifier = nimbleness.buildModifier(0, null);
+        if (player.getAttribute(Attributes.MOVEMENT_SPEED).hasModifier(nimbleModifier)) {
+            player.getAttribute(Attributes.MOVEMENT_SPEED).removeModifier(nimbleModifier);
+        }
+        player.getAttribute(Attributes.MOVEMENT_SPEED).addTransientModifier(nimbleModifier);
+
+        //strategy
+        AttributeModifier strategyModifier = strategy.buildModifier(0, null);
+        if (player.getAttribute(ForgeMod.REACH_DISTANCE.get()).hasModifier(strategyModifier)) {
+            player.getAttribute(ForgeMod.REACH_DISTANCE.get()).removeModifier(strategyModifier);
+        }
+        player.getAttribute(ForgeMod.REACH_DISTANCE.get()).addTransientModifier(strategyModifier);
+        AttributeModifier strategyAttackReachModifier = strategy.buildModifier(0, "a218bc25-dbbf-40e4-9a77-e3befddb7846");
+        if (player.getAttribute(ForgeMod.ATTACK_RANGE.get()).hasModifier(strategyAttackReachModifier)) {
+            player.getAttribute(ForgeMod.ATTACK_RANGE.get()).removeModifier(strategyAttackReachModifier);
+        }
+        player.getAttribute(ForgeMod.ATTACK_RANGE.get()).addTransientModifier(strategyAttackReachModifier);
+
     }
 
     public boolean attemptLevelUpAttribute(String attribute) {
@@ -38,24 +119,40 @@ public class AttributesCompatabililty {
             return false;
         }
         switch (attribute) {
-            case "health" -> {
-                int result = health.attemptLevelUp(availablePoints);
+            case "fitness" -> {
+                int result = fitness.attemptLevelUp(availablePoints);
                 if (result == -1) {
                     return false;
                 } else {
                     availablePoints -= result;
                 }
             }
-            case "toughness" -> {
-                int result = toughness.attemptLevelUp(availablePoints);
+            case "resilience" -> {
+                int result = resilience.attemptLevelUp(availablePoints);
                 if (result == -1) {
                     return false;
                 } else {
                     availablePoints -= result;
                 }
             }
-            case "strength" -> {
-                int result = strength.attemptLevelUp(availablePoints);
+            case "combat" -> {
+                int result = combat.attemptLevelUp(availablePoints);
+                if (result == -1) {
+                    return false;
+                } else {
+                    availablePoints -= result;
+                }
+            }
+            case "nimbleness" -> {
+                int result = nimbleness.attemptLevelUp(availablePoints);
+                if (result == -1) {
+                    return false;
+                } else {
+                    availablePoints -= result;
+                }
+            }
+            case "strategy" -> {
+                int result = strategy.attemptLevelUp(availablePoints);
                 if (result == -1) {
                     return false;
                 } else {
@@ -99,25 +196,34 @@ public class AttributesCompatabililty {
     public void copyFrom(AttributesCompatabililty source) {
         this.experience = source.experience;
         this.level = source.level;
-        this.strength = source.strength;
-        this.health = source.health;
-        this.toughness = source.toughness;
+        this.availablePoints = source.availablePoints;
+        this.combat = source.combat;
+        this.fitness = source.fitness;
+        this.resilience = source.resilience;
+        this.nimbleness = source.nimbleness;
+        this.strategy = source.strategy;
     }
 
     public void saveNBTData(CompoundTag nbt) {
         nbt.putInt("experience", this.experience);
         nbt.putInt("level", this.level);
-        nbt.putString("health", health.toString());
-        nbt.putString("toughness", toughness.toString());
-        nbt.putString("strength", strength.toString());
+        nbt.putInt("availablepoints", this.availablePoints);
+        nbt.putString("fitness", fitness.toString());
+        nbt.putString("resilience", resilience.toString());
+        nbt.putString("combat", combat.toString());
+        nbt.putString("nimbleness", nimbleness.toString());
+        nbt.putString("strategy", strategy.toString());
     }
 
     public void loadNBTData(CompoundTag nbt) {
         this.experience = nbt.getInt("experience");
         this.level = nbt.getInt("level");
-        this.health = AttributeType.fromString(nbt.getString("health"));
-        this.strength = AttributeType.fromString(nbt.getString("strength"));
-        this.toughness = AttributeType.fromString(nbt.getString("toughness"));
+        this.availablePoints = nbt.getInt("availablepoints");
+        this.fitness = AttributeType.fromString(nbt.getString("fitness"));
+        this.combat = AttributeType.fromString(nbt.getString("combat"));
+        this.resilience = AttributeType.fromString(nbt.getString("resilience"));
+        this.nimbleness = AttributeType.fromString(nbt.getString("nimbleness"));
+        this.strategy = AttributeType.fromString(nbt.getString("strategy"));
     }
 
     //getter and setter methods

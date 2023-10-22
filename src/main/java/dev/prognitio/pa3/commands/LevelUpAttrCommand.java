@@ -25,6 +25,7 @@ public class LevelUpAttrCommand {
             } else {
                 context.getPlayer().sendSystemMessage(Component.literal("Failed to level up the " + type + " attribute. Do you have enough attribute points, and does the attribute exist?"));
             }
+            cap.applyApplicableAttributes(context.getPlayer());
         });
         return 1;
     }
