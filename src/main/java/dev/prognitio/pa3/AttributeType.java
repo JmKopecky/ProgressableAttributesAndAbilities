@@ -19,7 +19,7 @@ public class AttributeType {
         this.uuid = uuid;
         this.maxLevel = maxLevel;
         this.perLevelScaleValue = perLevelScaleValue;
-        this.level = 5;
+        this.level = 0;
     }
 
     public int attemptLevelUp(int availablePoints) { //output is points to deduct, -1 if not enough points
