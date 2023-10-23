@@ -14,11 +14,9 @@ public class ClientEvents {
         @SubscribeEvent
         public static void onKeyInput(InputEvent.Key event) {
             if (Keybinding.PRIMARY_ABILITY_KEY.consumeClick()) {
-                Minecraft.getInstance().player.sendSystemMessage(Component.literal("Primary Key Pressed"));
                 ModNetworking.sendToServer(new PrimaryC2SPacket());
             }
             if (Keybinding.SECONDARY_ABILITY_KEY.consumeClick()) {
-                Minecraft.getInstance().player.sendSystemMessage(Component.literal("Secondary Key Pressed"));
                 ModNetworking.sendToServer(new SecondaryCS2Packet());
             }
         }

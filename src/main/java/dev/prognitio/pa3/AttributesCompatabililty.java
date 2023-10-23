@@ -63,7 +63,8 @@ public class AttributesCompatabililty {
 
     //abilities
     AbilityType dash = new AbilityType("dash", 5, 10, -1, 3, 1);
-    AbilityType arrowSalvo = new AbilityType("arrowsalvo", 5, 20, -2, 4, 2);
+    AbilityType arrowSalvo = new AbilityType("arrowsalvo", 5, 12, -2, 4, 2);
+    AbilityType overshield = new AbilityType("overshield", 5, 20, -2, 4, 2);
 
     String primaryAbility = "dash";
     String secondaryAbility = "arrowsalvo";
@@ -203,6 +204,7 @@ public class AttributesCompatabililty {
         switch (input) {
             case "dash" -> {return dash;}
             case "arrowsalvo" -> {return arrowSalvo;}
+            case "overshield" -> {return overshield;}
         }
         return null;
     }
@@ -244,6 +246,11 @@ public class AttributesCompatabililty {
         this.nimbleness = source.nimbleness;
         this.strategy = source.strategy;
         this.abilityCooldown = source.abilityCooldown;
+        this.primaryAbility = source.primaryAbility;
+        this.secondaryAbility = source.secondaryAbility;
+        this.dash = source.dash;
+        this.arrowSalvo = source.arrowSalvo;
+        this.overshield = source.overshield;
     }
 
     public void saveNBTData(CompoundTag nbt) {
@@ -256,6 +263,12 @@ public class AttributesCompatabililty {
         nbt.putString("nimbleness", nimbleness.toString());
         nbt.putString("strategy", strategy.toString());
         nbt.putInt("cooldown", abilityCooldown);
+        nbt.putString("dash", dash.toString());
+        nbt.putString("arrowsalvo", arrowSalvo.toString());
+        nbt.putString("overshield", overshield.toString());
+        nbt.putString("primaryability", primaryAbility);
+        nbt.putString("secondaryability", secondaryAbility);
+
     }
 
     public void loadNBTData(CompoundTag nbt) {
@@ -268,6 +281,11 @@ public class AttributesCompatabililty {
         this.nimbleness = AttributeType.fromString(nbt.getString("nimbleness"));
         this.strategy = AttributeType.fromString(nbt.getString("strategy"));
         this.abilityCooldown = nbt.getInt("cooldown");
+        this.primaryAbility = nbt.getString("primaryability");
+        this.secondaryAbility = nbt.getString("secondaryability");
+        this.dash = AbilityType.fromString(nbt.getString("dash"));
+        this.arrowSalvo = AbilityType.fromString(nbt.getString("arrowsalvo"));
+        this.overshield = AbilityType.fromString(nbt.getString("overshield"));
     }
 
     //getter and setter methods
