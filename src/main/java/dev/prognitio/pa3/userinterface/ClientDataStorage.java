@@ -23,6 +23,8 @@ public class ClientDataStorage {
     private static String secondaryAbility;
     private static Map<String, Integer> abilityLevels = new HashMap<>();
     private static Map<String, Integer> abilityMaxLevels = new HashMap<>();
+    private static Map<String, Integer> abilityLevelupReqs = new HashMap<>();
+    private static Map<String, Integer> attrLevelupReqs = new HashMap<>();
 
     public static void setAttrProperty(String packetInput, String property) {
         //packetInput should be in format "type:level"
@@ -66,6 +68,9 @@ public class ClientDataStorage {
                 }
             }
         }
+        if (property.equals("upgrade")) {
+            attrLevelupReqs.put(type, level);
+        }
     }
 
     public static int getAttrProperty(String attr, String target) {
@@ -108,6 +113,9 @@ public class ClientDataStorage {
                 }
             }
         }
+        if (target.equals("upgrade")) {
+            return attrLevelupReqs.get(attr);
+        }
         return -1;
     }
 
@@ -117,6 +125,9 @@ public class ClientDataStorage {
         }
         if (type.equals("max")) {
             return String.valueOf(abilityMaxLevels.get(target));
+        }
+        if (type.equals("upgrade")) {
+            return String.valueOf(abilityLevelupReqs.get(target));
         }
         if (type.equals("desc")) {
             switch (target) {
@@ -142,6 +153,9 @@ public class ClientDataStorage {
         }
         if (type.equals("max")) {
             abilityMaxLevels.put(target, value);
+        }
+        if (type.equals("upgrade")) {
+            abilityLevelupReqs.put(target, value);
         }
     }
 

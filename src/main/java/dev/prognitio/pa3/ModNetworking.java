@@ -83,6 +83,16 @@ public class ModNetworking {
                 .encoder(SyncSelectedAbililtySC::toBytes)
                 .consumerMainThread(SyncSelectedAbililtySC::handle).add();
 
+        net.messageBuilder(SyncAbilUpgCostSC.class, id(), NetworkDirection.PLAY_TO_CLIENT)
+                .decoder(SyncAbilUpgCostSC::new)
+                .encoder(SyncAbilUpgCostSC::toBytes)
+                .consumerMainThread(SyncAbilUpgCostSC::handle).add();
+
+        net.messageBuilder(SyncAttrUpgCostSC.class, id(), NetworkDirection.PLAY_TO_CLIENT)
+                .decoder(SyncAttrUpgCostSC::new)
+                .encoder(SyncAttrUpgCostSC::toBytes)
+                .consumerMainThread(SyncAttrUpgCostSC::handle).add();
+
         net.messageBuilder(LevelUpAttributeCS.class, id(), NetworkDirection.PLAY_TO_SERVER)
                 .decoder(LevelUpAttributeCS::new)
                 .encoder(LevelUpAttributeCS::toBytes)

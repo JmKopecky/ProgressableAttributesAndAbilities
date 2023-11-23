@@ -46,39 +46,66 @@ public class AbilityDisplayScreen extends Screen {
                 (button) -> {
                     //level up dash
                     ModNetworking.sendToServer(new LevelUpAbilityCS("dash"));
-                }));
+                }, (button, stack, mx, my) -> {
+            ArrayList<Component> tooltip = new ArrayList<>();
+            int level = Integer.parseInt(ClientDataStorage.getAbilityProperty("dash", "level"));
+            if (level == 0) {
+                tooltip.add(Component.literal("Unlock").withStyle(ChatFormatting.BLUE).withStyle(ChatFormatting.BOLD));
+            } else {
+                tooltip.add(Component.literal("Level up").withStyle(ChatFormatting.BLUE).withStyle(ChatFormatting.BOLD));
+            }
+            int maxLevel = Integer.parseInt(ClientDataStorage.getAbilityProperty("dash", "max"));
+            tooltip.add(Component.literal(level + "/" + maxLevel).withStyle(ChatFormatting.ITALIC).withStyle(ChatFormatting.AQUA));
+            if (level != maxLevel) {
+                int upgradeCost = Integer.parseInt(ClientDataStorage.getAbilityProperty("dash", "upgrade"));
+                tooltip.add(Component.literal("Required Points: " + upgradeCost));
+            }
+            renderTooltip(stack, tooltip, Optional.empty(), mx, my);
+        }));
 
         this.addRenderableWidget(new Button(midX - 20 - 10, midY - 40 - 10 + font.lineHeight/2,
                 20, 20, Component.literal("+"),
                 (button) -> {
                     //level up arrow salvo
                     ModNetworking.sendToServer(new LevelUpAbilityCS("arrowsalvo"));
-                }));
+                }, (button, stack, mx, my) -> {
+            ArrayList<Component> tooltip = new ArrayList<>();
+            int level = Integer.parseInt(ClientDataStorage.getAbilityProperty("arrowsalvo", "level"));
+            if (level == 0) {
+                tooltip.add(Component.literal("Unlock").withStyle(ChatFormatting.BLUE).withStyle(ChatFormatting.BOLD));
+            } else {
+                tooltip.add(Component.literal("Level up").withStyle(ChatFormatting.BLUE).withStyle(ChatFormatting.BOLD));
+            }
+            int maxLevel = Integer.parseInt(ClientDataStorage.getAbilityProperty("arrowsalvo", "max"));
+            tooltip.add(Component.literal(level + "/" + maxLevel).withStyle(ChatFormatting.ITALIC).withStyle(ChatFormatting.AQUA));
+            if (level != maxLevel) {
+                int upgradeCost = Integer.parseInt(ClientDataStorage.getAbilityProperty("arrowsalvo", "upgrade"));
+                tooltip.add(Component.literal("Required Points: " + upgradeCost));
+            }
+            renderTooltip(stack, tooltip, Optional.empty(), mx, my);
+        }));
 
         this.addRenderableWidget(new Button(midX - 20 - 10, midY - 20 - 10 + font.lineHeight/2,
                 20, 20, Component.literal("+"),
                 (button) -> {
                     //level up overshield
                     ModNetworking.sendToServer(new LevelUpAbilityCS("overshield"));
-                }));
-
-        /*
-        //button to set primary ability
-        this.addRenderableWidget(new Button(midX - 110 + 10 - 10, midY - 60 - 10 + font.lineHeight/2,
-                20, 20, Component.literal("P"),
-                (button) -> {
-                    ModNetworking.sendToServer(new SetSelectedAbilityCS("dash:p"));
-                }));
-
-
-
-        //button to set secondary ability
-        this.addRenderableWidget(new Button(midX - 110 - 10 - 10, midY - 60 - 10 + font.lineHeight/2,
-                20, 20, Component.literal("S"),
-                (button) -> {
-                    ModNetworking.sendToServer(new SetSelectedAbilityCS("dash:s"));
-                }));
-         */
+                }, (button, stack, mx, my) -> {
+            ArrayList<Component> tooltip = new ArrayList<>();
+            int level = Integer.parseInt(ClientDataStorage.getAbilityProperty("overshield", "level"));
+            if (level == 0) {
+                tooltip.add(Component.literal("Unlock").withStyle(ChatFormatting.BLUE).withStyle(ChatFormatting.BOLD));
+            } else {
+                tooltip.add(Component.literal("Level up").withStyle(ChatFormatting.BLUE).withStyle(ChatFormatting.BOLD));
+            }
+            int maxLevel = Integer.parseInt(ClientDataStorage.getAbilityProperty("overshield", "max"));
+            tooltip.add(Component.literal(level + "/" + maxLevel).withStyle(ChatFormatting.ITALIC).withStyle(ChatFormatting.AQUA));
+            if (level != maxLevel) {
+                int upgradeCost = Integer.parseInt(ClientDataStorage.getAbilityProperty("overshield", "upgrade"));
+                tooltip.add(Component.literal("Required Points: " + upgradeCost));
+            }
+            renderTooltip(stack, tooltip, Optional.empty(), mx, my);
+        }));
 
 
     }

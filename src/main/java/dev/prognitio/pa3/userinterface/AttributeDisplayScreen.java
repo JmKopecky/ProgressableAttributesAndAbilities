@@ -14,6 +14,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 
 import java.util.ArrayList;
+import java.util.Optional;
 
 public class AttributeDisplayScreen extends Screen {
 
@@ -41,27 +42,82 @@ public class AttributeDisplayScreen extends Screen {
         this.addRenderableWidget(new Button(midX + 95, midY - 45 - 5, 20, 20, Component.literal("+"),
                 (button) -> {
                     ModNetworking.sendToServer(new LevelUpAttributeCS("fitness"));
-                }));
+                }, (button, stack, mx, my) -> {
+            ArrayList<Component> tooltip = new ArrayList<>();
+            tooltip.add(Component.literal("Level up").withStyle(ChatFormatting.BLUE).withStyle(ChatFormatting.BOLD));
+            int level = ClientDataStorage.getAttrProperty("fitness", "level");
+            int maxLevel = ClientDataStorage.getAttrProperty("fitness", "max");
+            tooltip.add(Component.literal(level + "/" + maxLevel).withStyle(ChatFormatting.ITALIC).withStyle(ChatFormatting.AQUA));
+            if (level != maxLevel) {
+                int upgradeCost = ClientDataStorage.getAttrProperty("fitness", "upgrade");
+                tooltip.add(Component.literal("Required Points: " + upgradeCost));
+            }
+            renderTooltip(stack, tooltip, Optional.empty(), mx, my);
+        }));
         //resilience level up
         this.addRenderableWidget(new Button(midX + 95, midY - 15 - 5, 20, 20, Component.literal("+"),
                 (button) -> {
                     ModNetworking.sendToServer(new LevelUpAttributeCS("resilience"));
-                }));
+                }, (button, stack, mx, my) -> {
+            ArrayList<Component> tooltip = new ArrayList<>();
+            tooltip.add(Component.literal("Level up").withStyle(ChatFormatting.BLUE).withStyle(ChatFormatting.BOLD));
+            int level = ClientDataStorage.getAttrProperty("resilience", "level");
+            int maxLevel = ClientDataStorage.getAttrProperty("resilience", "max");
+            tooltip.add(Component.literal(level + "/" + maxLevel).withStyle(ChatFormatting.ITALIC).withStyle(ChatFormatting.AQUA));
+            if (level != maxLevel) {
+                int upgradeCost = ClientDataStorage.getAttrProperty("resilience", "upgrade");
+                tooltip.add(Component.literal("Required Points: " + upgradeCost));
+            }
+            renderTooltip(stack, tooltip, Optional.empty(), mx, my);
+        }));
         //combat level up
         this.addRenderableWidget(new Button(midX + 95, midY + 15 - 5, 20, 20, Component.literal("+"),
                 (button) -> {
                     ModNetworking.sendToServer(new LevelUpAttributeCS("combat"));
-                }));
+                }, (button, stack, mx, my) -> {
+            ArrayList<Component> tooltip = new ArrayList<>();
+            tooltip.add(Component.literal("Level up").withStyle(ChatFormatting.BLUE).withStyle(ChatFormatting.BOLD));
+            int level = ClientDataStorage.getAttrProperty("combat", "level");
+            int maxLevel = ClientDataStorage.getAttrProperty("combat", "max");
+            tooltip.add(Component.literal(level + "/" + maxLevel).withStyle(ChatFormatting.ITALIC).withStyle(ChatFormatting.AQUA));
+            if (level != maxLevel) {
+                int upgradeCost = ClientDataStorage.getAttrProperty("combat", "upgrade");
+                tooltip.add(Component.literal("Required Points: " + upgradeCost));
+            }
+            renderTooltip(stack, tooltip, Optional.empty(), mx, my);
+        }));
         //nimbleness level up
         this.addRenderableWidget(new Button(midX + 95, midY + 45 - 5, 20, 20, Component.literal("+"),
                 (button) -> {
                     ModNetworking.sendToServer(new LevelUpAttributeCS("nimbleness"));
-                }));
+                }, (button, stack, mx, my) -> {
+            ArrayList<Component> tooltip = new ArrayList<>();
+            tooltip.add(Component.literal("Level up").withStyle(ChatFormatting.BLUE).withStyle(ChatFormatting.BOLD));
+            int level = ClientDataStorage.getAttrProperty("nimbleness", "level");
+            int maxLevel = ClientDataStorage.getAttrProperty("nimbleness", "max");
+            tooltip.add(Component.literal(level + "/" + maxLevel).withStyle(ChatFormatting.ITALIC).withStyle(ChatFormatting.AQUA));
+            if (level != maxLevel) {
+                int upgradeCost = ClientDataStorage.getAttrProperty("nimbleness", "upgrade");
+                tooltip.add(Component.literal("Required Points: " + upgradeCost));
+            }
+            renderTooltip(stack, tooltip, Optional.empty(), mx, my);
+        }));
         //strategy level up
         this.addRenderableWidget(new Button(midX + 95, midY + 75 - 5, 20, 20, Component.literal("+"),
                 (button) -> {
                     ModNetworking.sendToServer(new LevelUpAttributeCS("strategy"));
-                }));
+                }, (button, stack, mx, my) -> {
+            ArrayList<Component> tooltip = new ArrayList<>();
+            tooltip.add(Component.literal("Level up").withStyle(ChatFormatting.BLUE).withStyle(ChatFormatting.BOLD));
+            int level = ClientDataStorage.getAttrProperty("strategy", "level");
+            int maxLevel = ClientDataStorage.getAttrProperty("strategy", "max");
+            tooltip.add(Component.literal(level + "/" + maxLevel).withStyle(ChatFormatting.ITALIC).withStyle(ChatFormatting.AQUA));
+            if (level != maxLevel) {
+                int upgradeCost = ClientDataStorage.getAttrProperty("strategy", "upgrade");
+                tooltip.add(Component.literal("Required Points: " + upgradeCost));
+            }
+            renderTooltip(stack, tooltip, Optional.empty(), mx, my);
+        }));
     }
 
     @Override

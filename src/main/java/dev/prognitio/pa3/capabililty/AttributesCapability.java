@@ -62,7 +62,7 @@ public class AttributesCapability {
         return list;
     };
     public AttributeType strategy = new AttributeType("strategy", 20,
-            "5f14399f-df13-4007-bd76-7f5cbad40f9f", strategySupp.get(), 2);
+            "5f14399f-df13-4007-bd76-7f5cbad40f9f", strategySupp.get(), 1);
 
     //abilities
     public AbilityType dash = new AbilityType("dash", 5, 10, -1, 3, 1);
@@ -170,6 +170,39 @@ public class AttributesCapability {
         ModNetworking.sendToPlayer(new SyncAbilMaxLevelSC(mxLvl), (ServerPlayer) player);
 
         ModNetworking.sendToPlayer(new SyncSelectedAbililtySC(primaryAbility + ":" + secondaryAbility), (ServerPlayer) player);
+
+        int pointsToUpgrade = 1 + dash.level * dash.upgradeScale;
+        if (dash.level == 0) {
+            pointsToUpgrade = dash.purchaseCost;
+        }
+        ModNetworking.sendToPlayer(new SyncAbilUpgCostSC("dash:" + pointsToUpgrade), (ServerPlayer) player);
+
+        pointsToUpgrade = 1 + arrowSalvo.level * arrowSalvo.upgradeScale;
+        if (arrowSalvo.level == 0) {
+            pointsToUpgrade = arrowSalvo.purchaseCost;
+        }
+        ModNetworking.sendToPlayer(new SyncAbilUpgCostSC("arrowsalvo:" + pointsToUpgrade), (ServerPlayer) player);
+
+        pointsToUpgrade = 1 + overshield.level * overshield.upgradeScale;
+        if (overshield.level == 0) {
+            pointsToUpgrade = overshield.purchaseCost;
+        }
+        ModNetworking.sendToPlayer(new SyncAbilUpgCostSC("overshield:" + pointsToUpgrade), (ServerPlayer) player);
+
+        pointsToUpgrade = (int) ((fitness.level/5 + 1) * fitness.pointRequirementScale);
+        ModNetworking.sendToPlayer(new SyncAttrUpgCostSC("fitness:" + pointsToUpgrade), (ServerPlayer) player);
+
+        pointsToUpgrade = (int) ((resilience.level/5 + 1) * resilience.pointRequirementScale);
+        ModNetworking.sendToPlayer(new SyncAttrUpgCostSC("resilience:" + pointsToUpgrade), (ServerPlayer) player);
+
+        pointsToUpgrade = (int) ((combat.level/5 + 1) * combat.pointRequirementScale);
+        ModNetworking.sendToPlayer(new SyncAttrUpgCostSC("combat:" + pointsToUpgrade), (ServerPlayer) player);
+
+        pointsToUpgrade = (int) ((strategy.level/5 + 1) * strategy.pointRequirementScale);
+        ModNetworking.sendToPlayer(new SyncAttrUpgCostSC("strategy:" + pointsToUpgrade), (ServerPlayer) player);
+
+        pointsToUpgrade = (int) ((nimbleness.level/5 + 1) * nimbleness.pointRequirementScale);
+        ModNetworking.sendToPlayer(new SyncAttrUpgCostSC("nimbleness:" + pointsToUpgrade), (ServerPlayer) player);
 
     }
 
