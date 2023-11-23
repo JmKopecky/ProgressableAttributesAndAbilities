@@ -3,7 +3,9 @@ package dev.prognitio.pa3.userinterface;
 import com.mojang.blaze3d.platform.Window;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
+import dev.prognitio.pa3.ModNetworking;
 import dev.prognitio.pa3.pa3;
+import dev.prognitio.pa3.userinterface.packets.LevelUpAttributeCS;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.components.Button;
@@ -29,51 +31,55 @@ public class AttributeDisplayScreen extends Screen {
         window = Minecraft.getInstance().getWindow();
         midY = window.getGuiScaledHeight() / 2;
         midX = window.getGuiScaledWidth() / 2;
-        this.addRenderableWidget(new Button((window.getGuiScaledWidth() - 256) / 2 + 256, (window.getGuiScaledHeight() - 256) / 2 + 64,
+        this.addRenderableWidget(new Button(midX - (40/2), midY + (256/2) - 10,
                 40, 20, Component.literal("Abilities"),
                 (button) -> {
                     Minecraft.getInstance().setScreen(new AbilityDisplayScreen(Component.literal("Ability Interface")));
                 }));
 
         //fitness level up
-        this.addRenderableWidget(new Button(midX + 50, midY - 45 - 5, 20, 20, Component.literal("+"),
+        this.addRenderableWidget(new Button(midX + 95, midY - 45 - 5, 20, 20, Component.literal("+"),
                 (button) -> {
-
+                    ModNetworking.sendToServer(new LevelUpAttributeCS("fitness"));
                 }));
         //resilience level up
-        this.addRenderableWidget(new Button(midX + 50, midY - 15 - 5, 20, 20, Component.literal("+"),
+        this.addRenderableWidget(new Button(midX + 95, midY - 15 - 5, 20, 20, Component.literal("+"),
                 (button) -> {
-
+                    ModNetworking.sendToServer(new LevelUpAttributeCS("resilience"));
                 }));
         //combat level up
-        this.addRenderableWidget(new Button(midX + 50, midY + 15 - 5, 20, 20, Component.literal("+"),
+        this.addRenderableWidget(new Button(midX + 95, midY + 15 - 5, 20, 20, Component.literal("+"),
                 (button) -> {
-
+                    ModNetworking.sendToServer(new LevelUpAttributeCS("combat"));
                 }));
         //nimbleness level up
-        this.addRenderableWidget(new Button(midX + 50, midY + 45 - 5, 20, 20, Component.literal("+"),
+        this.addRenderableWidget(new Button(midX + 95, midY + 45 - 5, 20, 20, Component.literal("+"),
                 (button) -> {
-
+                    ModNetworking.sendToServer(new LevelUpAttributeCS("nimbleness"));
                 }));
         //strategy level up
-        this.addRenderableWidget(new Button(midX + 50, midY + 75 - 5, 20, 20, Component.literal("+"),
+        this.addRenderableWidget(new Button(midX + 95, midY + 75 - 5, 20, 20, Component.literal("+"),
                 (button) -> {
-
-                }, ((pButton, pPoseStack, pMouseX, pMouseY) -> {
-
-        })));
+                    ModNetworking.sendToServer(new LevelUpAttributeCS("strategy"));
+                }));
     }
 
     @Override
     public void render(PoseStack stack, int mouseX, int mouseY, float partialTicks) {
         this.renderBackground(stack);
         RenderSystem.setShaderTexture(0, bg);
-        blit(stack, (window.getGuiScaledWidth() - 256) / 2, (window.getGuiScaledHeight() - 256) / 2 + 64, 0, 0, 0, 256, 256, 256, 256);
+        blit(stack, (window.getGuiScaledWidth() - 256) / 2, (window.getGuiScaledHeight() - 256) / 2, 0, 0, 0, 256, 256, 256, 256);
         drawRowForAttribute("Fitness", midY - 45, stack, mouseX, mouseY);
         drawRowForAttribute("Resilience", midY - 15, stack, mouseX, mouseY);
         drawRowForAttribute("Combat", midY + 15, stack, mouseX, mouseY);
         drawRowForAttribute("Nimbleness", midY + 45, stack, mouseX, mouseY);
         drawRowForAttribute("Strategy", midY + 75, stack, mouseX, mouseY);
+        String currentLevel = String.valueOf(ClientDataStorage.getLevel());
+        String currentXp = String.valueOf(ClientDataStorage.getXp());
+        String requiredXp = String.valueOf(ClientDataStorage.getRequiredXp());
+        String availablePoints = String.valueOf(ClientDataStorage.getAvailablePoints());
+        String levelDisplay = "Level: " + currentLevel + " | XP: " + currentXp + "/" + requiredXp + " | Available Points: " + availablePoints;
+        this.font.draw(stack, levelDisplay, (float) (midX - font.width(levelDisplay) / 2), (float) ((midY - 100)), 0xff4d4d4d);
         super.render(stack, mouseX, mouseY, partialTicks);
     }
 

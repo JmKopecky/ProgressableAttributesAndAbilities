@@ -14,7 +14,7 @@ import java.util.Random;
 public class AbilityType {
 
     String id;
-    int level;
+    public int level;
     int maxLevel;
     int cooldown;
     int cooldownScale;

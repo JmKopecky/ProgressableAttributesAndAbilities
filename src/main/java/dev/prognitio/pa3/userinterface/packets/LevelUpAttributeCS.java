@@ -1,19 +1,21 @@
-package dev.prognitio.pa3.userinterface;
+package dev.prognitio.pa3.userinterface.packets;
 
+import dev.prognitio.pa3.capabililty.AttributesProvider;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.chat.Component;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraftforge.network.NetworkEvent;
 
 import java.util.function.Supplier;
 
-public class SyncAttrMaxLevelSC {
+public class LevelUpAttributeCS {
 
     private final String data;
 
-    public SyncAttrMaxLevelSC(String data) {
+    public LevelUpAttributeCS(String data) {
         this.data = data;
     }
-    public SyncAttrMaxLevelSC(FriendlyByteBuf buf) {
+    public LevelUpAttributeCS(FriendlyByteBuf buf) {
         this.data = buf.readComponent().getString();
     }
     public void toBytes(FriendlyByteBuf buf) {
@@ -23,7 +25,12 @@ public class SyncAttrMaxLevelSC {
     public boolean handle(Supplier<NetworkEvent.Context> supplier) {
         NetworkEvent.Context context = supplier.get();
         context.enqueueWork(() -> {
-            ClientDataStorage.setAttrProperty(data, "max");
+            ServerPlayer player = context.getSender();
+            player.getCapability(AttributesProvider.ATTRIBUTES).ifPresent(cap -> {
+                cap.attemptLevelUpAttribute(data);
+                cap.syncDataToPlayer(player);
+                cap.applyApplicableAttributes(player);
+            });
         });
         return true;
     }

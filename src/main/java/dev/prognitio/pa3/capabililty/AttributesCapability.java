@@ -1,7 +1,7 @@
 package dev.prognitio.pa3.capabililty;
 
 import dev.prognitio.pa3.ModNetworking;
-import dev.prognitio.pa3.userinterface.*;
+import dev.prognitio.pa3.userinterface.packets.*;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
@@ -65,9 +65,9 @@ public class AttributesCapability {
             "5f14399f-df13-4007-bd76-7f5cbad40f9f", strategySupp.get(), 2);
 
     //abilities
-    AbilityType dash = new AbilityType("dash", 5, 10, -1, 3, 1);
-    AbilityType arrowSalvo = new AbilityType("arrowsalvo", 5, 12, -2, 4, 2);
-    AbilityType overshield = new AbilityType("overshield", 5, 20, -2, 4, 2);
+    public AbilityType dash = new AbilityType("dash", 5, 10, -1, 3, 1);
+    public AbilityType arrowSalvo = new AbilityType("arrowsalvo", 5, 12, -2, 4, 2);
+    public AbilityType overshield = new AbilityType("overshield", 5, 20, -2, 4, 2);
 
     String primaryAbility = "dash";
     String secondaryAbility = "arrowsalvo";
@@ -152,6 +152,25 @@ public class AttributesCapability {
         ModNetworking.sendToPlayer(new SyncPointsSC("" + availablePoints), (ServerPlayer) player);
         ModNetworking.sendToPlayer(new SyncTotalLevelSC("" + level), (ServerPlayer) player);
         ModNetworking.sendToPlayer(new SyncXPSC("" + experience), (ServerPlayer) player);
+        ModNetworking.sendToPlayer(new SyncXpLevelReqSC("" + calculateLevelUpRequirement()), (ServerPlayer) player);
+
+        lvl = "dash:" + dash.level;
+        mxLvl = "dash:" + dash.maxLevel;
+        ModNetworking.sendToPlayer(new SyncAbilLevelSC(lvl), (ServerPlayer) player);
+        ModNetworking.sendToPlayer(new SyncAbilMaxLevelSC(mxLvl), (ServerPlayer) player);
+
+        lvl = "arrowsalvo:" + arrowSalvo.level;
+        mxLvl = "arrowsalvo:" + arrowSalvo.maxLevel;
+        ModNetworking.sendToPlayer(new SyncAbilLevelSC(lvl), (ServerPlayer) player);
+        ModNetworking.sendToPlayer(new SyncAbilMaxLevelSC(mxLvl), (ServerPlayer) player);
+
+        lvl = "overshield:" + overshield.level;
+        mxLvl = "overshield:" + overshield.maxLevel;
+        ModNetworking.sendToPlayer(new SyncAbilLevelSC(lvl), (ServerPlayer) player);
+        ModNetworking.sendToPlayer(new SyncAbilMaxLevelSC(mxLvl), (ServerPlayer) player);
+
+        ModNetworking.sendToPlayer(new SyncSelectedAbililtySC(primaryAbility + ":" + secondaryAbility), (ServerPlayer) player);
+
     }
 
     public boolean attemptLevelUpAttribute(String attribute) {

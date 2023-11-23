@@ -1,19 +1,20 @@
-package dev.prognitio.pa3.userinterface;
+package dev.prognitio.pa3.userinterface.packets;
 
+import dev.prognitio.pa3.userinterface.ClientDataStorage;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.chat.Component;
 import net.minecraftforge.network.NetworkEvent;
 
 import java.util.function.Supplier;
 
-public class SyncPointsSC {
+public class SyncXpLevelReqSC {
 
     private final String data;
 
-    public SyncPointsSC(String data) {
+    public SyncXpLevelReqSC(String data) {
         this.data = data;
     }
-    public SyncPointsSC(FriendlyByteBuf buf) {
+    public SyncXpLevelReqSC(FriendlyByteBuf buf) {
         this.data = buf.readComponent().getString();
     }
     public void toBytes(FriendlyByteBuf buf) {
@@ -23,7 +24,7 @@ public class SyncPointsSC {
     public boolean handle(Supplier<NetworkEvent.Context> supplier) {
         NetworkEvent.Context context = supplier.get();
         context.enqueueWork(() -> {
-            ClientDataStorage.setAvailablePoints(Integer.parseInt(data));
+            ClientDataStorage.setRequiredXp(Integer.parseInt(data));
         });
         return true;
     }

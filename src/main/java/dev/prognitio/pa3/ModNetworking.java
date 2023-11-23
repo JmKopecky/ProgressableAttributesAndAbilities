@@ -2,7 +2,7 @@ package dev.prognitio.pa3;
 
 import dev.prognitio.pa3.keybindsystem.PrimaryC2SPacket;
 import dev.prognitio.pa3.keybindsystem.SecondaryCS2Packet;
-import dev.prognitio.pa3.userinterface.*;
+import dev.prognitio.pa3.userinterface.packets.*;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraftforge.network.NetworkDirection;
@@ -33,6 +33,11 @@ public class ModNetworking {
                 .encoder(PrimaryC2SPacket::toBytes)
                 .consumerMainThread(PrimaryC2SPacket::handle).add();
 
+        net.messageBuilder(SecondaryCS2Packet.class, id(), NetworkDirection.PLAY_TO_SERVER)
+                .decoder(SecondaryCS2Packet::new)
+                .encoder(SecondaryCS2Packet::toBytes)
+                .consumerMainThread(SecondaryCS2Packet::handle).add();
+
         net.messageBuilder(SyncAttrLevelSC.class, id(), NetworkDirection.PLAY_TO_CLIENT)
                 .decoder(SyncAttrLevelSC::new)
                 .encoder(SyncAttrLevelSC::toBytes)
@@ -58,10 +63,40 @@ public class ModNetworking {
                 .encoder(SyncXPSC::toBytes)
                 .consumerMainThread(SyncXPSC::handle).add();
 
-        net.messageBuilder(SecondaryCS2Packet.class, id(), NetworkDirection.PLAY_TO_SERVER)
-                .decoder(SecondaryCS2Packet::new)
-                .encoder(SecondaryCS2Packet::toBytes)
-                .consumerMainThread(SecondaryCS2Packet::handle).add();
+        net.messageBuilder(SyncXpLevelReqSC.class, id(), NetworkDirection.PLAY_TO_CLIENT)
+                .decoder(SyncXpLevelReqSC::new)
+                .encoder(SyncXpLevelReqSC::toBytes)
+                .consumerMainThread(SyncXpLevelReqSC::handle).add();
+
+        net.messageBuilder(SyncAbilLevelSC.class, id(), NetworkDirection.PLAY_TO_CLIENT)
+                .decoder(SyncAbilLevelSC::new)
+                .encoder(SyncAbilLevelSC::toBytes)
+                .consumerMainThread(SyncAbilLevelSC::handle).add();
+
+        net.messageBuilder(SyncAbilMaxLevelSC.class, id(), NetworkDirection.PLAY_TO_CLIENT)
+                .decoder(SyncAbilMaxLevelSC::new)
+                .encoder(SyncAbilMaxLevelSC::toBytes)
+                .consumerMainThread(SyncAbilMaxLevelSC::handle).add();
+
+        net.messageBuilder(SyncSelectedAbililtySC.class, id(), NetworkDirection.PLAY_TO_CLIENT)
+                .decoder(SyncSelectedAbililtySC::new)
+                .encoder(SyncSelectedAbililtySC::toBytes)
+                .consumerMainThread(SyncSelectedAbililtySC::handle).add();
+
+        net.messageBuilder(LevelUpAttributeCS.class, id(), NetworkDirection.PLAY_TO_SERVER)
+                .decoder(LevelUpAttributeCS::new)
+                .encoder(LevelUpAttributeCS::toBytes)
+                .consumerMainThread(LevelUpAttributeCS::handle).add();
+
+        net.messageBuilder(LevelUpAbilityCS.class, id(), NetworkDirection.PLAY_TO_SERVER)
+                .decoder(LevelUpAbilityCS::new)
+                .encoder(LevelUpAbilityCS::toBytes)
+                .consumerMainThread(LevelUpAbilityCS::handle).add();
+
+        net.messageBuilder(SetSelectedAbilityCS.class, id(), NetworkDirection.PLAY_TO_SERVER)
+                .decoder(SetSelectedAbilityCS::new)
+                .encoder(SetSelectedAbilityCS::toBytes)
+                .consumerMainThread(SetSelectedAbilityCS::handle).add();
     }
 
     public static <MSG> void sendToServer(MSG message) {

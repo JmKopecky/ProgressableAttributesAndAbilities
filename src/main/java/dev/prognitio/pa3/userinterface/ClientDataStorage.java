@@ -1,9 +1,13 @@
 package dev.prognitio.pa3.userinterface;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class ClientDataStorage {
 
     private static int level;
     private static int xp;
+    private static int requiredXp;
     private static int availablePoints;
     private static int fitnessLevel;
     private static int fitnessMaxLevel;
@@ -15,6 +19,10 @@ public class ClientDataStorage {
     private static int nimblenessMaxLevel;
     private static int strategyLevel;
     private static int strategyMaxLevel;
+    private static String primaryAbility;
+    private static String secondaryAbility;
+    private static Map<String, Integer> abilityLevels = new HashMap<>();
+    private static Map<String, Integer> abilityMaxLevels = new HashMap<>();
 
     public static void setAttrProperty(String packetInput, String property) {
         //packetInput should be in format "type:level"
@@ -103,6 +111,40 @@ public class ClientDataStorage {
         return -1;
     }
 
+    public static String getAbilityProperty(String target, String type) {
+        if (type.equals("level")) {
+            return String.valueOf(abilityLevels.get(target));
+        }
+        if (type.equals("max")) {
+            return String.valueOf(abilityMaxLevels.get(target));
+        }
+        if (type.equals("desc")) {
+            switch (target) {
+                case "dash" -> {
+                    return "Dash in the direction you are looking";
+                }
+                case "arrowsalvo" -> {
+                    return "Loose a salvo of arrows";
+                }
+                case "overshield" -> {
+                    return "Gain a number of Absorption hearts";
+                }
+            }
+        }
+        return "ERROR";
+    }
+
+    public static void setAbilityProperty(String target, String type) {
+        int value = Integer.parseInt(target.split(":")[1]);
+        target = target.split(":")[0];
+        if (type.equals("level")) {
+            abilityLevels.put(target, value);
+        }
+        if (type.equals("max")) {
+            abilityMaxLevels.put(target, value);
+        }
+    }
+
     public static int getLevel() {
         return level;
     }
@@ -125,5 +167,29 @@ public class ClientDataStorage {
 
     public static void setAvailablePoints(int availablePoints) {
         ClientDataStorage.availablePoints = availablePoints;
+    }
+
+    public static int getRequiredXp() {
+        return requiredXp;
+    }
+
+    public static void setRequiredXp(int requiredXp) {
+        ClientDataStorage.requiredXp = requiredXp;
+    }
+
+    public static String getPrimaryAbility() {
+        return primaryAbility;
+    }
+
+    public static void setPrimaryAbility(String primaryAbility) {
+        ClientDataStorage.primaryAbility = primaryAbility;
+    }
+
+    public static String getSecondaryAbility() {
+        return secondaryAbility;
+    }
+
+    public static void setSecondaryAbility(String secondaryAbility) {
+        ClientDataStorage.secondaryAbility = secondaryAbility;
     }
 }
