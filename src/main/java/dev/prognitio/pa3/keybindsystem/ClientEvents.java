@@ -1,5 +1,8 @@
-package dev.prognitio.pa3;
+package dev.prognitio.pa3.keybindsystem;
 
+import dev.prognitio.pa3.ModNetworking;
+import dev.prognitio.pa3.pa3;
+import dev.prognitio.pa3.userinterface.AttributeDisplayScreen;
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.chat.Component;
 import net.minecraftforge.api.distmarker.Dist;
@@ -19,6 +22,9 @@ public class ClientEvents {
             if (Keybinding.SECONDARY_ABILITY_KEY.consumeClick()) {
                 ModNetworking.sendToServer(new SecondaryCS2Packet());
             }
+            if (Keybinding.OPEN_INTERFACE_KEY.consumeClick()) {
+                Minecraft.getInstance().setScreen(new AttributeDisplayScreen(Component.literal("Attribute Interface")));
+            }
         }
     }
 
@@ -28,6 +34,7 @@ public class ClientEvents {
         public static void onKeyRegister(RegisterKeyMappingsEvent event) {
             event.register(Keybinding.PRIMARY_ABILITY_KEY);
             event.register(Keybinding.SECONDARY_ABILITY_KEY);
+            event.register(Keybinding.OPEN_INTERFACE_KEY);
         }
     }
 }

@@ -1,4 +1,4 @@
-package dev.prognitio.pa3;
+package dev.prognitio.pa3.capabililty;
 
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
@@ -13,15 +13,15 @@ import org.jetbrains.annotations.Nullable;
 
 public class AttributesProvider implements ICapabilityProvider, INBTSerializable<CompoundTag> {
 
-    public static Capability<AttributesCompatabililty> ATTRIBUTES = CapabilityManager.get(new CapabilityToken<>() {});
+    public static Capability<AttributesCapability> ATTRIBUTES = CapabilityManager.get(new CapabilityToken<>() {});
 
-    private AttributesCompatabililty attributeCapability = null;
+    private AttributesCapability attributeCapability = null;
 
-    private final LazyOptional<AttributesCompatabililty> optional = LazyOptional.of(this::createAttributes);
+    private final LazyOptional<AttributesCapability> optional = LazyOptional.of(this::createAttributes);
 
-    private AttributesCompatabililty createAttributes() {
+    private AttributesCapability createAttributes() {
         if (this.attributeCapability == null) {
-            this.attributeCapability = new AttributesCompatabililty();
+            this.attributeCapability = new AttributesCapability();
         }
         return this.attributeCapability;
     }

@@ -1,7 +1,10 @@
-package dev.prognitio.pa3;
+package dev.prognitio.pa3.capabililty;
 
+import dev.prognitio.pa3.ModNetworking;
+import dev.prognitio.pa3.userinterface.*;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
@@ -10,7 +13,7 @@ import net.minecraftforge.common.ForgeMod;
 import java.util.ArrayList;
 import java.util.function.Supplier;
 
-public class AttributesCompatabililty {
+public class AttributesCapability {
 
     private int experience = 0;
     private int level = 0;
@@ -22,7 +25,7 @@ public class AttributesCompatabililty {
         list.add(1.0);
         return list;
     };
-    AttributeType fitness = new AttributeType("fitness", 20,
+    public AttributeType fitness = new AttributeType("fitness", 20,
             "5c93580c-84a1-4583-83a9-3c29ca3abb3e", fitnessSupp.get(), 1);
 
     Supplier<ArrayList<Double>> resilienceSupp = () -> {
@@ -31,7 +34,7 @@ public class AttributesCompatabililty {
         list.add(1.0);
         return list;
     };
-    AttributeType resilience = new AttributeType("resilience", 20,
+    public AttributeType resilience = new AttributeType("resilience", 20,
             "e19e60ec-c913-433b-b38a-3801834be5cf", resilienceSupp.get(), 1);
 
     Supplier<ArrayList<Double>> combatSupp = () -> {
@@ -40,7 +43,7 @@ public class AttributesCompatabililty {
         list.add(50.0/20.0); //parry amount per level, start at 25, max at 75
         return list;
     };
-    AttributeType combat = new AttributeType("combat", 20,
+    public AttributeType combat = new AttributeType("combat", 20,
             "b7b13584-e7d3-4dea-9d09-f6c36b9bef2c", combatSupp.get(), 1);
 
     Supplier<ArrayList<Double>> nimblenessSupp = () -> {
@@ -49,7 +52,7 @@ public class AttributesCompatabililty {
         list.add(50.0/20.0);
         return list;
     };
-    AttributeType nimbleness = new AttributeType("nimbleness", 20,
+    public AttributeType nimbleness = new AttributeType("nimbleness", 20,
             "db7daa72-f2e0-40b0-8120-5816bf0ba274", nimblenessSupp.get(), 1);
 
     Supplier<ArrayList<Double>> strategySupp = () -> {
@@ -58,7 +61,7 @@ public class AttributesCompatabililty {
         list.add(2.0);
         return list;
     };
-    AttributeType strategy = new AttributeType("strategy", 20,
+    public AttributeType strategy = new AttributeType("strategy", 20,
             "5f14399f-df13-4007-bd76-7f5cbad40f9f", strategySupp.get(), 2);
 
     //abilities
@@ -122,6 +125,33 @@ public class AttributesCompatabililty {
         }
         player.getAttribute(ForgeMod.ATTACK_RANGE.get()).addTransientModifier(strategyAttackReachModifier);
 
+    }
+
+    public void syncDataToPlayer(Player player) {
+        String lvl = "fitness:" + fitness.level;
+        String mxLvl = "fitness:" + fitness.maxLevel;
+        ModNetworking.sendToPlayer(new SyncAttrLevelSC(lvl), (ServerPlayer) player);
+        ModNetworking.sendToPlayer(new SyncAttrMaxLevelSC(mxLvl), (ServerPlayer) player);
+        lvl = "resilience:" + resilience.level;
+        mxLvl = "resilience:" + resilience.maxLevel;
+        ModNetworking.sendToPlayer(new SyncAttrLevelSC(lvl), (ServerPlayer) player);
+        ModNetworking.sendToPlayer(new SyncAttrMaxLevelSC(mxLvl), (ServerPlayer) player);
+        lvl = "combat:" + combat.level;
+        mxLvl = "combat:" + combat.maxLevel;
+        ModNetworking.sendToPlayer(new SyncAttrLevelSC(lvl), (ServerPlayer) player);
+        ModNetworking.sendToPlayer(new SyncAttrMaxLevelSC(mxLvl), (ServerPlayer) player);
+        lvl = "nimbleness:" + nimbleness.level;
+        mxLvl = "nimbleness:" + nimbleness.maxLevel;
+        ModNetworking.sendToPlayer(new SyncAttrLevelSC(lvl), (ServerPlayer) player);
+        ModNetworking.sendToPlayer(new SyncAttrMaxLevelSC(mxLvl), (ServerPlayer) player);
+        lvl = "strategy:" + strategy.level;
+        mxLvl = "strategy:" + strategy.maxLevel;
+        ModNetworking.sendToPlayer(new SyncAttrLevelSC(lvl), (ServerPlayer) player);
+        ModNetworking.sendToPlayer(new SyncAttrMaxLevelSC(mxLvl), (ServerPlayer) player);
+
+        ModNetworking.sendToPlayer(new SyncPointsSC("" + availablePoints), (ServerPlayer) player);
+        ModNetworking.sendToPlayer(new SyncTotalLevelSC("" + level), (ServerPlayer) player);
+        ModNetworking.sendToPlayer(new SyncXPSC("" + experience), (ServerPlayer) player);
     }
 
     public boolean attemptLevelUpAttribute(String attribute) {
@@ -236,7 +266,7 @@ public class AttributesCompatabililty {
     }
 
     //handle the data
-    public void copyFrom(AttributesCompatabililty source) {
+    public void copyFrom(AttributesCapability source) {
         this.experience = source.experience;
         this.level = source.level;
         this.availablePoints = source.availablePoints;

@@ -1,6 +1,8 @@
 package dev.prognitio.pa3;
 
 
+import dev.prognitio.pa3.capabililty.AttributesCapability;
+import dev.prognitio.pa3.capabililty.AttributesProvider;
 import dev.prognitio.pa3.commands.*;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
@@ -28,32 +30,40 @@ public class ModEvents {
     @SubscribeEvent
     public static void onBlockBreak(BlockEvent.BreakEvent event) {
         if (event.getPlayer() != null) {
-            event.getPlayer().getCapability(AttributesProvider.ATTRIBUTES).ifPresent((attributes ->
-                    attributes.addXP(10)));
+            event.getPlayer().getCapability(AttributesProvider.ATTRIBUTES).ifPresent((attributes -> {
+                attributes.addXP(10);
+                attributes.syncDataToPlayer(event.getPlayer());
+                    }));
         }
     }
 
     @SubscribeEvent
     public static void onEntityPlace(BlockEvent.EntityPlaceEvent event) {
         if (event.getEntity() != null && event.getEntity() instanceof Player) {
-            event.getEntity().getCapability(AttributesProvider.ATTRIBUTES).ifPresent((attributes ->
-                    attributes.addXP(10)));
+            event.getEntity().getCapability(AttributesProvider.ATTRIBUTES).ifPresent((attributes -> {
+                attributes.addXP(10);
+                attributes.syncDataToPlayer((Player) event.getEntity());
+            }));
         }
     }
 
     @SubscribeEvent
     public static void onEntityKilled(LivingDeathEvent event) {
         if (event.getSource().getEntity() != null && event.getSource().getEntity() instanceof Player) {
-            event.getSource().getEntity().getCapability(AttributesProvider.ATTRIBUTES).ifPresent((attributes ->
-                    attributes.addXP(50)));
+            event.getSource().getEntity().getCapability(AttributesProvider.ATTRIBUTES).ifPresent((attributes -> {
+                attributes.addXP(10);
+                attributes.syncDataToPlayer((Player) event.getSource().getEntity());
+            }));
         }
     }
 
     @SubscribeEvent
     public static void onAdvancementEarned(AdvancementEvent.AdvancementEarnEvent event) {
         if (event.getEntity() != null) {
-            event.getEntity().getCapability(AttributesProvider.ATTRIBUTES).ifPresent((attributes ->
-                    attributes.addXP(100)));
+            event.getEntity().getCapability(AttributesProvider.ATTRIBUTES).ifPresent((attributes -> {
+                attributes.addXP(10);
+                attributes.syncDataToPlayer(event.getEntity());
+            }));
         }
     }
 
@@ -64,8 +74,10 @@ public class ModEvents {
             if (event.getObject() != null) {
                 if (!(event.getObject()).getCapability(AttributesProvider.ATTRIBUTES).isPresent()) {
                     event.addCapability(new ResourceLocation(pa3.MODID, "properties_attribute_system"), new AttributesProvider());
-                    event.getObject().getCapability(AttributesProvider.ATTRIBUTES).ifPresent(cap ->
-                            cap.applyApplicableAttributes((Player) event.getObject()));
+                    event.getObject().getCapability(AttributesProvider.ATTRIBUTES).ifPresent(cap -> {
+                        cap.applyApplicableAttributes((Player) event.getObject());
+                        cap.syncDataToPlayer((Player) event.getObject());
+                    });
                 }
             }
         }
@@ -78,6 +90,7 @@ public class ModEvents {
             event.getOriginal().getCapability(AttributesProvider.ATTRIBUTES).ifPresent(original -> event.getEntity().getCapability(AttributesProvider.ATTRIBUTES).ifPresent(cloned -> {
                 cloned.copyFrom(original);
                 cloned.applyApplicableAttributes(event.getEntity());
+                cloned.syncDataToPlayer(event.getEntity());
                 event.getEntity().setHealth(event.getEntity().getMaxHealth());
             }));
         }
@@ -85,7 +98,7 @@ public class ModEvents {
 
     @SubscribeEvent
     public static void onRegisterCapabilities(RegisterCapabilitiesEvent event) {
-        event.register(AttributesCompatabililty.class);
+        event.register(AttributesCapability.class);
     }
 
     @SubscribeEvent
@@ -103,7 +116,10 @@ public class ModEvents {
 
     @SubscribeEvent
     public static void onPlayerJoin(PlayerEvent.PlayerLoggedInEvent event) {
-        event.getEntity().getCapability(AttributesProvider.ATTRIBUTES).ifPresent(cap -> cap.applyApplicableAttributes(event.getEntity()));
+        event.getEntity().getCapability(AttributesProvider.ATTRIBUTES).ifPresent(cap -> {
+                    cap.applyApplicableAttributes(event.getEntity());
+                    cap.syncDataToPlayer(event.getEntity());
+                });
     }
 
     @SubscribeEvent

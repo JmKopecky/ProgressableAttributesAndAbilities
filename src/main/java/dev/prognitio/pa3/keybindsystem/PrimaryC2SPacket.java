@@ -1,5 +1,6 @@
-package dev.prognitio.pa3;
+package dev.prognitio.pa3.keybindsystem;
 
+import dev.prognitio.pa3.capabililty.AttributesProvider;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraftforge.network.NetworkEvent;

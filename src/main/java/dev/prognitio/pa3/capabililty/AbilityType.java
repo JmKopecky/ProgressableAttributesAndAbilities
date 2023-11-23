@@ -1,13 +1,10 @@
-package dev.prognitio.pa3;
+package dev.prognitio.pa3.capabililty;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import dev.prognitio.pa3.AttributesProvider;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.AbstractArrow;
-import net.minecraft.world.entity.projectile.Arrow;
-import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.phys.Vec3;

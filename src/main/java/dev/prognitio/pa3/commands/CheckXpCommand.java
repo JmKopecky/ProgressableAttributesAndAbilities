@@ -1,7 +1,7 @@
 package dev.prognitio.pa3.commands;
 
 import com.mojang.brigadier.CommandDispatcher;
-import dev.prognitio.pa3.AttributesProvider;
+import dev.prognitio.pa3.capabililty.AttributesProvider;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
 import net.minecraft.network.chat.Component;

@@ -2,7 +2,7 @@ package dev.prognitio.pa3.commands;
 
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.arguments.StringArgumentType;
-import dev.prognitio.pa3.AttributesProvider;
+import dev.prognitio.pa3.capabililty.AttributesProvider;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
 import net.minecraft.network.chat.Component;
@@ -21,6 +21,7 @@ public class LevelUpAttrCommand {
         Objects.requireNonNull(context.getPlayer()).getCapability(AttributesProvider.ATTRIBUTES).ifPresent((cap) -> {
             boolean result = cap.attemptLevelUpAttribute(type);
             if (result) {
+                cap.syncDataToPlayer(context.getPlayer());
                 context.getPlayer().sendSystemMessage(Component.literal("Successfully leveled up the " + type + " attribute"));
             } else {
                 context.getPlayer().sendSystemMessage(Component.literal("Failed to level up the " + type + " attribute. Do you have enough attribute points, and does the attribute exist?"));

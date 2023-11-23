@@ -2,7 +2,7 @@ package dev.prognitio.pa3.commands;
 
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.arguments.IntegerArgumentType;
-import dev.prognitio.pa3.AttributesProvider;
+import dev.prognitio.pa3.capabililty.AttributesProvider;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
 import net.minecraft.network.chat.Component;
@@ -20,6 +20,7 @@ public class AddXpCommand {
     private int commandTask(CommandSourceStack context, int experience) {
         Objects.requireNonNull(context.getPlayer()).getCapability(AttributesProvider.ATTRIBUTES).ifPresent((cap) -> {
             cap.addXP(experience);
+            cap.syncDataToPlayer(context.getPlayer());
             context.getPlayer().sendSystemMessage(Component.literal("Added " + experience + " experience"));
         });
         return 1;
