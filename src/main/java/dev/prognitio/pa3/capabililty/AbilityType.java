@@ -2,6 +2,8 @@ package dev.prognitio.pa3.capabililty;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.AbstractArrow;
@@ -79,6 +81,9 @@ public class AbilityType {
         dir = dir.scale(strength);
         player.setDeltaMovement(dir);
         player.hurtMarked = true;
+
+        //upgraded ability idea
+        //give the player an effect that negates fall damage when the player lands
     }
 
     public void arrowSalvo(Player player) {
@@ -104,10 +109,18 @@ public class AbilityType {
             arrow.setCritArrow(true);
             player.level.addFreshEntity(arrow);
         }
+
+        //upgraded ability idea: fire the above code over time using an effect.
     }
 
     public void overshield(Player player) {
-        //add an absorption effect
+        int duration = (level * 10 + 10) * 20;
+        int modifier = level * 2 - 1;
+        if (player.getAbsorptionAmount() == 0) {
+            player.addEffect(new MobEffectInstance(MobEffects.ABSORPTION, duration, modifier));
+        }
+        //upgraded final version idea:
+        //give the player an effect that negates the next amount of damage they take.
     }
 
     public static AbilityType fromString(String GSON) {
