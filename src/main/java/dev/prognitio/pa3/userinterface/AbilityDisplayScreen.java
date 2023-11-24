@@ -8,7 +8,6 @@ import dev.prognitio.pa3.capabililty.AbilityType;
 import dev.prognitio.pa3.pa3;
 import dev.prognitio.pa3.userinterface.packets.LevelUpAbilityCS;
 import dev.prognitio.pa3.userinterface.packets.SetSelectedAbilityCS;
-import dev.prognitio.pa3.userinterface.packets.SyncAbilEliteSC;
 import dev.prognitio.pa3.userinterface.packets.UnlockEliteAbilityCS;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
@@ -19,7 +18,6 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.inventory.tooltip.TooltipComponent;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Optional;
 
 public class AbilityDisplayScreen extends Screen {
