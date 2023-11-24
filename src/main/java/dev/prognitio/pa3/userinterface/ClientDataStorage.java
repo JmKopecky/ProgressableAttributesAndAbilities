@@ -24,6 +24,7 @@ public class ClientDataStorage {
     private static Map<String, Integer> abilityLevels = new HashMap<>();
     private static Map<String, Integer> abilityMaxLevels = new HashMap<>();
     private static Map<String, Integer> abilityLevelupReqs = new HashMap<>();
+    private static Map<String, Boolean> abilityIsElite = new HashMap<>();
     private static Map<String, Integer> attrLevelupReqs = new HashMap<>();
 
     public static void setAttrProperty(String packetInput, String property) {
@@ -129,6 +130,9 @@ public class ClientDataStorage {
         if (type.equals("upgrade")) {
             return String.valueOf(abilityLevelupReqs.get(target));
         }
+        if (type.equals("elite")) {
+            return String.valueOf(abilityIsElite.get(target));
+        }
         if (type.equals("desc")) {
             switch (target) {
                 case "dash" -> {
@@ -148,6 +152,11 @@ public class ClientDataStorage {
     public static void setAbilityProperty(String target, String type) {
         int value = Integer.parseInt(target.split(":")[1]);
         target = target.split(":")[0];
+
+        if (type.equals("elite")) {
+            abilityIsElite.put(target, value != 0);
+        }
+
         if (type.equals("level")) {
             abilityLevels.put(target, value);
         }

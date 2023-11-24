@@ -93,6 +93,11 @@ public class ModNetworking {
                 .encoder(SyncAttrUpgCostSC::toBytes)
                 .consumerMainThread(SyncAttrUpgCostSC::handle).add();
 
+        net.messageBuilder(SyncAbilEliteSC.class, id(), NetworkDirection.PLAY_TO_CLIENT)
+                .decoder(SyncAbilEliteSC::new)
+                .encoder(SyncAbilEliteSC::toBytes)
+                .consumerMainThread(SyncAbilEliteSC::handle).add();
+
         net.messageBuilder(LevelUpAttributeCS.class, id(), NetworkDirection.PLAY_TO_SERVER)
                 .decoder(LevelUpAttributeCS::new)
                 .encoder(LevelUpAttributeCS::toBytes)
@@ -107,6 +112,11 @@ public class ModNetworking {
                 .decoder(SetSelectedAbilityCS::new)
                 .encoder(SetSelectedAbilityCS::toBytes)
                 .consumerMainThread(SetSelectedAbilityCS::handle).add();
+
+        net.messageBuilder(UnlockEliteAbilityCS.class, id(), NetworkDirection.PLAY_TO_SERVER)
+                .decoder(UnlockEliteAbilityCS::new)
+                .encoder(UnlockEliteAbilityCS::toBytes)
+                .consumerMainThread(UnlockEliteAbilityCS::handle).add();
     }
 
     public static <MSG> void sendToServer(MSG message) {

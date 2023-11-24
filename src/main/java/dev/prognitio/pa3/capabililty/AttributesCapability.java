@@ -65,9 +65,9 @@ public class AttributesCapability {
             "5f14399f-df13-4007-bd76-7f5cbad40f9f", strategySupp.get(), 1);
 
     //abilities
-    public AbilityType dash = new AbilityType("dash", 5, 10, -1, 3, 1);
-    public AbilityType arrowSalvo = new AbilityType("arrowsalvo", 5, 12, -2, 4, 2);
-    public AbilityType overshield = new AbilityType("overshield", 5, 20, -2, 4, 2);
+    public AbilityType dash = new AbilityType("dash", 5, 6, -1, 3, 1);
+    public AbilityType arrowSalvo = new AbilityType("arrowsalvo", 5, 5, +1, 4, 2);
+    public AbilityType overshield = new AbilityType("overshield", 5, 16, +2, 4, 2);
 
     String primaryAbility = "dash";
     String secondaryAbility = "arrowsalvo";
@@ -204,6 +204,14 @@ public class AttributesCapability {
         pointsToUpgrade = (int) ((nimbleness.level/5 + 1) * nimbleness.pointRequirementScale);
         ModNetworking.sendToPlayer(new SyncAttrUpgCostSC("nimbleness:" + pointsToUpgrade), (ServerPlayer) player);
 
+        int isElite = dash.isEliteVersion ? 1 : 0;
+        ModNetworking.sendToPlayer(new SyncAbilEliteSC("dash:" + isElite), (ServerPlayer) player);
+
+        isElite = arrowSalvo.isEliteVersion ? 1 : 0;
+        ModNetworking.sendToPlayer(new SyncAbilEliteSC("arrowsalvo:" + isElite), (ServerPlayer) player);
+
+        isElite = overshield.isEliteVersion ? 1 : 0;
+        ModNetworking.sendToPlayer(new SyncAbilEliteSC("overshield:" + isElite), (ServerPlayer) player);
     }
 
     public boolean attemptLevelUpAttribute(String attribute) {
@@ -258,6 +266,21 @@ public class AttributesCapability {
         return true;
     }
 
+    public boolean attemptUnlockElite(String ability) {
+        switch (ability) {
+            case "dash" -> {
+                return dash.attemptUnlockElite(availablePoints) != -1;
+            }
+            case "arrowsalvo" -> {
+                return arrowSalvo.attemptUnlockElite(availablePoints) != -1;
+            }
+            case "overshield" -> {
+                return overshield.attemptUnlockElite(availablePoints) != -1;
+            }
+        }
+        return false;
+    }
+
     public void setPrimaryAbility(String primaryAbility) {
         this.primaryAbility = primaryAbility;
     }
@@ -270,7 +293,7 @@ public class AttributesCapability {
         if (abilityCooldown <= 0) {
             getAbilityFromString(primaryAbility).runAbility(player);
         } else {
-            player.sendSystemMessage(Component.literal("Cooldown Remaining: " + abilityCooldown / 20));
+            player.sendSystemMessage(Component.literal("Cooldown Remaining: " + abilityCooldown / 40));
         }
     }
 
@@ -278,7 +301,7 @@ public class AttributesCapability {
         if (abilityCooldown <= 0) {
             getAbilityFromString(secondaryAbility).runAbility(player);
         } else {
-            player.sendSystemMessage(Component.literal("Cooldown Remaining: " + abilityCooldown / 20));
+            player.sendSystemMessage(Component.literal("Cooldown Remaining: " + abilityCooldown / 40));
         }
     }
 

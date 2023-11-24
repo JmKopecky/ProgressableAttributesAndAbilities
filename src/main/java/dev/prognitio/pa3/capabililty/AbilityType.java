@@ -2,6 +2,7 @@ package dev.prognitio.pa3.capabililty;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import dev.prognitio.pa3.effects.EffectsRegister;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.EntityType;
@@ -22,6 +23,8 @@ public class AbilityType {
     int cooldownScale;
     int purchaseCost;
     int upgradeScale;
+    boolean isEliteVersion;
+    public static final int ELITE_ABILITY_COST = 10;
 
     public AbilityType(String id, int maxLevel, int initialCooldown, int cooldownScale, int purchaseCost, int upgradeScale) {
         this.id = id;
@@ -31,6 +34,7 @@ public class AbilityType {
         this.cooldownScale = cooldownScale;
         this.purchaseCost = purchaseCost;
         this.upgradeScale = upgradeScale;
+        this.isEliteVersion = false;
     }
 
     public int attemptPurchaseAbility(int availablePoints) {
@@ -46,11 +50,21 @@ public class AbilityType {
         int cost = 1 + level * upgradeScale;
         if (availablePoints >= cost && level != 0 && level != maxLevel) {
             level++;
-            cooldown += cooldownScale;
+            this.cooldown += this.cooldownScale;
             return cost;
         } else {
             return -1;
         }
+    }
+
+    public int attemptUnlockElite(int availablePoints) {
+        if  (level == maxLevel) {
+            if (availablePoints >= ELITE_ABILITY_COST) {
+                isEliteVersion = true;
+                return ELITE_ABILITY_COST;
+            }
+        }
+        return -1;
     }
 
     public void runAbility(Player player) {
@@ -63,7 +77,7 @@ public class AbilityType {
 
             //add cooldown
             player.getCapability(AttributesProvider.ATTRIBUTES).ifPresent(cap -> {
-                cap.setAbilityCooldown(cooldown * 20);
+                cap.setAbilityCooldown(this.cooldown * 40);
             });
         }
     }
@@ -82,19 +96,20 @@ public class AbilityType {
         player.setDeltaMovement(dir);
         player.hurtMarked = true;
 
-        //upgraded ability idea
-        //give the player an effect that negates fall damage when the player lands
+        if (isEliteVersion) {
+            player.addEffect(new MobEffectInstance(EffectsRegister.FALL_NEGATE_EFFECT.get(), 30 * 20, 0));
+        }
     }
 
     public void arrowSalvo(Player player) {
         Random random = new Random();
-        int arrowCount = random.nextInt(5, 5 + (level * 3));
+        int arrowCount = random.nextInt(12, 12 + (level * 7));
         for (int i = 0; i < arrowCount; i++) {
             System.out.println("Spawning an arrow");
             AbstractArrow arrow = new AbstractArrow(EntityType.ARROW, player, player.level) {
                 @Override
                 protected ItemStack getPickupItem() {
-                    return Items.ARROW.getDefaultInstance();
+                    return ItemStack.EMPTY;
                 }
             };
             float xRot = player.getXRot();
@@ -109,8 +124,9 @@ public class AbilityType {
             arrow.setCritArrow(true);
             player.level.addFreshEntity(arrow);
         }
-
-        //upgraded ability idea: fire the above code over time using an effect.
+        if (isEliteVersion) {
+            player.addEffect(new MobEffectInstance(EffectsRegister.ARROW_SCATTER_EFFECT.get(), 20, 1));
+        }
     }
 
     public void overshield(Player player) {
@@ -119,8 +135,10 @@ public class AbilityType {
         if (player.getAbsorptionAmount() == 0) {
             player.addEffect(new MobEffectInstance(MobEffects.ABSORPTION, duration, modifier));
         }
-        //upgraded final version idea:
-        //give the player an effect that negates the next amount of damage they take.
+
+        if (isEliteVersion) {
+            player.addEffect(new MobEffectInstance(EffectsRegister.ATTACK_NEGATE_EFFECT.get(), 30 * 20, 0));
+        }
     }
 
     public static AbilityType fromString(String GSON) {

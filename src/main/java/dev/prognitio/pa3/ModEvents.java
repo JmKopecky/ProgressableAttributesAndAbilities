@@ -4,6 +4,7 @@ package dev.prognitio.pa3;
 import dev.prognitio.pa3.capabililty.AttributesCapability;
 import dev.prognitio.pa3.capabililty.AttributesProvider;
 import dev.prognitio.pa3.commands.*;
+import dev.prognitio.pa3.effects.EffectsRegister;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
@@ -18,6 +19,7 @@ import net.minecraftforge.event.entity.player.AdvancementEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.level.BlockEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.LogicalSide;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.server.command.ConfigCommand;
 
@@ -124,16 +126,33 @@ public class ModEvents {
 
     @SubscribeEvent
     public static void onPlayerTick(TickEvent.PlayerTickEvent event) {
-        event.player.getCapability(AttributesProvider.ATTRIBUTES).ifPresent(cap -> {
-            if (cap.getAbilityCooldown() > 0) {
-                cap.setAbilityCooldown(cap.getAbilityCooldown() - 1);
-            }
-        });
+        if (event.side == LogicalSide.SERVER) {
+            event.player.getCapability(AttributesProvider.ATTRIBUTES).ifPresent(cap -> {
+                if (cap.getAbilityCooldown() > 0) {
+                    cap.setAbilityCooldown(cap.getAbilityCooldown() - 1);
+                }
+            });
+        }
     }
 
     @SubscribeEvent
     public static void onEntityHurt(LivingHurtEvent event) {
         if (event.getEntity() instanceof Player) {
+
+            if (event.getSource().isFall()) {
+                if (event.getEntity().hasEffect(EffectsRegister.FALL_NEGATE_EFFECT.get())) {
+                    event.getEntity().removeEffect(EffectsRegister.FALL_NEGATE_EFFECT.get());
+                    event.setCanceled(true);
+                    return;
+                }
+            }
+
+            if (event.getEntity().hasEffect(EffectsRegister.ATTACK_NEGATE_EFFECT.get())) {
+                event.getEntity().removeEffect(EffectsRegister.ATTACK_NEGATE_EFFECT.get());
+                event.setCanceled(true);
+                return;
+            }
+
             event.getEntity().getCapability(AttributesProvider.ATTRIBUTES).ifPresent(cap -> {
                 Random random = new Random();
                 //dodge

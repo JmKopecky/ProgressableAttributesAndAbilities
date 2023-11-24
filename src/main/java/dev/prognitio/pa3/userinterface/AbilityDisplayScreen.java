@@ -4,17 +4,22 @@ import com.mojang.blaze3d.platform.Window;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import dev.prognitio.pa3.ModNetworking;
+import dev.prognitio.pa3.capabililty.AbilityType;
 import dev.prognitio.pa3.pa3;
 import dev.prognitio.pa3.userinterface.packets.LevelUpAbilityCS;
 import dev.prognitio.pa3.userinterface.packets.SetSelectedAbilityCS;
+import dev.prognitio.pa3.userinterface.packets.SyncAbilEliteSC;
+import dev.prognitio.pa3.userinterface.packets.UnlockEliteAbilityCS;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.inventory.tooltip.TooltipComponent;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 public class AbilityDisplayScreen extends Screen {
@@ -44,67 +49,25 @@ public class AbilityDisplayScreen extends Screen {
         this.addRenderableWidget(new Button(midX - 20 - 10, midY - 60 - 10 + font.lineHeight/2,
                 20, 20, Component.literal("+"),
                 (button) -> {
-                    //level up dash
-                    ModNetworking.sendToServer(new LevelUpAbilityCS("dash"));
+                    upgradeAbilityButtonOnClick(button, "dash");
                 }, (button, stack, mx, my) -> {
-            ArrayList<Component> tooltip = new ArrayList<>();
-            int level = Integer.parseInt(ClientDataStorage.getAbilityProperty("dash", "level"));
-            if (level == 0) {
-                tooltip.add(Component.literal("Unlock").withStyle(ChatFormatting.BLUE).withStyle(ChatFormatting.BOLD));
-            } else {
-                tooltip.add(Component.literal("Level up").withStyle(ChatFormatting.BLUE).withStyle(ChatFormatting.BOLD));
-            }
-            int maxLevel = Integer.parseInt(ClientDataStorage.getAbilityProperty("dash", "max"));
-            tooltip.add(Component.literal(level + "/" + maxLevel).withStyle(ChatFormatting.ITALIC).withStyle(ChatFormatting.AQUA));
-            if (level != maxLevel) {
-                int upgradeCost = Integer.parseInt(ClientDataStorage.getAbilityProperty("dash", "upgrade"));
-                tooltip.add(Component.literal("Required Points: " + upgradeCost));
-            }
-            renderTooltip(stack, tooltip, Optional.empty(), mx, my);
+            renderUpgradeButtonTooltip("dash", button, stack, mx, my);
         }));
 
         this.addRenderableWidget(new Button(midX - 20 - 10, midY - 40 - 10 + font.lineHeight/2,
                 20, 20, Component.literal("+"),
                 (button) -> {
-                    //level up arrow salvo
-                    ModNetworking.sendToServer(new LevelUpAbilityCS("arrowsalvo"));
+                    upgradeAbilityButtonOnClick(button, "arrowsalvo");
                 }, (button, stack, mx, my) -> {
-            ArrayList<Component> tooltip = new ArrayList<>();
-            int level = Integer.parseInt(ClientDataStorage.getAbilityProperty("arrowsalvo", "level"));
-            if (level == 0) {
-                tooltip.add(Component.literal("Unlock").withStyle(ChatFormatting.BLUE).withStyle(ChatFormatting.BOLD));
-            } else {
-                tooltip.add(Component.literal("Level up").withStyle(ChatFormatting.BLUE).withStyle(ChatFormatting.BOLD));
-            }
-            int maxLevel = Integer.parseInt(ClientDataStorage.getAbilityProperty("arrowsalvo", "max"));
-            tooltip.add(Component.literal(level + "/" + maxLevel).withStyle(ChatFormatting.ITALIC).withStyle(ChatFormatting.AQUA));
-            if (level != maxLevel) {
-                int upgradeCost = Integer.parseInt(ClientDataStorage.getAbilityProperty("arrowsalvo", "upgrade"));
-                tooltip.add(Component.literal("Required Points: " + upgradeCost));
-            }
-            renderTooltip(stack, tooltip, Optional.empty(), mx, my);
+            renderUpgradeButtonTooltip("arrowsalvo", button, stack, mx, my);
         }));
 
         this.addRenderableWidget(new Button(midX - 20 - 10, midY - 20 - 10 + font.lineHeight/2,
                 20, 20, Component.literal("+"),
                 (button) -> {
-                    //level up overshield
-                    ModNetworking.sendToServer(new LevelUpAbilityCS("overshield"));
+                    upgradeAbilityButtonOnClick(button, "overshield");
                 }, (button, stack, mx, my) -> {
-            ArrayList<Component> tooltip = new ArrayList<>();
-            int level = Integer.parseInt(ClientDataStorage.getAbilityProperty("overshield", "level"));
-            if (level == 0) {
-                tooltip.add(Component.literal("Unlock").withStyle(ChatFormatting.BLUE).withStyle(ChatFormatting.BOLD));
-            } else {
-                tooltip.add(Component.literal("Level up").withStyle(ChatFormatting.BLUE).withStyle(ChatFormatting.BOLD));
-            }
-            int maxLevel = Integer.parseInt(ClientDataStorage.getAbilityProperty("overshield", "max"));
-            tooltip.add(Component.literal(level + "/" + maxLevel).withStyle(ChatFormatting.ITALIC).withStyle(ChatFormatting.AQUA));
-            if (level != maxLevel) {
-                int upgradeCost = Integer.parseInt(ClientDataStorage.getAbilityProperty("overshield", "upgrade"));
-                tooltip.add(Component.literal("Required Points: " + upgradeCost));
-            }
-            renderTooltip(stack, tooltip, Optional.empty(), mx, my);
+            renderUpgradeButtonTooltip("overshield", button, stack, mx, my);
         }));
 
 
@@ -133,14 +96,28 @@ public class AbilityDisplayScreen extends Screen {
     protected void renderAbilityTitle(String title, int xPos, int yPos, int mouseX, int mouseY, PoseStack stack) {
         boolean isPrimary = ClientDataStorage.getPrimaryAbility().equals(title.toLowerCase().replaceAll(" ", ""));
         boolean isSecondary = ClientDataStorage.getSecondaryAbility().equals(title.toLowerCase().replaceAll(" ", ""));
+        boolean isElite = Boolean.parseBoolean(ClientDataStorage.getAbilityProperty(title, "elite"));
 
         float xStart = (float) (xPos - (font.width(title)/2.0));
+
         if (isPrimary) {
-            this.font.draw(stack, title, xStart, yPos, 11141290);
+            if (isElite) {
+                this.font.draw(stack, Component.literal(title).withStyle(ChatFormatting.BOLD), xStart, yPos, 11141290);
+            } else {
+                this.font.draw(stack, title, xStart, yPos, 11141290);
+            }
         } else if (isSecondary) {
-            this.font.draw(stack, title, xStart, yPos, 11141120);
+            if (isElite) {
+                this.font.draw(stack, Component.literal(title).withStyle(ChatFormatting.BOLD), xStart, yPos, 11141120);
+            } else {
+                this.font.draw(stack, title, xStart, yPos, 11141120);
+            }
         } else {
-            this.font.draw(stack, title, xStart, yPos, 0xff4d4d4d);
+            if (isElite) {
+                this.font.draw(stack, Component.literal(title).withStyle(ChatFormatting.BOLD), xStart, yPos, 0xff4d4d4d);
+            } else {
+                this.font.draw(stack, title, xStart, yPos, 0xff4d4d4d);
+            }
         }
 
         boolean isOverlappingText = isInRange(mouseX, mouseY, (int) xStart, font.width(title), yPos, font.lineHeight);
@@ -155,6 +132,47 @@ public class AbilityDisplayScreen extends Screen {
             toRender.add(Component.literal("Left click to set as primary.").withStyle(ChatFormatting.DARK_PURPLE));
             toRender.add(Component.literal("Right click to set as secondary").withStyle(ChatFormatting.DARK_RED));
             this.renderTooltip(stack, toRender, Optional.empty(), mouseX, mouseY, font);
+        }
+    }
+
+    public void renderUpgradeButtonTooltip(String type, Button button, PoseStack stack, int mx, int my) {
+        ArrayList<Component> tooltip = new ArrayList<>();
+        int level = Integer.parseInt(ClientDataStorage.getAbilityProperty(type, "level"));
+        int maxLevel = Integer.parseInt(ClientDataStorage.getAbilityProperty(type, "max"));
+        boolean isElite = Boolean.parseBoolean(ClientDataStorage.getAbilityProperty(type, "elite"));
+        if (level == 0) {
+            tooltip.add(Component.literal("Unlock").withStyle(ChatFormatting.BLUE).withStyle(ChatFormatting.BOLD));
+        } else if (level == maxLevel && !isElite) {
+            tooltip.add(Component.literal("Unlock Elite Ability").withStyle(ChatFormatting.BLUE).withStyle(ChatFormatting.BOLD));
+        } else if (level == maxLevel) {
+            tooltip.add(Component.literal("Elite Ability").withStyle(ChatFormatting.BLUE).withStyle(ChatFormatting.BOLD));
+        } else {
+            tooltip.add(Component.literal("Level up").withStyle(ChatFormatting.BLUE).withStyle(ChatFormatting.BOLD));
+        }
+
+        tooltip.add(Component.literal(level + "/" + maxLevel).withStyle(ChatFormatting.ITALIC).withStyle(ChatFormatting.AQUA));
+
+        if (level != maxLevel) {
+            int upgradeCost = Integer.parseInt(ClientDataStorage.getAbilityProperty(type, "upgrade"));
+            tooltip.add(Component.literal("Required Points: " + upgradeCost));
+        }
+
+        if (!isElite && level == maxLevel) {
+            tooltip.add(Component.literal("Required Points: " + AbilityType.ELITE_ABILITY_COST));
+        }
+        Optional<TooltipComponent> optional = Optional.empty();
+        renderTooltip(stack, tooltip, optional, mx, my);
+    }
+
+    public void upgradeAbilityButtonOnClick(Button button, String type) {
+        int level = Integer.parseInt(ClientDataStorage.getAbilityProperty(type, "level"));
+        int maxLevel = Integer.parseInt(ClientDataStorage.getAbilityProperty(type, "max"));
+        if (level == maxLevel) {
+            ModNetworking.sendToServer(new UnlockEliteAbilityCS(type));
+            return;
+        }
+        if (level < maxLevel) {
+            ModNetworking.sendToServer(new LevelUpAbilityCS(type));
         }
     }
 
