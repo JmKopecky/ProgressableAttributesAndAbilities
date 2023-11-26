@@ -169,19 +169,19 @@ public class AttributesCapability {
 
         ModNetworking.sendToPlayer(new SyncSelectedAbililtySC(primaryAbility + ":" + secondaryAbility), (ServerPlayer) player);
 
-        int pointsToUpgrade = 1 + dash.level * dash.upgradeScale;
+        int pointsToUpgrade = 1 + dash.level / 2 * dash.upgradeScale;
         if (dash.level == 0) {
             pointsToUpgrade = dash.purchaseCost;
         }
         ModNetworking.sendToPlayer(new SyncAbilUpgCostSC("dash:" + pointsToUpgrade), (ServerPlayer) player);
 
-        pointsToUpgrade = 1 + arrowSalvo.level * arrowSalvo.upgradeScale;
+        pointsToUpgrade = 1 + arrowSalvo.level / 2 * arrowSalvo.upgradeScale;
         if (arrowSalvo.level == 0) {
             pointsToUpgrade = arrowSalvo.purchaseCost;
         }
         ModNetworking.sendToPlayer(new SyncAbilUpgCostSC("arrowsalvo:" + pointsToUpgrade), (ServerPlayer) player);
 
-        pointsToUpgrade = 1 + overshield.level * overshield.upgradeScale;
+        pointsToUpgrade = 1 + overshield.level / 2 * overshield.upgradeScale;
         if (overshield.level == 0) {
             pointsToUpgrade = overshield.purchaseCost;
         }
