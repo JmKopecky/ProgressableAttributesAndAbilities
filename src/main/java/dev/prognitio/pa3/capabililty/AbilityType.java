@@ -23,7 +23,7 @@ public class AbilityType {
     int purchaseCost;
     int upgradeScale;
     boolean isEliteVersion;
-    public static final int ELITE_ABILITY_COST = 10;
+    public static final int ELITE_ABILITY_COST = 3;
 
     public AbilityType(String id, int maxLevel, int initialCooldown, int cooldownScale, int purchaseCost, int upgradeScale) {
         this.id = id;
@@ -46,7 +46,7 @@ public class AbilityType {
     }
 
     public int attemptLevelAbility(int availablePoints) {
-        int cost = 1 + level * upgradeScale;
+        int cost = 1 + level/2 * upgradeScale;
         if (availablePoints >= cost && level != 0 && level != maxLevel) {
             level++;
             this.cooldown += this.cooldownScale;
@@ -120,7 +120,7 @@ public class AbilityType {
             yRot -= random.nextFloat(0, 20);
             float vel = random.nextFloat(1, 4);
             arrow.shootFromRotation(player, xRot, yRot, 0.0f, vel, 0.5f);
-            arrow.setBaseDamage(arrow.getBaseDamage() + 2);
+            arrow.setBaseDamage(arrow.getBaseDamage() + 1);
             arrow.setCritArrow(true);
             player.level.addFreshEntity(arrow);
         }

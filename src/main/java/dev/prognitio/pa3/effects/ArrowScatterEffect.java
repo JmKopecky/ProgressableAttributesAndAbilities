@@ -34,7 +34,7 @@ public class ArrowScatterEffect extends MobEffect {
             yRot -= random.nextFloat(0, 20);
             float vel = random.nextFloat(3, 6);
             arrow.shootFromRotation(pLivingEntity, xRot, yRot, 0.0f, vel, 0.5f);
-            arrow.setBaseDamage(arrow.getBaseDamage() + 4);
+            arrow.setBaseDamage(arrow.getBaseDamage() + 1);
             arrow.setCritArrow(true);
             pLivingEntity.level.addFreshEntity(arrow);
         }

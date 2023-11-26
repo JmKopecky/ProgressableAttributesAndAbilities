@@ -4,13 +4,11 @@ import dev.prognitio.pa3.ModNetworking;
 import dev.prognitio.pa3.userhud.SyncCooldownDataSC;
 import dev.prognitio.pa3.userinterface.packets.*;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.common.ForgeMod;
-import org.apache.logging.log4j.core.jmx.Server;
 
 import java.util.ArrayList;
 import java.util.function.Supplier;
@@ -28,52 +26,52 @@ public class AttributesCapability {
 
     Supplier<ArrayList<Double>> fitnessSupp = () -> {
         ArrayList<Double> list = new ArrayList<>();
-        list.add(1.0);
+        list.add(2.0);
         return list;
     };
-    public AttributeType fitness = new AttributeType("fitness", 20,
+    public AttributeType fitness = new AttributeType("fitness", 10,
             "5c93580c-84a1-4583-83a9-3c29ca3abb3e", fitnessSupp.get(), 1);
 
     Supplier<ArrayList<Double>> resilienceSupp = () -> {
         ArrayList<Double> list = new ArrayList<>();
-        list.add(1.0);
+        list.add(2.0);
         list.add(1.0);
         return list;
     };
-    public AttributeType resilience = new AttributeType("resilience", 20,
+    public AttributeType resilience = new AttributeType("resilience", 10,
             "e19e60ec-c913-433b-b38a-3801834be5cf", resilienceSupp.get(), 1);
 
     Supplier<ArrayList<Double>> combatSupp = () -> {
         ArrayList<Double> list = new ArrayList<>();
         list.add(0.5);
-        list.add(2.5); //parry amount per level, start at 25, max at 75
+        list.add(5.0); //parry amount per level, start at 25, max at 75
         return list;
     };
-    public AttributeType combat = new AttributeType("combat", 20,
+    public AttributeType combat = new AttributeType("combat", 10,
             "b7b13584-e7d3-4dea-9d09-f6c36b9bef2c", combatSupp.get(), 1);
 
     Supplier<ArrayList<Double>> nimblenessSupp = () -> {
         ArrayList<Double> list = new ArrayList<>();
-        list.add(0.05);
-        list.add(1.5); //dodge chance scaling
+        list.add(0.1);
+        list.add(3.0); //dodge chance scaling
         return list;
     };
-    public AttributeType nimbleness = new AttributeType("nimbleness", 20,
+    public AttributeType nimbleness = new AttributeType("nimbleness", 10,
             "db7daa72-f2e0-40b0-8120-5816bf0ba274", nimblenessSupp.get(), 1);
 
     Supplier<ArrayList<Double>> strategySupp = () -> {
         ArrayList<Double> list = new ArrayList<>();
-        list.add(0.25);
-        list.add(2.0);
+        list.add(0.5);
+        list.add(4.0);
         return list;
     };
-    public AttributeType strategy = new AttributeType("strategy", 20,
+    public AttributeType strategy = new AttributeType("strategy", 10,
             "5f14399f-df13-4007-bd76-7f5cbad40f9f", strategySupp.get(), 1);
 
     //abilities
-    public AbilityType dash = new AbilityType("dash", 5, 6, -1, 3, 1);
-    public AbilityType arrowSalvo = new AbilityType("arrowsalvo", 5, 5, +1, 4, 2);
-    public AbilityType overshield = new AbilityType("overshield", 5, 16, +2, 4, 2);
+    public AbilityType dash = new AbilityType("dash", 5, 6, -1, 2, 1);
+    public AbilityType arrowSalvo = new AbilityType("arrowsalvo", 5, 5, +1, 3, 2);
+    public AbilityType overshield = new AbilityType("overshield", 5, 16, +2, 3, 2);
 
     String primaryAbility = "dash";
     String secondaryAbility = "arrowsalvo";
@@ -105,12 +103,6 @@ public class AttributesCapability {
             player.getAttribute(Attributes.ATTACK_DAMAGE).removeModifier(combatModifier);
         }
         player.getAttribute(Attributes.ATTACK_DAMAGE).addTransientModifier(combatModifier);
-        AttributeModifier combatSpeedModifier = combat.buildModifier(1,
-                "a0b4fa02-421d-4332-995f-974cc51f7378");
-        if (player.getAttribute(Attributes.ATTACK_SPEED).hasModifier(combatSpeedModifier)) {
-            player.getAttribute(Attributes.ATTACK_SPEED).removeModifier(combatSpeedModifier);
-        }
-        player.getAttribute(Attributes.ATTACK_SPEED).addTransientModifier(combatSpeedModifier);
 
         //nimbleness
         AttributeModifier nimbleModifier = nimbleness.buildModifier(0, null);
@@ -278,7 +270,7 @@ public class AttributesCapability {
         switch (ability) {
             case "dash" -> {
                 int result = dash.attemptUnlockElite(availablePoints);
-                if (result != -1) {
+                if (availablePoints - result <= availablePoints) {
                     setAvailablePoints(availablePoints - result);
                     return true;
                 }
@@ -286,7 +278,7 @@ public class AttributesCapability {
             }
             case "arrowsalvo" -> {
                 int result = arrowSalvo.attemptUnlockElite(availablePoints);
-                if (result != -1) {
+                if (availablePoints - result <= availablePoints) {
                     setAvailablePoints(availablePoints - result);
                     return true;
                 }
@@ -294,7 +286,7 @@ public class AttributesCapability {
             }
             case "overshield" -> {
                 int result = overshield.attemptUnlockElite(availablePoints);
-                if (result != -1) {
+                if (availablePoints - result <= availablePoints) {
                     setAvailablePoints(availablePoints - result);
                     return true;
                 }
@@ -334,9 +326,9 @@ public class AttributesCapability {
     }
 
     public int calculateLevelUpRequirement() {
-        //for each level, make it 10% harder to get another level
-        int initialXPRequirement = 10000; //what should the base xp requirement be to go from level 0 to level 1
-        float perLevelScaling = 1.05f; //how much the exp requirement should increase each level.
+        //for each level, make it 2% harder to get another level
+        int initialXPRequirement = 1000; //what should the base xp requirement be to go from level 0 to level 1
+        float perLevelScaling = 1.02f; //how much the exp requirement should increase each level.
         return (int) (initialXPRequirement * (Math.pow(perLevelScaling, level)));
     }
 

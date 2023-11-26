@@ -27,6 +27,7 @@ public class AttributeDisplayScreen extends Screen {
     int midY = 0;
     int midX = 0;
     ResourceLocation bg = new ResourceLocation(pa3.MODID, "textures/gui/attr_abil_bg.png");
+    ResourceLocation bar = new ResourceLocation(pa3.MODID, "textures/gui/cooldownbars.png");
 
     @Override
     protected void init() {
@@ -126,17 +127,26 @@ public class AttributeDisplayScreen extends Screen {
         this.renderBackground(stack);
         RenderSystem.setShaderTexture(0, bg);
         blit(stack, (window.getGuiScaledWidth() - 256) / 2, (window.getGuiScaledHeight() - 256) / 2, 0, 0, 0, 256, 256, 256, 256);
+
         drawRowForAttribute("Fitness", midY - 45, stack, mouseX, mouseY);
         drawRowForAttribute("Resilience", midY - 15, stack, mouseX, mouseY);
         drawRowForAttribute("Combat", midY + 15, stack, mouseX, mouseY);
         drawRowForAttribute("Nimbleness", midY + 45, stack, mouseX, mouseY);
         drawRowForAttribute("Strategy", midY + 75, stack, mouseX, mouseY);
+
+        RenderSystem.setShaderTexture(0, bar);
+        int currentXp = ClientDataStorage.getXp();
+        int requiredXp = ClientDataStorage.getRequiredXp();
+        double percent = currentXp * 1.0 / requiredXp;
+        int fillValue = (int) (percent * 182);
+        blit(stack, midX - (182 / 2), midY - 100, 0, 0, 182, 5, 182, 10);
+        blit(stack, midX - (182/2), midY - 100, 0, 5, fillValue, 5, 182, 10);
+
         String currentLevel = String.valueOf(ClientDataStorage.getLevel());
-        String currentXp = String.valueOf(ClientDataStorage.getXp());
-        String requiredXp = String.valueOf(ClientDataStorage.getRequiredXp());
         String availablePoints = String.valueOf(ClientDataStorage.getAvailablePoints());
-        String levelDisplay = "Level: " + currentLevel + " | XP: " + currentXp + "/" + requiredXp + " | Available Points: " + availablePoints;
-        this.font.draw(stack, levelDisplay, (float) (midX - font.width(levelDisplay) / 2), (float) ((midY - 100)), 0xff4d4d4d);
+        String levelDisplay = "Level: " + currentLevel + " | Available Points: " + availablePoints;
+        this.font.draw(stack, levelDisplay, (float) (midX - font.width(levelDisplay) / 2), (float) ((midY - 115)), 0xff4d4d4d);
+
         super.render(stack, mouseX, mouseY, partialTicks);
     }
 
@@ -163,7 +173,6 @@ public class AttributeDisplayScreen extends Screen {
             }
             case "Combat" -> {
                 attributeBonuses.add("Strength");
-                attributeBonuses.add("Attack Speed");
                 attributeBonuses.add("Parry");
             }
             case "Nimbleness" -> {

@@ -35,7 +35,9 @@ public class LevelUpAbilityCS {
                         } else {
                             result = cap.dash.attemptLevelAbility(cap.getAvailablePoints());
                         }
-                        cap.setAvailablePoints(cap.getAvailablePoints() - result);
+                        if (cap.getAvailablePoints() - result <= cap.getAvailablePoints()) {
+                            cap.setAvailablePoints(cap.getAvailablePoints() - result);
+                        }
                     }
                     case "arrowsalvo" -> {
                         int result;
@@ -44,7 +46,9 @@ public class LevelUpAbilityCS {
                         } else {
                             result = cap.arrowSalvo.attemptLevelAbility(cap.getAvailablePoints());
                         }
-                        cap.setAvailablePoints(cap.getAvailablePoints() - result);
+                        if (cap.getAvailablePoints() - result <= cap.getAvailablePoints()) {
+                            cap.setAvailablePoints(cap.getAvailablePoints() - result);
+                        }
                     }
                     case "overshield" -> {
                         int result;
@@ -53,7 +57,9 @@ public class LevelUpAbilityCS {
                         } else {
                             result = cap.overshield.attemptLevelAbility(cap.getAvailablePoints());
                         }
-                        cap.setAvailablePoints(cap.getAvailablePoints() - result);
+                        if (cap.getAvailablePoints() - result <= cap.getAvailablePoints()) {
+                            cap.setAvailablePoints(cap.getAvailablePoints() - result);
+                        }
                     }
                 }
                 cap.syncDataToPlayer(player);

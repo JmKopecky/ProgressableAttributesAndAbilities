@@ -7,10 +7,10 @@ import dev.prognitio.pa3.commands.*;
 import dev.prognitio.pa3.effects.EffectsRegister;
 import dev.prognitio.pa3.userhud.SyncCooldownDataSC;
 import dev.prognitio.pa3.userhud.SyncPassiveProcSC;
-import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.common.capabilities.RegisterCapabilitiesEvent;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
@@ -26,6 +26,7 @@ import net.minecraftforge.fml.LogicalSide;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.server.command.ConfigCommand;
 
+import java.util.Objects;
 import java.util.Random;
 
 @Mod.EventBusSubscriber(modid=pa3.MODID)
@@ -36,7 +37,7 @@ public class ModEvents {
     public static void onBlockBreak(BlockEvent.BreakEvent event) {
         if (event.getPlayer() != null) {
             event.getPlayer().getCapability(AttributesProvider.ATTRIBUTES).ifPresent((attributes -> {
-                attributes.addXP(10);
+                attributes.addXP(20);
                 attributes.syncDataToPlayer(event.getPlayer());
                     }));
         }
@@ -46,7 +47,7 @@ public class ModEvents {
     public static void onEntityPlace(BlockEvent.EntityPlaceEvent event) {
         if (event.getEntity() != null && event.getEntity() instanceof Player) {
             event.getEntity().getCapability(AttributesProvider.ATTRIBUTES).ifPresent((attributes -> {
-                attributes.addXP(10);
+                attributes.addXP(20);
                 attributes.syncDataToPlayer((Player) event.getEntity());
             }));
         }
@@ -56,22 +57,19 @@ public class ModEvents {
     public static void onEntityKilled(LivingDeathEvent event) {
         if (event.getSource().getEntity() != null && event.getSource().getEntity() instanceof Player) {
             event.getSource().getEntity().getCapability(AttributesProvider.ATTRIBUTES).ifPresent((attributes -> {
-                attributes.addXP(10);
+                System.out.println("Hello from onEntityKilled event");
+                int maxhealth = (int) event.getEntity().getMaxHealth();
+                int attackDamage = 0;
+                if (event.getEntity().getAttribute(Attributes.ATTACK_DAMAGE) != null) {
+                    attackDamage = (int) event.getEntity().getAttribute(Attributes.ATTACK_DAMAGE).getValue();
+                }
+                int attackBonus = attackDamage * 10;
+                int healthBonus = maxhealth * 2;
+                attributes.addXP(10 + attackBonus + healthBonus);
                 attributes.syncDataToPlayer((Player) event.getSource().getEntity());
             }));
         }
     }
-
-    @SubscribeEvent
-    public static void onAdvancementEarned(AdvancementEvent.AdvancementEarnEvent event) {
-        if (event.getEntity() != null) {
-            event.getEntity().getCapability(AttributesProvider.ATTRIBUTES).ifPresent((attributes -> {
-                attributes.addXP(10);
-                attributes.syncDataToPlayer(event.getEntity());
-            }));
-        }
-    }
-
 
     @SubscribeEvent
     public static void onAttachCapabilitiesPlayer(AttachCapabilitiesEvent<Entity> event) {

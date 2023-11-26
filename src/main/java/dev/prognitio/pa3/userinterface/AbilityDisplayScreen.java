@@ -27,6 +27,7 @@ public class AbilityDisplayScreen extends Screen {
     int midY;
     int midX;
     ResourceLocation bg = new ResourceLocation(pa3.MODID, "textures/gui/attr_abil_bg.png");
+    ResourceLocation bar = new ResourceLocation(pa3.MODID, "textures/gui/cooldownbars.png");
 
     public AbilityDisplayScreen(Component pTitle) {
         super(pTitle);
@@ -78,12 +79,18 @@ public class AbilityDisplayScreen extends Screen {
         RenderSystem.setShaderTexture(0, bg);
         blit(stack, (window.getGuiScaledWidth() - 256) / 2, (window.getGuiScaledHeight() - 256) / 2, 0, 0, 0, 256, 256, 256, 256);
 
+        RenderSystem.setShaderTexture(0, bar);
+        int currentXp = ClientDataStorage.getXp();
+        int requiredXp = ClientDataStorage.getRequiredXp();
+        double percent = currentXp * 1.0 / requiredXp;
+        int fillValue = (int) (percent * 182);
+        blit(stack, midX - (182 / 2), midY - 100, 0, 0, 182, 5, 182, 10);
+        blit(stack, midX - (182/2), midY - 100, 0, 5, fillValue, 5, 182, 10);
+
         String currentLevel = String.valueOf(ClientDataStorage.getLevel());
-        String currentXp = String.valueOf(ClientDataStorage.getXp());
-        String requiredXp = String.valueOf(ClientDataStorage.getRequiredXp());
         String availablePoints = String.valueOf(ClientDataStorage.getAvailablePoints());
-        String levelDisplay = "Level: " + currentLevel + " | XP: " + currentXp + "/" + requiredXp + " | Available Points: " + availablePoints;
-        this.font.draw(stack, levelDisplay, (float) (midX - font.width(levelDisplay) / 2), (float) ((midY - 100)), 0xff4d4d4d);
+        String levelDisplay = "Level: " + currentLevel + " | Available Points: " + availablePoints;
+        this.font.draw(stack, levelDisplay, (float) (midX - font.width(levelDisplay) / 2), (float) ((midY - 115)), 0xff4d4d4d);
 
         renderAbilityTitle("Dash", midX - 80, midY - 60, mouseX, mouseY, stack);
         renderAbilityTitle("Arrow Salvo", midX - 80, midY - 40, mouseX, mouseY, stack);
@@ -166,7 +173,10 @@ public class AbilityDisplayScreen extends Screen {
         int level = Integer.parseInt(ClientDataStorage.getAbilityProperty(type, "level"));
         int maxLevel = Integer.parseInt(ClientDataStorage.getAbilityProperty(type, "max"));
         if (level == maxLevel) {
-            ModNetworking.sendToServer(new UnlockEliteAbilityCS(type));
+            Boolean isElite = Boolean.valueOf(ClientDataStorage.getAbilityProperty(type, "elite"));
+            if (!isElite) {
+                ModNetworking.sendToServer(new UnlockEliteAbilityCS(type));
+            }
             return;
         }
         if (level < maxLevel) {

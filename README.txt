@@ -9,8 +9,6 @@ What we've got:
     - Experience system to level up
 
 TODO:
-    - Balancing attributes and abilities
-    - Improved XP gain and new ways to get XP
     - More abilities
 
 

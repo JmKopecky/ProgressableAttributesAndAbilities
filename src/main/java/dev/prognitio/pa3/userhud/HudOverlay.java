@@ -3,11 +3,8 @@ package dev.prognitio.pa3.userhud;
 import com.mojang.blaze3d.systems.RenderSystem;
 import dev.prognitio.pa3.ClientDataStorage;
 import dev.prognitio.pa3.pa3;
-import net.minecraft.ChatFormatting;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiComponent;
 import net.minecraft.client.renderer.GameRenderer;
-import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.client.gui.overlay.IGuiOverlay;
 
