@@ -5,8 +5,11 @@ import dev.prognitio.pa3.capabililty.AttributesCapability;
 import dev.prognitio.pa3.capabililty.AttributesProvider;
 import dev.prognitio.pa3.commands.*;
 import dev.prognitio.pa3.effects.EffectsRegister;
+import dev.prognitio.pa3.userhud.SyncCooldownDataSC;
+import dev.prognitio.pa3.userhud.SyncPassiveProcSC;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.common.capabilities.RegisterCapabilitiesEvent;
@@ -130,7 +133,12 @@ public class ModEvents {
             event.player.getCapability(AttributesProvider.ATTRIBUTES).ifPresent(cap -> {
                 if (cap.getAbilityCooldown() > 0) {
                     cap.setAbilityCooldown(cap.getAbilityCooldown() - 1);
+                    ModNetworking.sendToPlayer(new SyncCooldownDataSC(cap.getAbilityCooldown() + ":" + cap.getCurrentMaxCooldown()), (ServerPlayer) event.player);
                 }
+                cap.decreasePassiveTimers();
+                ModNetworking.sendToPlayer(new SyncPassiveProcSC("dodge:" + cap.getPassiveDodgeProc()), (ServerPlayer) event.player);
+                ModNetworking.sendToPlayer(new SyncPassiveProcSC("parry:" + cap.getPassiveParryProc()), (ServerPlayer) event.player);
+                ModNetworking.sendToPlayer(new SyncPassiveProcSC("doublestrike:" + cap.getPassiveDoubleStrikeProc()), (ServerPlayer) event.player);
             });
         }
     }
@@ -159,7 +167,7 @@ public class ModEvents {
                 double dodgechance = cap.nimbleness.calculatePower(1);
                 if (random.nextDouble(0, 100) < dodgechance) {
                     //do dodge
-                    event.getEntity().sendSystemMessage(Component.literal("Dodged an attack"));
+                    cap.triggerDodgeProc();
                     event.setCanceled(true);
                     return;
                 }
@@ -169,7 +177,7 @@ public class ModEvents {
                 if (random.nextDouble(0, 100) < parryChance) {
                     //do parry
                     event.setAmount((float) (event.getAmount() * parryAmount));
-                    event.getEntity().sendSystemMessage(Component.literal("Parried an attack"));
+                    cap.triggerParryProc();
                 }
             });
         }
@@ -179,7 +187,7 @@ public class ModEvents {
                 if (random.nextDouble(0, 100) < cap.strategy.calculatePower(1)) {
                     //do double strike
                     event.setAmount(event.getAmount() * 2);
-                    event.getSource().getEntity().sendSystemMessage(Component.literal("Dealt an additional strike"));
+                    cap.triggerDoubleStrikeProc();
                 }
             });
         }

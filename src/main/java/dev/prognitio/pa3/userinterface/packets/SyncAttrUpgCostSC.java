@@ -1,6 +1,6 @@
 package dev.prognitio.pa3.userinterface.packets;
 
-import dev.prognitio.pa3.userinterface.ClientDataStorage;
+import dev.prognitio.pa3.ClientDataStorage;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.chat.Component;
 import net.minecraftforge.network.NetworkEvent;

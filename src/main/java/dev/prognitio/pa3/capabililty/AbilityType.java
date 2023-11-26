@@ -77,6 +77,7 @@ public class AbilityType {
             //add cooldown
             player.getCapability(AttributesProvider.ATTRIBUTES).ifPresent(cap -> {
                 cap.setAbilityCooldown(this.cooldown * 40);
+                cap.setCurrentMaxCooldown(this.cooldown * 40);
             });
         }
     }

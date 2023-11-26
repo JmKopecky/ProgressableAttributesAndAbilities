@@ -1,4 +1,4 @@
-package dev.prognitio.pa3.userinterface;
+package dev.prognitio.pa3;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -26,6 +26,11 @@ public class ClientDataStorage {
     private static Map<String, Integer> abilityLevelupReqs = new HashMap<>();
     private static Map<String, Boolean> abilityIsElite = new HashMap<>();
     private static Map<String, Integer> attrLevelupReqs = new HashMap<>();
+    private static int currentCooldown;
+    private static int maxCooldown;
+    private static int doubleStrikeProcTimer = 0;
+    private static int dodgeProcTimer = 0;
+    private static int parryProcTimer = 0;
 
     public static void setAttrProperty(String packetInput, String property) {
         //packetInput should be in format "type:level"
@@ -168,6 +173,31 @@ public class ClientDataStorage {
         }
     }
 
+    public static void setPassiveProcTimer(String data) {
+        String target = data.split(":")[0];
+        int value = Integer.parseInt(data.split(":")[1]);
+        switch (target) {
+            case "dodge" -> dodgeProcTimer = value;
+            case "parry" -> parryProcTimer = value;
+            case "doublestrike" -> doubleStrikeProcTimer = value;
+        }
+    }
+
+    public static int getPassiveProcTimer(String target) {
+        switch (target) {
+            case "dodge" -> {
+                return dodgeProcTimer;
+            }
+            case "parry" -> {
+                return parryProcTimer;
+            }
+            case "doublestrike" -> {
+                return doubleStrikeProcTimer;
+            }
+        }
+        return -1;
+    }
+
     public static int getLevel() {
         return level;
     }
@@ -214,5 +244,21 @@ public class ClientDataStorage {
 
     public static void setSecondaryAbility(String secondaryAbility) {
         ClientDataStorage.secondaryAbility = secondaryAbility;
+    }
+
+    public static int getCurrentCooldown() {
+        return currentCooldown;
+    }
+
+    public static void setCurrentCooldown(int currentCooldown) {
+        ClientDataStorage.currentCooldown = currentCooldown;
+    }
+
+    public static int getMaxCooldown() {
+        return maxCooldown;
+    }
+
+    public static void setMaxCooldown(int maxCooldown) {
+        ClientDataStorage.maxCooldown = maxCooldown;
     }
 }

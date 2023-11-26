@@ -14,9 +14,9 @@ public class Keybinding {
     public static final String KEY_OPEN_INTERFACE = "key.pa3.open_interface";
 
     public static final KeyMapping PRIMARY_ABILITY_KEY = new KeyMapping(KEY_ACTIVATE_PRIMARY, KeyConflictContext.IN_GAME,
-             InputConstants.Type.KEYSYM, GLFW.GLFW_KEY_X, CATEGORY);
+             InputConstants.Type.KEYSYM, GLFW.GLFW_KEY_V, CATEGORY);
     public static final KeyMapping SECONDARY_ABILITY_KEY = new KeyMapping(KEY_ACTIVATE_SECONDARY, KeyConflictContext.IN_GAME,
-            InputConstants.Type.KEYSYM, GLFW.GLFW_KEY_V, CATEGORY);
+            InputConstants.Type.KEYSYM, GLFW.GLFW_KEY_X, CATEGORY);
     public static final KeyMapping OPEN_INTERFACE_KEY = new KeyMapping(KEY_OPEN_INTERFACE, KeyConflictContext.IN_GAME,
             InputConstants.Type.KEYSYM, GLFW.GLFW_KEY_K, CATEGORY);
 }

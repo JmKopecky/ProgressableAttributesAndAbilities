@@ -1,6 +1,7 @@
 package dev.prognitio.pa3.capabililty;
 
 import dev.prognitio.pa3.ModNetworking;
+import dev.prognitio.pa3.userhud.SyncCooldownDataSC;
 import dev.prognitio.pa3.userinterface.packets.*;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
@@ -9,6 +10,7 @@ import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.common.ForgeMod;
+import org.apache.logging.log4j.core.jmx.Server;
 
 import java.util.ArrayList;
 import java.util.function.Supplier;
@@ -19,6 +21,10 @@ public class AttributesCapability {
     private int level = 0;
     private int availablePoints = 0;
     private int abilityCooldown = 0;
+    private int currentMaxCooldown = 0;
+    private int passiveDodgeProc = 0;
+    private int passiveParryProc = 0;
+    private int passiveDoubleStrikeProc = 0;
 
     Supplier<ArrayList<Double>> fitnessSupp = () -> {
         ArrayList<Double> list = new ArrayList<>();
@@ -40,7 +46,7 @@ public class AttributesCapability {
     Supplier<ArrayList<Double>> combatSupp = () -> {
         ArrayList<Double> list = new ArrayList<>();
         list.add(0.5);
-        list.add(50.0/20.0); //parry amount per level, start at 25, max at 75
+        list.add(2.5); //parry amount per level, start at 25, max at 75
         return list;
     };
     public AttributeType combat = new AttributeType("combat", 20,
@@ -49,7 +55,7 @@ public class AttributesCapability {
     Supplier<ArrayList<Double>> nimblenessSupp = () -> {
         ArrayList<Double> list = new ArrayList<>();
         list.add(0.05);
-        list.add(50.0/20.0);
+        list.add(1.5); //dodge chance scaling
         return list;
     };
     public AttributeType nimbleness = new AttributeType("nimbleness", 20,
@@ -212,6 +218,8 @@ public class AttributesCapability {
 
         isElite = overshield.isEliteVersion ? 1 : 0;
         ModNetworking.sendToPlayer(new SyncAbilEliteSC("overshield:" + isElite), (ServerPlayer) player);
+
+        ModNetworking.sendToPlayer(new SyncCooldownDataSC(abilityCooldown + ":" + currentMaxCooldown), (ServerPlayer) player);
     }
 
     public boolean attemptLevelUpAttribute(String attribute) {
@@ -292,16 +300,12 @@ public class AttributesCapability {
     public void firePrimaryAbility(Player player) {
         if (abilityCooldown <= 0) {
             getAbilityFromString(primaryAbility).runAbility(player);
-        } else {
-            player.sendSystemMessage(Component.literal("Cooldown Remaining: " + abilityCooldown / 40));
         }
     }
 
     public void fireSecondaryAbility(Player player) {
         if (abilityCooldown <= 0) {
             getAbilityFromString(secondaryAbility).runAbility(player);
-        } else {
-            player.sendSystemMessage(Component.literal("Cooldown Remaining: " + abilityCooldown / 40));
         }
     }
 
@@ -351,6 +355,10 @@ public class AttributesCapability {
         this.nimbleness = source.nimbleness;
         this.strategy = source.strategy;
         this.abilityCooldown = source.abilityCooldown;
+        this.currentMaxCooldown = source.currentMaxCooldown;
+        this.passiveDodgeProc = source.passiveDodgeProc;
+        this.passiveParryProc = source.passiveParryProc;
+        this.passiveDoubleStrikeProc = source.passiveDoubleStrikeProc;
         this.primaryAbility = source.primaryAbility;
         this.secondaryAbility = source.secondaryAbility;
         this.dash = source.dash;
@@ -368,6 +376,10 @@ public class AttributesCapability {
         nbt.putString("nimbleness", nimbleness.toString());
         nbt.putString("strategy", strategy.toString());
         nbt.putInt("cooldown", abilityCooldown);
+        nbt.putInt("maxcooldown", currentMaxCooldown);
+        nbt.putInt("dodgeproc", passiveDodgeProc);
+        nbt.putInt("parryproc", passiveParryProc);
+        nbt.putInt("doublestrikeproc", passiveDoubleStrikeProc);
         nbt.putString("dash", dash.toString());
         nbt.putString("arrowsalvo", arrowSalvo.toString());
         nbt.putString("overshield", overshield.toString());
@@ -386,6 +398,10 @@ public class AttributesCapability {
         this.nimbleness = AttributeType.fromString(nbt.getString("nimbleness"));
         this.strategy = AttributeType.fromString(nbt.getString("strategy"));
         this.abilityCooldown = nbt.getInt("cooldown");
+        this.currentMaxCooldown = nbt.getInt("maxcooldown");
+        this.passiveDodgeProc = nbt.getInt("dodgeproc");
+        this.passiveParryProc = nbt.getInt("parryproc");
+        this.passiveDoubleStrikeProc = nbt.getInt("doublestrikeproc");
         this.primaryAbility = nbt.getString("primaryability");
         this.secondaryAbility = nbt.getString("secondaryability");
         this.dash = AbilityType.fromString(nbt.getString("dash"));
@@ -417,4 +433,46 @@ public class AttributesCapability {
 
     public int getAbilityCooldown() { return abilityCooldown; }
     public void setAbilityCooldown(int abilityCooldown) { this.abilityCooldown = abilityCooldown; }
+
+    public int getCurrentMaxCooldown() {
+        return currentMaxCooldown;
+    }
+
+    public void setCurrentMaxCooldown(int currentMaxCooldown) {
+        this.currentMaxCooldown = currentMaxCooldown;
+    }
+
+    public void triggerDodgeProc() {
+        this.passiveDodgeProc = 40;
+    }
+
+    public void triggerParryProc() {
+        this.passiveParryProc = 40;
+    }
+
+    public void triggerDoubleStrikeProc() {
+        this.passiveDoubleStrikeProc = 40;
+    }
+
+    public void decreasePassiveTimers() {
+        if (passiveDodgeProc > 0) {
+            this.passiveDodgeProc--;
+        }
+        if (passiveParryProc > 0) {
+            this.passiveParryProc--;
+        }
+        if (passiveDoubleStrikeProc > 0) {
+            this.passiveDoubleStrikeProc--;
+        }
+    }
+
+    public int getPassiveDodgeProc() {
+        return passiveDodgeProc;
+    }
+    public int getPassiveParryProc() {
+        return passiveParryProc;
+    }
+    public int getPassiveDoubleStrikeProc() {
+        return passiveDoubleStrikeProc;
+    }
 }

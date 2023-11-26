@@ -3,6 +3,7 @@ package dev.prognitio.pa3.userinterface;
 import com.mojang.blaze3d.platform.Window;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
+import dev.prognitio.pa3.ClientDataStorage;
 import dev.prognitio.pa3.ModNetworking;
 import dev.prognitio.pa3.capabililty.AbilityType;
 import dev.prognitio.pa3.pa3;
@@ -87,7 +88,6 @@ public class AbilityDisplayScreen extends Screen {
         renderAbilityTitle("Dash", midX - 80, midY - 60, mouseX, mouseY, stack);
         renderAbilityTitle("Arrow Salvo", midX - 80, midY - 40, mouseX, mouseY, stack);
         renderAbilityTitle("Overshield", midX - 80,  midY - 20, mouseX, mouseY, stack);
-
         super.render(stack, mouseX, mouseY, partialTicks);
     }
 

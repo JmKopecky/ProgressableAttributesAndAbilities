@@ -3,6 +3,7 @@ package dev.prognitio.pa3.userinterface;
 import com.mojang.blaze3d.platform.Window;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
+import dev.prognitio.pa3.ClientDataStorage;
 import dev.prognitio.pa3.ModNetworking;
 import dev.prognitio.pa3.pa3;
 import dev.prognitio.pa3.userinterface.packets.LevelUpAttributeCS;

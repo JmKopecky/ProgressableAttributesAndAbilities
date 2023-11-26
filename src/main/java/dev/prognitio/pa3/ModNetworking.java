@@ -2,6 +2,8 @@ package dev.prognitio.pa3;
 
 import dev.prognitio.pa3.keybindsystem.PrimaryC2SPacket;
 import dev.prognitio.pa3.keybindsystem.SecondaryCS2Packet;
+import dev.prognitio.pa3.userhud.SyncCooldownDataSC;
+import dev.prognitio.pa3.userhud.SyncPassiveProcSC;
 import dev.prognitio.pa3.userinterface.packets.*;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
@@ -97,6 +99,16 @@ public class ModNetworking {
                 .decoder(SyncAbilEliteSC::new)
                 .encoder(SyncAbilEliteSC::toBytes)
                 .consumerMainThread(SyncAbilEliteSC::handle).add();
+
+        net.messageBuilder(SyncCooldownDataSC.class, id(), NetworkDirection.PLAY_TO_CLIENT)
+                .decoder(SyncCooldownDataSC::new)
+                .encoder(SyncCooldownDataSC::toBytes)
+                .consumerMainThread(SyncCooldownDataSC::handle).add();
+
+        net.messageBuilder(SyncPassiveProcSC.class, id(), NetworkDirection.PLAY_TO_CLIENT)
+                .decoder(SyncPassiveProcSC::new)
+                .encoder(SyncPassiveProcSC::toBytes)
+                .consumerMainThread(SyncPassiveProcSC::handle).add();
 
         net.messageBuilder(LevelUpAttributeCS.class, id(), NetworkDirection.PLAY_TO_SERVER)
                 .decoder(LevelUpAttributeCS::new)
