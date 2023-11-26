@@ -277,13 +277,28 @@ public class AttributesCapability {
     public boolean attemptUnlockElite(String ability) {
         switch (ability) {
             case "dash" -> {
-                return dash.attemptUnlockElite(availablePoints) != -1;
+                int result = dash.attemptUnlockElite(availablePoints);
+                if (result != -1) {
+                    setAvailablePoints(availablePoints - result);
+                    return true;
+                }
+                return false;
             }
             case "arrowsalvo" -> {
-                return arrowSalvo.attemptUnlockElite(availablePoints) != -1;
+                int result = arrowSalvo.attemptUnlockElite(availablePoints);
+                if (result != -1) {
+                    setAvailablePoints(availablePoints - result);
+                    return true;
+                }
+                return false;
             }
             case "overshield" -> {
-                return overshield.attemptUnlockElite(availablePoints) != -1;
+                int result = overshield.attemptUnlockElite(availablePoints);
+                if (result != -1) {
+                    setAvailablePoints(availablePoints - result);
+                    return true;
+                }
+                return false;
             }
         }
         return false;
@@ -428,7 +443,11 @@ public class AttributesCapability {
         return availablePoints;
     }
     public void setAvailablePoints(int availablePoints) {
-        this.availablePoints = availablePoints;
+        if (availablePoints < 0) {
+            this.availablePoints = 0;
+        } else {
+            this.availablePoints = availablePoints;
+        }
     }
 
     public int getAbilityCooldown() { return abilityCooldown; }

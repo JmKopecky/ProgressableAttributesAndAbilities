@@ -29,25 +29,31 @@ public class LevelUpAbilityCS {
             player.getCapability(AttributesProvider.ATTRIBUTES).ifPresent(cap -> {
                 switch (data) {
                     case "dash" -> {
+                        int result;
                         if (cap.dash.level == 0) {
-                            cap.dash.attemptPurchaseAbility(cap.getAvailablePoints());
+                            result = cap.dash.attemptPurchaseAbility(cap.getAvailablePoints());
                         } else {
-                            cap.dash.attemptLevelAbility(cap.getAvailablePoints());
+                            result = cap.dash.attemptLevelAbility(cap.getAvailablePoints());
                         }
+                        cap.setAvailablePoints(cap.getAvailablePoints() - result);
                     }
                     case "arrowsalvo" -> {
+                        int result;
                         if (cap.arrowSalvo.level == 0) {
-                            cap.arrowSalvo.attemptPurchaseAbility(cap.getAvailablePoints());
+                            result = cap.arrowSalvo.attemptPurchaseAbility(cap.getAvailablePoints());
                         } else {
-                            cap.arrowSalvo.attemptLevelAbility(cap.getAvailablePoints());
+                            result = cap.arrowSalvo.attemptLevelAbility(cap.getAvailablePoints());
                         }
+                        cap.setAvailablePoints(cap.getAvailablePoints() - result);
                     }
                     case "overshield" -> {
+                        int result;
                         if (cap.overshield.level == 0) {
-                            cap.overshield.attemptPurchaseAbility(cap.getAvailablePoints());
+                            result = cap.overshield.attemptPurchaseAbility(cap.getAvailablePoints());
                         } else {
-                            cap.overshield.attemptLevelAbility(cap.getAvailablePoints());
+                            result = cap.overshield.attemptLevelAbility(cap.getAvailablePoints());
                         }
+                        cap.setAvailablePoints(cap.getAvailablePoints() - result);
                     }
                 }
                 cap.syncDataToPlayer(player);

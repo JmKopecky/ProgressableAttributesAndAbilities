@@ -26,6 +26,7 @@ public class LevelAbilityCommand {
                     context.getPlayer().sendSystemMessage(Component.literal("Failed to level up ability"));
                 } else {
                     context.getPlayer().sendSystemMessage(Component.literal("Leveled up " + ability));
+                    cap.setAvailablePoints(cap.getAvailablePoints() - cost);
                 }
             } else {
                 context.getPlayer().sendSystemMessage(Component.literal("Failed to level up ability"));
