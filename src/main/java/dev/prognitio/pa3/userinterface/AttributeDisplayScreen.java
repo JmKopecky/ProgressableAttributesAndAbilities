@@ -13,6 +13,7 @@ import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.Optional;
@@ -36,15 +37,11 @@ public class AttributeDisplayScreen extends Screen {
         midX = window.getGuiScaledWidth() / 2;
         this.addRenderableWidget(new Button(midX - (40/2), midY + (256/2) - 10,
                 40, 20, Component.literal("Abilities"),
-                (button) -> {
-                    Minecraft.getInstance().setScreen(new AbilityDisplayScreen(Component.literal("Ability Interface")));
-                }));
+                (button) -> Minecraft.getInstance().setScreen(new AbilityDisplayScreen(Component.literal("Ability Interface")))));
 
         //fitness level up
         this.addRenderableWidget(new Button(midX + 95, midY - 45 - 5, 20, 20, Component.literal("+"),
-                (button) -> {
-                    ModNetworking.sendToServer(new LevelUpAttributeCS("fitness"));
-                }, (button, stack, mx, my) -> {
+                (button) -> ModNetworking.sendToServer(new LevelUpAttributeCS("fitness")), (button, stack, mx, my) -> {
             ArrayList<Component> tooltip = new ArrayList<>();
             tooltip.add(Component.literal("Level up").withStyle(ChatFormatting.BLUE).withStyle(ChatFormatting.BOLD));
             int level = ClientDataStorage.getAttrProperty("fitness", "level");
@@ -58,9 +55,7 @@ public class AttributeDisplayScreen extends Screen {
         }));
         //resilience level up
         this.addRenderableWidget(new Button(midX + 95, midY - 15 - 5, 20, 20, Component.literal("+"),
-                (button) -> {
-                    ModNetworking.sendToServer(new LevelUpAttributeCS("resilience"));
-                }, (button, stack, mx, my) -> {
+                (button) -> ModNetworking.sendToServer(new LevelUpAttributeCS("resilience")), (button, stack, mx, my) -> {
             ArrayList<Component> tooltip = new ArrayList<>();
             tooltip.add(Component.literal("Level up").withStyle(ChatFormatting.BLUE).withStyle(ChatFormatting.BOLD));
             int level = ClientDataStorage.getAttrProperty("resilience", "level");
@@ -74,9 +69,7 @@ public class AttributeDisplayScreen extends Screen {
         }));
         //combat level up
         this.addRenderableWidget(new Button(midX + 95, midY + 15 - 5, 20, 20, Component.literal("+"),
-                (button) -> {
-                    ModNetworking.sendToServer(new LevelUpAttributeCS("combat"));
-                }, (button, stack, mx, my) -> {
+                (button) -> ModNetworking.sendToServer(new LevelUpAttributeCS("combat")), (button, stack, mx, my) -> {
             ArrayList<Component> tooltip = new ArrayList<>();
             tooltip.add(Component.literal("Level up").withStyle(ChatFormatting.BLUE).withStyle(ChatFormatting.BOLD));
             int level = ClientDataStorage.getAttrProperty("combat", "level");
@@ -90,9 +83,7 @@ public class AttributeDisplayScreen extends Screen {
         }));
         //nimbleness level up
         this.addRenderableWidget(new Button(midX + 95, midY + 45 - 5, 20, 20, Component.literal("+"),
-                (button) -> {
-                    ModNetworking.sendToServer(new LevelUpAttributeCS("nimbleness"));
-                }, (button, stack, mx, my) -> {
+                (button) -> ModNetworking.sendToServer(new LevelUpAttributeCS("nimbleness")), (button, stack, mx, my) -> {
             ArrayList<Component> tooltip = new ArrayList<>();
             tooltip.add(Component.literal("Level up").withStyle(ChatFormatting.BLUE).withStyle(ChatFormatting.BOLD));
             int level = ClientDataStorage.getAttrProperty("nimbleness", "level");
@@ -106,9 +97,7 @@ public class AttributeDisplayScreen extends Screen {
         }));
         //strategy level up
         this.addRenderableWidget(new Button(midX + 95, midY + 75 - 5, 20, 20, Component.literal("+"),
-                (button) -> {
-                    ModNetworking.sendToServer(new LevelUpAttributeCS("strategy"));
-                }, (button, stack, mx, my) -> {
+                (button) -> ModNetworking.sendToServer(new LevelUpAttributeCS("strategy")), (button, stack, mx, my) -> {
             ArrayList<Component> tooltip = new ArrayList<>();
             tooltip.add(Component.literal("Level up").withStyle(ChatFormatting.BLUE).withStyle(ChatFormatting.BOLD));
             int level = ClientDataStorage.getAttrProperty("strategy", "level");
@@ -123,7 +112,7 @@ public class AttributeDisplayScreen extends Screen {
     }
 
     @Override
-    public void render(PoseStack stack, int mouseX, int mouseY, float partialTicks) {
+    public void render(@NotNull PoseStack stack, int mouseX, int mouseY, float partialTicks) {
         this.renderBackground(stack);
         RenderSystem.setShaderTexture(0, bg);
         blit(stack, (window.getGuiScaledWidth() - 256) / 2, (window.getGuiScaledHeight() - 256) / 2, 0, 0, 0, 256, 256, 256, 256);
@@ -164,9 +153,7 @@ public class AttributeDisplayScreen extends Screen {
 
         ArrayList<String> attributeBonuses = new ArrayList<>();
         switch (type) {
-            case "Fitness" -> {
-                attributeBonuses.add("Health");
-            }
+            case "Fitness" -> attributeBonuses.add("Health");
             case "Resilience" -> {
                 attributeBonuses.add("Armor");
                 attributeBonuses.add("Armor Toughness");
@@ -183,9 +170,7 @@ public class AttributeDisplayScreen extends Screen {
                 attributeBonuses.add("Reach");
                 attributeBonuses.add("Double Strike");
             }
-            default -> {
-                throw new IllegalArgumentException("Unrecognized Type value while rendering the tooltip for an attribute.");
-            }
+            default -> throw new IllegalArgumentException("Unrecognized Type value while rendering the tooltip for an attribute.");
         }
         if (isInWidthRange && isInHeightRange) {
             ArrayList<Component> tooltipLines = new ArrayList<>();

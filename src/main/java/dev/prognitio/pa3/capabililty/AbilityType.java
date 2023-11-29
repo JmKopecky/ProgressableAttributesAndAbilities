@@ -10,6 +10,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.AbstractArrow;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.phys.Vec3;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.Random;
 
@@ -118,7 +119,7 @@ public class AbilityType {
             System.out.println("Spawning an arrow");
             AbstractArrow arrow = new AbstractArrow(EntityType.ARROW, player, player.level) {
                 @Override
-                protected ItemStack getPickupItem() {
+                protected @NotNull ItemStack getPickupItem() {
                     return ItemStack.EMPTY;
                 }
             };

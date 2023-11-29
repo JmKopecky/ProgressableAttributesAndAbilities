@@ -11,7 +11,7 @@ import net.minecraftforge.client.gui.overlay.IGuiOverlay;
 public class HudOverlay {
 
     private static final ResourceLocation COOLDOWN = new ResourceLocation(pa3.MODID, "textures/gui/cooldownbars.png");
-    private static final ResourceLocation PASSIVE_TEMPLATE = new ResourceLocation(pa3.MODID, "textures/gui/passiveicontemplate.png");
+    //private static final ResourceLocation PASSIVE_TEMPLATE = new ResourceLocation(pa3.MODID, "textures/gui/passiveicontemplate.png");
     private static final ResourceLocation PASSIVE_DODGE = new ResourceLocation(pa3.MODID, "textures/gui/passivedodgeicontemplate.png");
     private static final ResourceLocation PASSIVE_PARRY = new ResourceLocation(pa3.MODID, "textures/gui/passiveparryicontemplate.png");
     private static final ResourceLocation PASSIVE_DOUBLE_STRIKE = new ResourceLocation(pa3.MODID, "textures/gui/passivedoublestrikeicontemplate.png");

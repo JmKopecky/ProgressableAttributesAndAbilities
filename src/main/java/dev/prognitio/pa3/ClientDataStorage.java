@@ -38,40 +38,20 @@ public class ClientDataStorage {
         int level = Integer.parseInt(packetInput.split(":")[1]);
         if (property.equals("level")) {
             switch (type) {
-                case "fitness" -> {
-                    fitnessLevel = level;
-                }
-                case "resilience" -> {
-                    resilienceLevel = level;
-                }
-                case "combat" -> {
-                    combatLevel = level;
-                }
-                case "nimbleness" -> {
-                    nimblenessLevel = level;
-                }
-                case "strategy" -> {
-                    strategyLevel = level;
-                }
+                case "fitness" -> fitnessLevel = level;
+                case "resilience" -> resilienceLevel = level;
+                case "combat" -> combatLevel = level;
+                case "nimbleness" -> nimblenessLevel = level;
+                case "strategy" -> strategyLevel = level;
             }
         }
         if (property.equals("max")) {
             switch (type) {
-                case "fitness" -> {
-                    fitnessMaxLevel = level;
-                }
-                case "resilience" -> {
-                    resilienceMaxLevel = level;
-                }
-                case "combat" -> {
-                    combatMaxLevel = level;
-                }
-                case "nimbleness" -> {
-                    nimblenessMaxLevel = level;
-                }
-                case "strategy" -> {
-                    strategyMaxLevel = level;
-                }
+                case "fitness" -> fitnessMaxLevel = level;
+                case "resilience" -> resilienceMaxLevel = level;
+                case "combat" -> combatMaxLevel = level;
+                case "nimbleness" -> nimblenessMaxLevel = level;
+                case "strategy" -> strategyMaxLevel = level;
             }
         }
         if (property.equals("upgrade")) {

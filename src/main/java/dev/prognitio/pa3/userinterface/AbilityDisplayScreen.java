@@ -17,6 +17,7 @@ import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.inventory.tooltip.TooltipComponent;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.Optional;
@@ -40,55 +41,33 @@ public class AbilityDisplayScreen extends Screen {
         midX = window.getGuiScaledWidth() / 2;
         this.addRenderableWidget(new Button(midX - (60/2), midY + (256/2) - 10,
                 60, 20, Component.literal("Attributes"),
-                (button) -> {
-                    Minecraft.getInstance().setScreen(new AttributeDisplayScreen(Component.literal("Attribute Interface")));
-                }));
+                (button) -> Minecraft.getInstance().setScreen(new AttributeDisplayScreen(Component.literal("Attribute Interface")))));
 
 
         //button to level up abilities
         this.addRenderableWidget(new Button(midX - 20 - 10, midY - 60 - 10 + font.lineHeight/2,
                 20, 20, Component.literal("+"),
-                (button) -> {
-                    upgradeAbilityButtonOnClick(button, "dash");
-                }, (button, stack, mx, my) -> {
-            renderUpgradeButtonTooltip("dash", button, stack, mx, my);
-        }));
+                (button) -> upgradeAbilityButtonOnClick("dash"), (button, stack, mx, my) -> renderUpgradeButtonTooltip("dash", stack, mx, my)));
 
         this.addRenderableWidget(new Button(midX - 20 - 10, midY - 40 - 10 + font.lineHeight/2,
                 20, 20, Component.literal("+"),
-                (button) -> {
-                    upgradeAbilityButtonOnClick(button, "arrowsalvo");
-                }, (button, stack, mx, my) -> {
-            renderUpgradeButtonTooltip("arrowsalvo", button, stack, mx, my);
-        }));
+                (button) -> upgradeAbilityButtonOnClick("arrowsalvo"), (button, stack, mx, my) -> renderUpgradeButtonTooltip("arrowsalvo", stack, mx, my)));
 
         this.addRenderableWidget(new Button(midX - 20 - 10, midY - 20 - 10 + font.lineHeight/2,
                 20, 20, Component.literal("+"),
-                (button) -> {
-                    upgradeAbilityButtonOnClick(button, "overshield");
-                }, (button, stack, mx, my) -> {
-            renderUpgradeButtonTooltip("overshield", button, stack, mx, my);
-        }));
+                (button) -> upgradeAbilityButtonOnClick("overshield"), (button, stack, mx, my) -> renderUpgradeButtonTooltip("overshield", stack, mx, my)));
 
         this.addRenderableWidget(new Button(midX - 20 - 10, midY - 10 + font.lineHeight/2,
                 20, 20, Component.literal("+"),
-                (button) -> {
-                    upgradeAbilityButtonOnClick(button, "incendiarylance");
-                }, (button, stack, mx, my) -> {
-            renderUpgradeButtonTooltip("incendiarylance", button, stack, mx, my);
-        }));
+                (button) -> upgradeAbilityButtonOnClick("incendiarylance"), (button, stack, mx, my) -> renderUpgradeButtonTooltip("incendiarylance", stack, mx, my)));
 
         this.addRenderableWidget(new Button(midX - 20 - 10, midY + 20 - 10 + font.lineHeight/2,
                 20, 20, Component.literal("+"),
-                (button) -> {
-                    upgradeAbilityButtonOnClick(button, "chainlightning");
-                }, (button, stack, mx, my) -> {
-            renderUpgradeButtonTooltip("chainlightning", button, stack, mx, my);
-        }));
+                (button) -> upgradeAbilityButtonOnClick("chainlightning"), (button, stack, mx, my) -> renderUpgradeButtonTooltip("chainlightning", stack, mx, my)));
     }
 
     @Override
-    public void render(PoseStack stack, int mouseX, int mouseY, float partialTicks) {
+    public void render(@NotNull PoseStack stack, int mouseX, int mouseY, float partialTicks) {
         this.renderBackground(stack);
         RenderSystem.setShaderTexture(0, bg);
         blit(stack, (window.getGuiScaledWidth() - 256) / 2, (window.getGuiScaledHeight() - 256) / 2, 0, 0, 0, 256, 256, 256, 256);
@@ -145,7 +124,7 @@ public class AbilityDisplayScreen extends Screen {
         if (isOverlappingText) {
             ArrayList<Component> toRender = new ArrayList<>();
             toRender.add(Component.literal(title).withStyle(ChatFormatting.BOLD).withStyle(ChatFormatting.BLUE));
-            String level = ClientDataStorage.getAbilityProperty(title.replaceAll(" ", "").toLowerCase(), "level");;
+            String level = ClientDataStorage.getAbilityProperty(title.replaceAll(" ", "").toLowerCase(), "level");
             String maxLevel = ClientDataStorage.getAbilityProperty(title.replaceAll(" ", "").toLowerCase(), "max");
             toRender.add(Component.literal(level + "/" + maxLevel).withStyle(ChatFormatting.AQUA));
             String desc = ClientDataStorage.getAbilityProperty(title.replaceAll(" ", "").toLowerCase(), "desc");
@@ -156,7 +135,7 @@ public class AbilityDisplayScreen extends Screen {
         }
     }
 
-    public void renderUpgradeButtonTooltip(String type, Button button, PoseStack stack, int mx, int my) {
+    public void renderUpgradeButtonTooltip(String type, PoseStack stack, int mx, int my) {
         ArrayList<Component> tooltip = new ArrayList<>();
         int level = Integer.parseInt(ClientDataStorage.getAbilityProperty(type, "level"));
         int maxLevel = Integer.parseInt(ClientDataStorage.getAbilityProperty(type, "max"));
@@ -185,11 +164,11 @@ public class AbilityDisplayScreen extends Screen {
         renderTooltip(stack, tooltip, optional, mx, my);
     }
 
-    public void upgradeAbilityButtonOnClick(Button button, String type) {
+    public void upgradeAbilityButtonOnClick(String type) {
         int level = Integer.parseInt(ClientDataStorage.getAbilityProperty(type, "level"));
         int maxLevel = Integer.parseInt(ClientDataStorage.getAbilityProperty(type, "max"));
         if (level == maxLevel) {
-            Boolean isElite = Boolean.valueOf(ClientDataStorage.getAbilityProperty(type, "elite"));
+            boolean isElite = Boolean.parseBoolean(ClientDataStorage.getAbilityProperty(type, "elite"));
             if (!isElite) {
                 ModNetworking.sendToServer(new UnlockEliteAbilityCS(type));
             }

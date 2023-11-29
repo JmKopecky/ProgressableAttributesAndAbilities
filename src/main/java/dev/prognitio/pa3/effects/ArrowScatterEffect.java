@@ -7,6 +7,7 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.projectile.AbstractArrow;
 import net.minecraft.world.item.ItemStack;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.Random;
 
@@ -16,13 +17,13 @@ public class ArrowScatterEffect extends MobEffect {
     }
 
     @Override
-    public void applyEffectTick(LivingEntity pLivingEntity, int pAmplifier) {
+    public void applyEffectTick(@NotNull LivingEntity pLivingEntity, int pAmplifier) {
         Random random = new Random();
         for (int i = 0; i < 1 + pAmplifier; i++) {
             System.out.println("spawning arrow");
             AbstractArrow arrow = new AbstractArrow(EntityType.ARROW, pLivingEntity, pLivingEntity.level) {
                 @Override
-                protected ItemStack getPickupItem() {
+                protected @NotNull ItemStack getPickupItem() {
                     return ItemStack.EMPTY;
                 }
             };
@@ -46,7 +47,7 @@ public class ArrowScatterEffect extends MobEffect {
     }
 
     @Override
-    public Component getDisplayName() {
+    public @NotNull Component getDisplayName() {
         return Component.literal("Arrow Scatter");
     }
 }

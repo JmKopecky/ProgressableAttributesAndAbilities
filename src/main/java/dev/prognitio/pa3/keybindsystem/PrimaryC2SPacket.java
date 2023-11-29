@@ -26,9 +26,9 @@ public class PrimaryC2SPacket {
         context.enqueueWork(() -> {
             //on the server
             ServerPlayer player = context.getSender();
-            player.getCapability(AttributesProvider.ATTRIBUTES).ifPresent(cap -> {
-                cap.firePrimaryAbility(player);
-            });
+            if (player != null) {
+                player.getCapability(AttributesProvider.ATTRIBUTES).ifPresent(cap -> cap.firePrimaryAbility(player));
+            }
         });
         return true;
     }

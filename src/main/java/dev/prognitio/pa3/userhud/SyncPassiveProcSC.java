@@ -23,9 +23,7 @@ public class SyncPassiveProcSC {
     }
     public boolean handle(Supplier<NetworkEvent.Context> supplier) {
         NetworkEvent.Context context = supplier.get();
-        context.enqueueWork(() -> {
-            ClientDataStorage.setPassiveProcTimer(data);
-        });
+        context.enqueueWork(() -> ClientDataStorage.setPassiveProcTimer(data));
         return true;
     }
 }

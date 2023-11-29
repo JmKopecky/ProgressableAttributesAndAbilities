@@ -26,66 +26,68 @@ public class LevelUpAbilityCS {
         NetworkEvent.Context context = supplier.get();
         context.enqueueWork(() -> {
             ServerPlayer player = context.getSender();
-            player.getCapability(AttributesProvider.ATTRIBUTES).ifPresent(cap -> {
-                switch (data) {
-                    case "dash" -> {
-                        int result;
-                        if (cap.dash.level == 0) {
-                            result = cap.dash.attemptPurchaseAbility(cap.getAvailablePoints());
-                        } else {
-                            result = cap.dash.attemptLevelAbility(cap.getAvailablePoints());
+            if (player != null) {
+                player.getCapability(AttributesProvider.ATTRIBUTES).ifPresent(cap -> {
+                    switch (data) {
+                        case "dash" -> {
+                            int result;
+                            if (cap.dash.level == 0) {
+                                result = cap.dash.attemptPurchaseAbility(cap.getAvailablePoints());
+                            } else {
+                                result = cap.dash.attemptLevelAbility(cap.getAvailablePoints());
+                            }
+                            if (cap.getAvailablePoints() - result <= cap.getAvailablePoints()) {
+                                cap.setAvailablePoints(cap.getAvailablePoints() - result);
+                            }
                         }
-                        if (cap.getAvailablePoints() - result <= cap.getAvailablePoints()) {
-                            cap.setAvailablePoints(cap.getAvailablePoints() - result);
+                        case "arrowsalvo" -> {
+                            int result;
+                            if (cap.arrowSalvo.level == 0) {
+                                result = cap.arrowSalvo.attemptPurchaseAbility(cap.getAvailablePoints());
+                            } else {
+                                result = cap.arrowSalvo.attemptLevelAbility(cap.getAvailablePoints());
+                            }
+                            if (cap.getAvailablePoints() - result <= cap.getAvailablePoints()) {
+                                cap.setAvailablePoints(cap.getAvailablePoints() - result);
+                            }
+                        }
+                        case "overshield" -> {
+                            int result;
+                            if (cap.overshield.level == 0) {
+                                result = cap.overshield.attemptPurchaseAbility(cap.getAvailablePoints());
+                            } else {
+                                result = cap.overshield.attemptLevelAbility(cap.getAvailablePoints());
+                            }
+                            if (cap.getAvailablePoints() - result <= cap.getAvailablePoints()) {
+                                cap.setAvailablePoints(cap.getAvailablePoints() - result);
+                            }
+                        }
+                        case "incendiarylance" -> {
+                            int result;
+                            if (cap.incendiaryLance.level == 0) {
+                                result = cap.incendiaryLance.attemptPurchaseAbility(cap.getAvailablePoints());
+                            } else {
+                                result = cap.incendiaryLance.attemptLevelAbility(cap.getAvailablePoints());
+                            }
+                            if (cap.getAvailablePoints() - result <= cap.getAvailablePoints()) {
+                                cap.setAvailablePoints(cap.getAvailablePoints() - result);
+                            }
+                        }
+                        case "chainlightning" -> {
+                            int result;
+                            if (cap.chainLightning.level == 0) {
+                                result = cap.chainLightning.attemptPurchaseAbility(cap.getAvailablePoints());
+                            } else {
+                                result = cap.chainLightning.attemptLevelAbility(cap.getAvailablePoints());
+                            }
+                            if (cap.getAvailablePoints() - result <= cap.getAvailablePoints()) {
+                                cap.setAvailablePoints(cap.getAvailablePoints() - result);
+                            }
                         }
                     }
-                    case "arrowsalvo" -> {
-                        int result;
-                        if (cap.arrowSalvo.level == 0) {
-                            result = cap.arrowSalvo.attemptPurchaseAbility(cap.getAvailablePoints());
-                        } else {
-                            result = cap.arrowSalvo.attemptLevelAbility(cap.getAvailablePoints());
-                        }
-                        if (cap.getAvailablePoints() - result <= cap.getAvailablePoints()) {
-                            cap.setAvailablePoints(cap.getAvailablePoints() - result);
-                        }
-                    }
-                    case "overshield" -> {
-                        int result;
-                        if (cap.overshield.level == 0) {
-                            result = cap.overshield.attemptPurchaseAbility(cap.getAvailablePoints());
-                        } else {
-                            result = cap.overshield.attemptLevelAbility(cap.getAvailablePoints());
-                        }
-                        if (cap.getAvailablePoints() - result <= cap.getAvailablePoints()) {
-                            cap.setAvailablePoints(cap.getAvailablePoints() - result);
-                        }
-                    }
-                    case "incendiarylance" -> {
-                        int result;
-                        if (cap.incendiaryLance.level == 0) {
-                            result = cap.incendiaryLance.attemptPurchaseAbility(cap.getAvailablePoints());
-                        } else {
-                            result = cap.incendiaryLance.attemptLevelAbility(cap.getAvailablePoints());
-                        }
-                        if (cap.getAvailablePoints() - result <= cap.getAvailablePoints()) {
-                            cap.setAvailablePoints(cap.getAvailablePoints() - result);
-                        }
-                    }
-                    case "chainlightning" -> {
-                        int result;
-                        if (cap.chainLightning.level == 0) {
-                            result = cap.chainLightning.attemptPurchaseAbility(cap.getAvailablePoints());
-                        } else {
-                            result = cap.chainLightning.attemptLevelAbility(cap.getAvailablePoints());
-                        }
-                        if (cap.getAvailablePoints() - result <= cap.getAvailablePoints()) {
-                            cap.setAvailablePoints(cap.getAvailablePoints() - result);
-                        }
-                    }
-                }
-                cap.syncDataToPlayer(player);
-            });
+                    cap.syncDataToPlayer(player);
+                });
+            }
         });
         return true;
     }

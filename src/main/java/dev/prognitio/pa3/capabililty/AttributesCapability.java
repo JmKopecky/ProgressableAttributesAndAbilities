@@ -298,50 +298,39 @@ public class AttributesCapability {
         return true;
     }
 
-    public boolean attemptUnlockElite(String ability) {
+    public void attemptUnlockElite(String ability) {
         switch (ability) {
             case "dash" -> {
                 int result = dash.attemptUnlockElite(availablePoints);
                 if (availablePoints - result <= availablePoints) {
                     setAvailablePoints(availablePoints - result);
-                    return true;
                 }
-                return false;
             }
             case "arrowsalvo" -> {
                 int result = arrowSalvo.attemptUnlockElite(availablePoints);
                 if (availablePoints - result <= availablePoints) {
                     setAvailablePoints(availablePoints - result);
-                    return true;
                 }
-                return false;
             }
             case "overshield" -> {
                 int result = overshield.attemptUnlockElite(availablePoints);
                 if (availablePoints - result <= availablePoints) {
                     setAvailablePoints(availablePoints - result);
-                    return true;
                 }
-                return false;
             }
             case "incendiarylance" -> {
                 int result = incendiaryLance.attemptUnlockElite(availablePoints);
                 if (availablePoints - result <= availablePoints) {
                     setAvailablePoints(availablePoints - result);
-                    return true;
                 }
-                return false;
             }
             case "chainlightning" -> {
                 int result = chainLightning.attemptUnlockElite(availablePoints);
                 if (availablePoints - result <= availablePoints) {
                     setAvailablePoints(availablePoints - result);
-                    return true;
                 }
-                return false;
             }
         }
-        return false;
     }
 
     public void setPrimaryAbility(String primaryAbility) {
