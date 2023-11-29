@@ -15,6 +15,14 @@ import java.util.Random;
 
 public class AbilityType {
 
+    // Note when adding ability: ensure all the ability is added everywhere you see other abilities in the following classes:
+    //  - AbilityType.java
+    //  - AttributesCapability.java
+    //  - ClientDataStorage.java
+    //  - AbilityDisplayScreen.java
+    //  - LevelUpAbilityCS.java
+    // These are the only classes that need updated.
+
     String id;
     public int level;
     int maxLevel;
@@ -72,6 +80,8 @@ public class AbilityType {
                 case "dash" -> dash(player);
                 case "arrowsalvo" -> arrowSalvo(player);
                 case "overshield" -> overshield(player);
+                case "incendiarylance" -> incendiaryLance(player);
+                case "chainlightning" -> chainLightning(player);
             }
 
             //add cooldown
@@ -84,7 +94,7 @@ public class AbilityType {
 
     public static boolean isValidAbility(String abilityString) {
         switch (abilityString) {
-            case "dash", "arrowsalvo", "overshield" -> {return true;}
+            case "dash", "arrowsalvo", "overshield", "incendiarylance", "chainlightning" -> {return true;}
             default -> {return false;}
         }
     }
@@ -139,6 +149,15 @@ public class AbilityType {
         if (isEliteVersion) {
             player.addEffect(new MobEffectInstance(EffectsRegister.ATTACK_NEGATE_EFFECT.get(), 30 * 20, 0));
         }
+    }
+
+    public void incendiaryLance(Player player) {
+        //lance projectile that does high damage
+        //elite version could do damage to nearby enemies
+    }
+
+    public void chainLightning(Player player) {
+        //send a lightning projectile to the closest hostile some number of times
     }
 
     public static AbilityType fromString(String GSON) {

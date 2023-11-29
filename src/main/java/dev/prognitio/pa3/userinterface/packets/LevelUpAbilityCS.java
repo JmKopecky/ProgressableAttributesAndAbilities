@@ -61,6 +61,28 @@ public class LevelUpAbilityCS {
                             cap.setAvailablePoints(cap.getAvailablePoints() - result);
                         }
                     }
+                    case "incendiarylance" -> {
+                        int result;
+                        if (cap.incendiaryLance.level == 0) {
+                            result = cap.incendiaryLance.attemptPurchaseAbility(cap.getAvailablePoints());
+                        } else {
+                            result = cap.incendiaryLance.attemptLevelAbility(cap.getAvailablePoints());
+                        }
+                        if (cap.getAvailablePoints() - result <= cap.getAvailablePoints()) {
+                            cap.setAvailablePoints(cap.getAvailablePoints() - result);
+                        }
+                    }
+                    case "chainlightning" -> {
+                        int result;
+                        if (cap.chainLightning.level == 0) {
+                            result = cap.chainLightning.attemptPurchaseAbility(cap.getAvailablePoints());
+                        } else {
+                            result = cap.chainLightning.attemptLevelAbility(cap.getAvailablePoints());
+                        }
+                        if (cap.getAvailablePoints() - result <= cap.getAvailablePoints()) {
+                            cap.setAvailablePoints(cap.getAvailablePoints() - result);
+                        }
+                    }
                 }
                 cap.syncDataToPlayer(player);
             });

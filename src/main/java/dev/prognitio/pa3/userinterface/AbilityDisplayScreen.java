@@ -70,7 +70,21 @@ public class AbilityDisplayScreen extends Screen {
             renderUpgradeButtonTooltip("overshield", button, stack, mx, my);
         }));
 
+        this.addRenderableWidget(new Button(midX - 20 - 10, midY - 10 + font.lineHeight/2,
+                20, 20, Component.literal("+"),
+                (button) -> {
+                    upgradeAbilityButtonOnClick(button, "incendiarylance");
+                }, (button, stack, mx, my) -> {
+            renderUpgradeButtonTooltip("incendiarylance", button, stack, mx, my);
+        }));
 
+        this.addRenderableWidget(new Button(midX - 20 - 10, midY + 20 - 10 + font.lineHeight/2,
+                20, 20, Component.literal("+"),
+                (button) -> {
+                    upgradeAbilityButtonOnClick(button, "chainlightning");
+                }, (button, stack, mx, my) -> {
+            renderUpgradeButtonTooltip("chainlightning", button, stack, mx, my);
+        }));
     }
 
     @Override
@@ -95,6 +109,8 @@ public class AbilityDisplayScreen extends Screen {
         renderAbilityTitle("Dash", midX - 80, midY - 60, mouseX, mouseY, stack);
         renderAbilityTitle("Arrow Salvo", midX - 80, midY - 40, mouseX, mouseY, stack);
         renderAbilityTitle("Overshield", midX - 80,  midY - 20, mouseX, mouseY, stack);
+        renderAbilityTitle("Incendiary Lance", midX - 80, midY, mouseX, mouseY, stack);
+        renderAbilityTitle("Chain Lightning", midX - 80,  midY + 20, mouseX, mouseY, stack);
         super.render(stack, mouseX, mouseY, partialTicks);
     }
 
@@ -196,6 +212,12 @@ public class AbilityDisplayScreen extends Screen {
         }
         if (isInRange(pMouseX, pMouseY, (midX - 80) - (font.width("Overshield")/2), font.width("Overshield"), midY - 20, font.lineHeight)) {
             ability = "overshield";
+        }
+        if (isInRange(pMouseX, pMouseY, (midX - 80) - (font.width("Incendiary Lance")/2), font.width("IncendiaryLance"), midY, font.lineHeight)) {
+            ability = "incendiarylance";
+        }
+        if (isInRange(pMouseX, pMouseY, (midX - 80) - (font.width("Chain Lightning")/2), font.width("Chain Lightning"), midY + 20, font.lineHeight)) {
+            ability = "chainlightning";
         }
 
         if (!ability.equals("")) {

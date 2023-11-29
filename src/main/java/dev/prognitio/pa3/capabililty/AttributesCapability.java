@@ -72,6 +72,9 @@ public class AttributesCapability {
     public AbilityType dash = new AbilityType("dash", 5, 6, -1, 2, 1);
     public AbilityType arrowSalvo = new AbilityType("arrowsalvo", 5, 5, +1, 3, 2);
     public AbilityType overshield = new AbilityType("overshield", 5, 16, +2, 3, 2);
+    public AbilityType incendiaryLance = new AbilityType("incendiarylance", 5, 15, -1, 3, 1);
+    public AbilityType chainLightning = new AbilityType("chainlightning", 5, 15, -1, 3, 2);
+
 
     String primaryAbility = "dash";
     String secondaryAbility = "arrowsalvo";
@@ -167,6 +170,16 @@ public class AttributesCapability {
         ModNetworking.sendToPlayer(new SyncAbilLevelSC(lvl), (ServerPlayer) player);
         ModNetworking.sendToPlayer(new SyncAbilMaxLevelSC(mxLvl), (ServerPlayer) player);
 
+        lvl = "incendiarylance:" + incendiaryLance.level;
+        mxLvl = "incendiarylance:" + incendiaryLance.maxLevel;
+        ModNetworking.sendToPlayer(new SyncAbilLevelSC(lvl), (ServerPlayer) player);
+        ModNetworking.sendToPlayer(new SyncAbilMaxLevelSC(mxLvl), (ServerPlayer) player);
+
+        lvl = "chainlightning:" + chainLightning.level;
+        mxLvl = "chainlightning:" + chainLightning.maxLevel;
+        ModNetworking.sendToPlayer(new SyncAbilLevelSC(lvl), (ServerPlayer) player);
+        ModNetworking.sendToPlayer(new SyncAbilMaxLevelSC(mxLvl), (ServerPlayer) player);
+
         ModNetworking.sendToPlayer(new SyncSelectedAbililtySC(primaryAbility + ":" + secondaryAbility), (ServerPlayer) player);
 
         int pointsToUpgrade = 1 + dash.level / 2 * dash.upgradeScale;
@@ -186,6 +199,19 @@ public class AttributesCapability {
             pointsToUpgrade = overshield.purchaseCost;
         }
         ModNetworking.sendToPlayer(new SyncAbilUpgCostSC("overshield:" + pointsToUpgrade), (ServerPlayer) player);
+
+        pointsToUpgrade = 1 + incendiaryLance.level / 2 * incendiaryLance.upgradeScale;
+        if (incendiaryLance.level == 0) {
+            pointsToUpgrade = incendiaryLance.purchaseCost;
+        }
+        ModNetworking.sendToPlayer(new SyncAbilUpgCostSC("incendiarylance:" + pointsToUpgrade), (ServerPlayer) player);
+
+        pointsToUpgrade = 1 + chainLightning.level / 2 * chainLightning.upgradeScale;
+        if (chainLightning.level == 0) {
+            pointsToUpgrade = chainLightning.purchaseCost;
+        }
+        ModNetworking.sendToPlayer(new SyncAbilUpgCostSC("chainlightning:" + pointsToUpgrade), (ServerPlayer) player);
+
 
         pointsToUpgrade = (int) ((fitness.level/5 + 1) * fitness.pointRequirementScale);
         ModNetworking.sendToPlayer(new SyncAttrUpgCostSC("fitness:" + pointsToUpgrade), (ServerPlayer) player);
@@ -210,6 +236,12 @@ public class AttributesCapability {
 
         isElite = overshield.isEliteVersion ? 1 : 0;
         ModNetworking.sendToPlayer(new SyncAbilEliteSC("overshield:" + isElite), (ServerPlayer) player);
+
+        isElite = incendiaryLance.isEliteVersion ? 1 : 0;
+        ModNetworking.sendToPlayer(new SyncAbilEliteSC("incendiarylance:" + isElite), (ServerPlayer) player);
+
+        isElite = chainLightning.isEliteVersion ? 1 : 0;
+        ModNetworking.sendToPlayer(new SyncAbilEliteSC("chainlightning:" + isElite), (ServerPlayer) player);
 
         ModNetworking.sendToPlayer(new SyncCooldownDataSC(abilityCooldown + ":" + currentMaxCooldown), (ServerPlayer) player);
     }
@@ -292,6 +324,22 @@ public class AttributesCapability {
                 }
                 return false;
             }
+            case "incendiarylance" -> {
+                int result = incendiaryLance.attemptUnlockElite(availablePoints);
+                if (availablePoints - result <= availablePoints) {
+                    setAvailablePoints(availablePoints - result);
+                    return true;
+                }
+                return false;
+            }
+            case "chainlightning" -> {
+                int result = chainLightning.attemptUnlockElite(availablePoints);
+                if (availablePoints - result <= availablePoints) {
+                    setAvailablePoints(availablePoints - result);
+                    return true;
+                }
+                return false;
+            }
         }
         return false;
     }
@@ -321,6 +369,8 @@ public class AttributesCapability {
             case "dash" -> {return dash;}
             case "arrowsalvo" -> {return arrowSalvo;}
             case "overshield" -> {return overshield;}
+            case "incendiarylance" -> {return incendiaryLance;}
+            case "chainlightning" -> {return chainLightning;}
         }
         return null;
     }
@@ -371,6 +421,8 @@ public class AttributesCapability {
         this.dash = source.dash;
         this.arrowSalvo = source.arrowSalvo;
         this.overshield = source.overshield;
+        this.incendiaryLance = source.incendiaryLance;
+        this.chainLightning = source.chainLightning;
     }
 
     public void saveNBTData(CompoundTag nbt) {
@@ -390,6 +442,8 @@ public class AttributesCapability {
         nbt.putString("dash", dash.toString());
         nbt.putString("arrowsalvo", arrowSalvo.toString());
         nbt.putString("overshield", overshield.toString());
+        nbt.putString("incendiarylance", incendiaryLance.toString());
+        nbt.putString("chainlightning", chainLightning.toString());
         nbt.putString("primaryability", primaryAbility);
         nbt.putString("secondaryability", secondaryAbility);
 
@@ -414,6 +468,8 @@ public class AttributesCapability {
         this.dash = AbilityType.fromString(nbt.getString("dash"));
         this.arrowSalvo = AbilityType.fromString(nbt.getString("arrowsalvo"));
         this.overshield = AbilityType.fromString(nbt.getString("overshield"));
+        this.incendiaryLance = AbilityType.fromString(nbt.getString("incendiarylance"));
+        this.chainLightning = AbilityType.fromString(nbt.getString("chainlightning"));
     }
 
     //getter and setter methods
@@ -435,11 +491,7 @@ public class AttributesCapability {
         return availablePoints;
     }
     public void setAvailablePoints(int availablePoints) {
-        if (availablePoints < 0) {
-            this.availablePoints = 0;
-        } else {
-            this.availablePoints = availablePoints;
-        }
+        this.availablePoints = Math.max(availablePoints, 0);
     }
 
     public int getAbilityCooldown() { return abilityCooldown; }

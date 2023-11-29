@@ -149,6 +149,12 @@ public class ClientDataStorage {
                 case "overshield" -> {
                     return "Gain a number of Absorption hearts";
                 }
+                case "incendiarylance" -> {
+                    return "Fire a lance of the hottest flame";
+                }
+                case "chainlightning" -> {
+                    return "Release a powerful lightning that chains between enemies";
+                }
             }
         }
         return "ERROR";
