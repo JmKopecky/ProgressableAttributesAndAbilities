@@ -3,6 +3,8 @@ package dev.prognitio.pa3.capabililty;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import dev.prognitio.pa3.effects.EffectsRegister;
+import dev.prognitio.pa3.entity.EntityRegister;
+import dev.prognitio.pa3.entity.IncendiaryLanceProjectile;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.EntityType;
@@ -31,7 +33,7 @@ public class AbilityType {
     int cooldownScale;
     int purchaseCost;
     int upgradeScale;
-    boolean isEliteVersion;
+    public boolean isEliteVersion;
     public static final int ELITE_ABILITY_COST = 3;
 
     public AbilityType(String id, int maxLevel, int initialCooldown, int cooldownScale, int purchaseCost, int upgradeScale) {
@@ -153,8 +155,11 @@ public class AbilityType {
     }
 
     public void incendiaryLance(Player player) {
-        //lance projectile that does high damage
-        //elite version could do damage to nearby enemies
+        IncendiaryLanceProjectile projectile = new IncendiaryLanceProjectile(EntityRegister.INCENDIARY_LANCE.get(), player, player.level);
+        projectile.shootFromRotation(player, player.getXRot(), player.getYRot(), 0.0f, 1.0f, 0.9f);
+        projectile.setBaseDamage(12 + 4*level);
+        projectile.setOwner(player);
+        player.level.addFreshEntity(projectile);
     }
 
     public void chainLightning(Player player) {

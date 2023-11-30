@@ -1,6 +1,7 @@
 package dev.prognitio.pa3;
 
 import dev.prognitio.pa3.effects.EffectsRegister;
+import dev.prognitio.pa3.entity.EntityRegister;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.server.ServerStartingEvent;
@@ -25,7 +26,7 @@ public class pa3
         modEventBus.addListener(this::commonSetup);
 
         EffectsRegister.EFFECTS.register(modEventBus);
-        
+        EntityRegister.ENTITY_TYPES.register(modEventBus);
         // Register ourselves for server and other game events we are interested in
         MinecraftForge.EVENT_BUS.register(this);
     }
