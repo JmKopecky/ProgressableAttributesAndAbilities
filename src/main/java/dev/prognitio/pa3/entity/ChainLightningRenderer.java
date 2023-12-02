@@ -8,6 +8,9 @@ import net.minecraft.client.renderer.entity.ArrowRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.phys.Vec3;
+
+import java.util.Random;
 
 public class ChainLightningRenderer extends ArrowRenderer<ChainLightningProjectile> {
 
@@ -27,6 +30,16 @@ public class ChainLightningRenderer extends ArrowRenderer<ChainLightningProjecti
         super.render(pEntity, pEntityYaw, pPartialTicks, pMatrixStack, pBuffer, pPackedLight);
         if (pEntity.getLevel().isClientSide()) {
             pEntity.getLevel().addParticle(ParticleTypes.SCRAPE, pEntity.getX(), pEntity.getY(), pEntity.getZ(), 0, 0, 0);
+            Random random = new Random();
+            for (int i = 0; i < 30; i++) {
+                Vec3 movementVector = pEntity.getDeltaMovement();
+
+                float xDir = random.nextFloat(-1, 1) * 5;
+                float yDir = random.nextFloat(-1, 1) * 5;
+                float zDir = random.nextFloat(-1, 1) * 5;
+
+                pEntity.getLevel().addParticle(ParticleTypes.WAX_OFF, pEntity.getX(), pEntity.getY(), pEntity.getZ(), xDir, yDir, zDir);
+            }
         }
     }
 }

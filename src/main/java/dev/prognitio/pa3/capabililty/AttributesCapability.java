@@ -78,6 +78,7 @@ public class AttributesCapability {
 
     String primaryAbility = "dash";
     String secondaryAbility = "arrowsalvo";
+    String lastTriggered = "empty";
 
     public void applyApplicableAttributes(Player player) {
         //fitness
@@ -344,12 +345,14 @@ public class AttributesCapability {
     public void firePrimaryAbility(Player player) {
         if (abilityCooldown <= 0) {
             getAbilityFromString(primaryAbility).runAbility(player);
+            setLastTriggered(primaryAbility);
         }
     }
 
     public void fireSecondaryAbility(Player player) {
         if (abilityCooldown <= 0) {
             getAbilityFromString(secondaryAbility).runAbility(player);
+            setLastTriggered(secondaryAbility);
         }
     }
 
@@ -412,12 +415,14 @@ public class AttributesCapability {
         this.overshield = source.overshield;
         this.incendiaryLance = source.incendiaryLance;
         this.chainLightning = source.chainLightning;
+        this.lastTriggered = source.lastTriggered;
     }
 
     public void saveNBTData(CompoundTag nbt) {
         nbt.putInt("experience", this.experience);
         nbt.putInt("level", this.level);
         nbt.putInt("availablepoints", this.availablePoints);
+        nbt.putString("lastfired", this.lastTriggered);
         nbt.putString("fitness", fitness.toString());
         nbt.putString("resilience", resilience.toString());
         nbt.putString("combat", combat.toString());
@@ -442,6 +447,7 @@ public class AttributesCapability {
         this.experience = nbt.getInt("experience");
         this.level = nbt.getInt("level");
         this.availablePoints = nbt.getInt("availablepoints");
+        this.lastTriggered = nbt.getString("lastfired");
         this.fitness = AttributeType.fromString(nbt.getString("fitness"));
         this.combat = AttributeType.fromString(nbt.getString("combat"));
         this.resilience = AttributeType.fromString(nbt.getString("resilience"));
@@ -459,6 +465,14 @@ public class AttributesCapability {
         this.overshield = AbilityType.fromString(nbt.getString("overshield"));
         this.incendiaryLance = AbilityType.fromString(nbt.getString("incendiarylance"));
         this.chainLightning = AbilityType.fromString(nbt.getString("chainlightning"));
+    }
+
+    public String getLastTriggered() {
+        return lastTriggered;
+    }
+
+    public void setLastTriggered(String triggered) {
+        this.lastTriggered = triggered;
     }
 
     //getter and setter methods

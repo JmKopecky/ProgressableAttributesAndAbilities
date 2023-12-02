@@ -191,6 +191,14 @@ public class AbilityType {
             }
         }
 
+        if (targetList.isEmpty()) {
+            ChainLightningProjectile projectile = new ChainLightningProjectile(EntityRegister.CHAIN_LIGHTNING.get(), player, player.level, 1, player);
+            projectile.setOwner(player);
+            projectile.shootFromRotation(player, player.getRotationVector().x, player.getRotationVector().y, 0, 0.75f, 1f);
+            player.level.addFreshEntity(projectile);
+            return;
+        }
+
         LivingEntity target = player.level.getNearestEntity(targetList, TargetingConditions.forCombat(), null, playerX, playerY, playerZ);
 
         AbstractArrow getPos = new AbstractArrow(EntityType.ARROW, player, player.level) {
@@ -204,9 +212,9 @@ public class AbilityType {
         Vec2 lookRot = new Vec2(getPos.getXRot(), getPos.getYRot());
         getPos.discard();
 
-        ChainLightningProjectile projectile = new ChainLightningProjectile(EntityRegister.CHAIN_LIGHTNING.get(), player, player.level, 1);
+        ChainLightningProjectile projectile = new ChainLightningProjectile(EntityRegister.CHAIN_LIGHTNING.get(), player, player.level, 1, target);
         projectile.setOwner(player);
-        projectile.shootFromRotation(player, lookRot.x, lookRot.y, 0, 1.5f, 1f);
+        projectile.shootFromRotation(player, lookRot.x, lookRot.y, 0, 0.75f, 1f);
         player.level.addFreshEntity(projectile);
     }
 

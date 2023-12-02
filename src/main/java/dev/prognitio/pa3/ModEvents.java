@@ -143,6 +143,22 @@ public class ModEvents {
 
     @SubscribeEvent
     public static void onEntityHurt(LivingHurtEvent event) {
+
+        if (event.getSource().getMsgId().equals("lightningBolt")) {
+            if (event.getEntity().hasEffect(EffectsRegister.CHAIN_LIGHTNING_INVULNERABLE.get())) {
+                if (event.getEntity() instanceof Player) {
+                    event.getEntity().getCapability(AttributesProvider.ATTRIBUTES).ifPresent((cap) -> {
+                        if (cap.getLastTriggered().equals("chainlightning") && cap.getAbilityCooldown() > 0) {
+                            event.setCanceled(true);
+                        }
+                    });
+                }
+            }
+            if (event.isCanceled()) {
+                return;
+            }
+        }
+
         if (event.getEntity() instanceof Player) {
 
             if (event.getSource().isFall()) {
