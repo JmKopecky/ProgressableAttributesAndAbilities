@@ -26,8 +26,7 @@ public class ChainLightningRenderer extends ArrowRenderer<ChainLightningProjecti
     public void render(ChainLightningProjectile pEntity, float pEntityYaw, float pPartialTicks, PoseStack pMatrixStack, MultiBufferSource pBuffer, int pPackedLight) {
         super.render(pEntity, pEntityYaw, pPartialTicks, pMatrixStack, pBuffer, pPackedLight);
         if (pEntity.getLevel().isClientSide()) {
-            RenderSystem.setShaderColor(0f, 1.0f, 1.0f, 1.0f);
-            pEntity.getLevel().addParticle(ParticleTypes.ELECTRIC_SPARK, pEntity.getX(), pEntity.getY(), pEntity.getZ(), 0, 0, 0);
+            pEntity.getLevel().addParticle(ParticleTypes.SCRAPE, pEntity.getX(), pEntity.getY(), pEntity.getZ(), 0, 0, 0);
         }
     }
 }
