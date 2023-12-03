@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CompilerConfiguration">
+    <bytecodeTargetLevel>
+      <module name="MultiLoader.Common" target="17" />
+      <module name="MultiLoader.Common.main" target="17" />
+      <module name="MultiLoader.Common.test" target="17" />
+      <module name="MultiLoader.Fabric" target="17" />
+      <module name="MultiLoader.Fabric.main" target="17" />
+      <module name="MultiLoader.Fabric.test" target="17" />
+      <module name="MultiLoader.Forge" target="17" />
+      <module name="MultiLoader.Forge.main" target="17" />
+      <module name="MultiLoader.Forge.test" target="17" />
+    </bytecodeTargetLevel>
+  </component>
+</project>
