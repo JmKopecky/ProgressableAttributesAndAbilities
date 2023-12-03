@@ -1,0 +1,15 @@
+{
+    "required": true,
+    "minVersion": "0.8",
+    "package": "dev.prognitio.pa3.mixin",
+    "compatibilityLevel": "JAVA_17",
+    "mixins": [
+    ],
+    "client": [
+      "Pa3Mixin"
+    ],
+    "injectors": {
+      "defaultRequire": 1
+    }
+  }
+  

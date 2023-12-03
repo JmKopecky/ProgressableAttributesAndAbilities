@@ -1,9 +1,9 @@
 {
     "schemaVersion": 1,
-    "id": "modid",
+    "id": "pa3",
     "version": "${version}",
   
-    "name": "Example Mod",
+    "name": "Progressable Attributes and Abilities",
     "description": "This is an example description! Tell everyone what your mod is about!",
     "authors": [
       "Me!"
@@ -19,11 +19,11 @@
     "environment": "*",
     "entrypoints": {
       "main": [
-        "com.example.examplemod.ExampleMod"
+        "dev.prognitio.pa3.Pa3"
       ]
     },
     "mixins": [
-      "modid.mixins.json"
+      "pa3.mixins.json"
     ],
   
     "depends": {
