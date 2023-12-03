@@ -42,7 +42,7 @@ public class Pa3 {
     private void commonSetup(final FMLCommonSetupEvent event)
     {
         // Some common setup code
-        ModNetworking.register();
+        ForgeModNetworking.register();
     }
     
     // This method exists as a wrapper for the code in the Common project.

@@ -5,13 +5,9 @@ import net.minecraft.client.KeyMapping;
 import net.minecraftforge.client.settings.KeyConflictContext;
 import org.lwjgl.glfw.GLFW;
 
+import static dev.prognitio.pa3.KeyBindResources.*;
+
 public class Keybinding {
-    //translation key for category
-    public static final String CATEGORY = "key.category.pa3.abilitys";
-    //translation for the key
-    public static final String KEY_ACTIVATE_PRIMARY = "key.pa3.activate_primary";
-    public static final String KEY_ACTIVATE_SECONDARY = "key.pa3.activate_secondary";
-    public static final String KEY_OPEN_INTERFACE = "key.pa3.open_interface";
 
     public static final KeyMapping PRIMARY_ABILITY_KEY = new KeyMapping(KEY_ACTIVATE_PRIMARY, KeyConflictContext.IN_GAME,
              InputConstants.Type.KEYSYM, GLFW.GLFW_KEY_V, CATEGORY);

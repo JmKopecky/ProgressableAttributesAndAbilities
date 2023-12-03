@@ -20,6 +20,9 @@
     "entrypoints": {
       "main": [
         "dev.prognitio.pa3.Pa3"
+      ],
+      "client": [
+        "dev.prognitio.pa3.Pa3Client"
       ]
     },
     "mixins": [

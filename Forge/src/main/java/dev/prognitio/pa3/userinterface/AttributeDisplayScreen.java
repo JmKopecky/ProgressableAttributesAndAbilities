@@ -5,8 +5,7 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import dev.prognitio.pa3.ClientDataStorage;
 import dev.prognitio.pa3.Constants;
-import dev.prognitio.pa3.ModNetworking;
-import dev.prognitio.pa3.Pa3;
+import dev.prognitio.pa3.ForgeModNetworking;
 import dev.prognitio.pa3.userinterface.packets.LevelUpAttributeCS;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
@@ -42,7 +41,7 @@ public class AttributeDisplayScreen extends Screen {
 
         //fitness level up
         this.addRenderableWidget(new Button(midX + 95, midY - 45 - 5, 20, 20, Component.literal("+"),
-                (button) -> ModNetworking.sendToServer(new LevelUpAttributeCS("fitness")), (button, stack, mx, my) -> {
+                (button) -> ForgeModNetworking.sendToServer(new LevelUpAttributeCS("fitness")), (button, stack, mx, my) -> {
             ArrayList<Component> tooltip = new ArrayList<>();
             tooltip.add(Component.literal("Level up").withStyle(ChatFormatting.BLUE).withStyle(ChatFormatting.BOLD));
             int level = ClientDataStorage.getAttrProperty("fitness", "level");
@@ -56,7 +55,7 @@ public class AttributeDisplayScreen extends Screen {
         }));
         //resilience level up
         this.addRenderableWidget(new Button(midX + 95, midY - 15 - 5, 20, 20, Component.literal("+"),
-                (button) -> ModNetworking.sendToServer(new LevelUpAttributeCS("resilience")), (button, stack, mx, my) -> {
+                (button) -> ForgeModNetworking.sendToServer(new LevelUpAttributeCS("resilience")), (button, stack, mx, my) -> {
             ArrayList<Component> tooltip = new ArrayList<>();
             tooltip.add(Component.literal("Level up").withStyle(ChatFormatting.BLUE).withStyle(ChatFormatting.BOLD));
             int level = ClientDataStorage.getAttrProperty("resilience", "level");
@@ -70,7 +69,7 @@ public class AttributeDisplayScreen extends Screen {
         }));
         //combat level up
         this.addRenderableWidget(new Button(midX + 95, midY + 15 - 5, 20, 20, Component.literal("+"),
-                (button) -> ModNetworking.sendToServer(new LevelUpAttributeCS("combat")), (button, stack, mx, my) -> {
+                (button) -> ForgeModNetworking.sendToServer(new LevelUpAttributeCS("combat")), (button, stack, mx, my) -> {
             ArrayList<Component> tooltip = new ArrayList<>();
             tooltip.add(Component.literal("Level up").withStyle(ChatFormatting.BLUE).withStyle(ChatFormatting.BOLD));
             int level = ClientDataStorage.getAttrProperty("combat", "level");
@@ -84,7 +83,7 @@ public class AttributeDisplayScreen extends Screen {
         }));
         //nimbleness level up
         this.addRenderableWidget(new Button(midX + 95, midY + 45 - 5, 20, 20, Component.literal("+"),
-                (button) -> ModNetworking.sendToServer(new LevelUpAttributeCS("nimbleness")), (button, stack, mx, my) -> {
+                (button) -> ForgeModNetworking.sendToServer(new LevelUpAttributeCS("nimbleness")), (button, stack, mx, my) -> {
             ArrayList<Component> tooltip = new ArrayList<>();
             tooltip.add(Component.literal("Level up").withStyle(ChatFormatting.BLUE).withStyle(ChatFormatting.BOLD));
             int level = ClientDataStorage.getAttrProperty("nimbleness", "level");
@@ -98,7 +97,7 @@ public class AttributeDisplayScreen extends Screen {
         }));
         //strategy level up
         this.addRenderableWidget(new Button(midX + 95, midY + 75 - 5, 20, 20, Component.literal("+"),
-                (button) -> ModNetworking.sendToServer(new LevelUpAttributeCS("strategy")), (button, stack, mx, my) -> {
+                (button) -> ForgeModNetworking.sendToServer(new LevelUpAttributeCS("strategy")), (button, stack, mx, my) -> {
             ArrayList<Component> tooltip = new ArrayList<>();
             tooltip.add(Component.literal("Level up").withStyle(ChatFormatting.BLUE).withStyle(ChatFormatting.BOLD));
             int level = ClientDataStorage.getAttrProperty("strategy", "level");

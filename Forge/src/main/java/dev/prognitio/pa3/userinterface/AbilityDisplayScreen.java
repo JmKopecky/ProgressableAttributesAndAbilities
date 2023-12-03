@@ -5,8 +5,7 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import dev.prognitio.pa3.ClientDataStorage;
 import dev.prognitio.pa3.Constants;
-import dev.prognitio.pa3.ModNetworking;
-import dev.prognitio.pa3.Pa3;
+import dev.prognitio.pa3.ForgeModNetworking;
 import dev.prognitio.pa3.capabililty.AbilityType;
 import dev.prognitio.pa3.userinterface.packets.LevelUpAbilityCS;
 import dev.prognitio.pa3.userinterface.packets.SetSelectedAbilityCS;
@@ -177,12 +176,12 @@ public class AbilityDisplayScreen extends Screen {
         if (level == maxLevel) {
             boolean isElite = Boolean.parseBoolean(ClientDataStorage.getAbilityProperty(type, "elite"));
             if (!isElite) {
-                ModNetworking.sendToServer(new UnlockEliteAbilityCS(type));
+                ForgeModNetworking.sendToServer(new UnlockEliteAbilityCS(type));
             }
             return;
         }
         if (level < maxLevel) {
-            ModNetworking.sendToServer(new LevelUpAbilityCS(type));
+            ForgeModNetworking.sendToServer(new LevelUpAbilityCS(type));
         }
     }
 
@@ -211,9 +210,9 @@ public class AbilityDisplayScreen extends Screen {
 
         if (!ability.equals("")) {
             if (pButton == 0) { //left click
-                ModNetworking.sendToServer(new SetSelectedAbilityCS(ability + ":p"));
+                ForgeModNetworking.sendToServer(new SetSelectedAbilityCS(ability + ":p"));
             } else { //right click
-                ModNetworking.sendToServer(new SetSelectedAbilityCS(ability + ":s"));
+                ForgeModNetworking.sendToServer(new SetSelectedAbilityCS(ability + ":s"));
             }
         }
         return super.mouseClicked(pMouseX, pMouseY, pButton);

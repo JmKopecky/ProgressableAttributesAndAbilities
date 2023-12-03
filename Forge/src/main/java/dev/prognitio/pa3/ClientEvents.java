@@ -17,10 +17,10 @@ public class ClientEvents {
         @SubscribeEvent
         public static void onKeyInput(InputEvent.Key event) {
             if (Keybinding.PRIMARY_ABILITY_KEY.consumeClick()) {
-                ModNetworking.sendToServer(new PrimaryC2SPacket());
+                ForgeModNetworking.sendToServer(new PrimaryC2SPacket());
             }
             if (Keybinding.SECONDARY_ABILITY_KEY.consumeClick()) {
-                ModNetworking.sendToServer(new SecondaryCS2Packet());
+                ForgeModNetworking.sendToServer(new SecondaryCS2Packet());
             }
             if (Keybinding.OPEN_INTERFACE_KEY.consumeClick()) {
                 Minecraft.getInstance().setScreen(new AttributeDisplayScreen(Component.literal("Attribute Interface")));

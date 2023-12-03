@@ -1,6 +1,7 @@
 package dev.prognitio.pa3.capabililty;
 
-import dev.prognitio.pa3.ModNetworking;
+import dev.prognitio.pa3.AttributeType;
+import dev.prognitio.pa3.ForgeModNetworking;
 import dev.prognitio.pa3.userhud.SyncCooldownDataSC;
 import dev.prognitio.pa3.userinterface.packets.*;
 import net.minecraft.nbt.CompoundTag;
@@ -133,133 +134,133 @@ public class AttributesCapability {
     public void syncDataToPlayer(Player player) {
         String lvl = "fitness:" + fitness.level;
         String mxLvl = "fitness:" + fitness.maxLevel;
-        ModNetworking.sendToPlayer(new SyncAttrLevelSC(lvl), (ServerPlayer) player);
-        ModNetworking.sendToPlayer(new SyncAttrMaxLevelSC(mxLvl), (ServerPlayer) player);
+        ForgeModNetworking.sendToPlayer(new SyncAttrLevelSC(lvl), (ServerPlayer) player);
+        ForgeModNetworking.sendToPlayer(new SyncAttrMaxLevelSC(mxLvl), (ServerPlayer) player);
         lvl = "resilience:" + resilience.level;
         mxLvl = "resilience:" + resilience.maxLevel;
-        ModNetworking.sendToPlayer(new SyncAttrLevelSC(lvl), (ServerPlayer) player);
-        ModNetworking.sendToPlayer(new SyncAttrMaxLevelSC(mxLvl), (ServerPlayer) player);
+        ForgeModNetworking.sendToPlayer(new SyncAttrLevelSC(lvl), (ServerPlayer) player);
+        ForgeModNetworking.sendToPlayer(new SyncAttrMaxLevelSC(mxLvl), (ServerPlayer) player);
         lvl = "combat:" + combat.level;
         mxLvl = "combat:" + combat.maxLevel;
-        ModNetworking.sendToPlayer(new SyncAttrLevelSC(lvl), (ServerPlayer) player);
-        ModNetworking.sendToPlayer(new SyncAttrMaxLevelSC(mxLvl), (ServerPlayer) player);
+        ForgeModNetworking.sendToPlayer(new SyncAttrLevelSC(lvl), (ServerPlayer) player);
+        ForgeModNetworking.sendToPlayer(new SyncAttrMaxLevelSC(mxLvl), (ServerPlayer) player);
         lvl = "nimbleness:" + nimbleness.level;
         mxLvl = "nimbleness:" + nimbleness.maxLevel;
-        ModNetworking.sendToPlayer(new SyncAttrLevelSC(lvl), (ServerPlayer) player);
-        ModNetworking.sendToPlayer(new SyncAttrMaxLevelSC(mxLvl), (ServerPlayer) player);
+        ForgeModNetworking.sendToPlayer(new SyncAttrLevelSC(lvl), (ServerPlayer) player);
+        ForgeModNetworking.sendToPlayer(new SyncAttrMaxLevelSC(mxLvl), (ServerPlayer) player);
         lvl = "strategy:" + strategy.level;
         mxLvl = "strategy:" + strategy.maxLevel;
-        ModNetworking.sendToPlayer(new SyncAttrLevelSC(lvl), (ServerPlayer) player);
-        ModNetworking.sendToPlayer(new SyncAttrMaxLevelSC(mxLvl), (ServerPlayer) player);
+        ForgeModNetworking.sendToPlayer(new SyncAttrLevelSC(lvl), (ServerPlayer) player);
+        ForgeModNetworking.sendToPlayer(new SyncAttrMaxLevelSC(mxLvl), (ServerPlayer) player);
 
-        ModNetworking.sendToPlayer(new SyncPointsSC("" + availablePoints), (ServerPlayer) player);
-        ModNetworking.sendToPlayer(new SyncTotalLevelSC("" + level), (ServerPlayer) player);
-        ModNetworking.sendToPlayer(new SyncXPSC("" + experience), (ServerPlayer) player);
-        ModNetworking.sendToPlayer(new SyncXpLevelReqSC("" + calculateLevelUpRequirement()), (ServerPlayer) player);
+        ForgeModNetworking.sendToPlayer(new SyncPointsSC("" + availablePoints), (ServerPlayer) player);
+        ForgeModNetworking.sendToPlayer(new SyncTotalLevelSC("" + level), (ServerPlayer) player);
+        ForgeModNetworking.sendToPlayer(new SyncXPSC("" + experience), (ServerPlayer) player);
+        ForgeModNetworking.sendToPlayer(new SyncXpLevelReqSC("" + calculateLevelUpRequirement()), (ServerPlayer) player);
 
         lvl = "dash:" + dash.level;
         mxLvl = "dash:" + dash.maxLevel;
-        ModNetworking.sendToPlayer(new SyncAbilLevelSC(lvl), (ServerPlayer) player);
-        ModNetworking.sendToPlayer(new SyncAbilMaxLevelSC(mxLvl), (ServerPlayer) player);
+        ForgeModNetworking.sendToPlayer(new SyncAbilLevelSC(lvl), (ServerPlayer) player);
+        ForgeModNetworking.sendToPlayer(new SyncAbilMaxLevelSC(mxLvl), (ServerPlayer) player);
 
         lvl = "arrowsalvo:" + arrowSalvo.level;
         mxLvl = "arrowsalvo:" + arrowSalvo.maxLevel;
-        ModNetworking.sendToPlayer(new SyncAbilLevelSC(lvl), (ServerPlayer) player);
-        ModNetworking.sendToPlayer(new SyncAbilMaxLevelSC(mxLvl), (ServerPlayer) player);
+        ForgeModNetworking.sendToPlayer(new SyncAbilLevelSC(lvl), (ServerPlayer) player);
+        ForgeModNetworking.sendToPlayer(new SyncAbilMaxLevelSC(mxLvl), (ServerPlayer) player);
 
         lvl = "overshield:" + overshield.level;
         mxLvl = "overshield:" + overshield.maxLevel;
-        ModNetworking.sendToPlayer(new SyncAbilLevelSC(lvl), (ServerPlayer) player);
-        ModNetworking.sendToPlayer(new SyncAbilMaxLevelSC(mxLvl), (ServerPlayer) player);
+        ForgeModNetworking.sendToPlayer(new SyncAbilLevelSC(lvl), (ServerPlayer) player);
+        ForgeModNetworking.sendToPlayer(new SyncAbilMaxLevelSC(mxLvl), (ServerPlayer) player);
 
         lvl = "incendiarylance:" + incendiaryLance.level;
         mxLvl = "incendiarylance:" + incendiaryLance.maxLevel;
-        ModNetworking.sendToPlayer(new SyncAbilLevelSC(lvl), (ServerPlayer) player);
-        ModNetworking.sendToPlayer(new SyncAbilMaxLevelSC(mxLvl), (ServerPlayer) player);
+        ForgeModNetworking.sendToPlayer(new SyncAbilLevelSC(lvl), (ServerPlayer) player);
+        ForgeModNetworking.sendToPlayer(new SyncAbilMaxLevelSC(mxLvl), (ServerPlayer) player);
 
         lvl = "chainlightning:" + chainLightning.level;
         mxLvl = "chainlightning:" + chainLightning.maxLevel;
-        ModNetworking.sendToPlayer(new SyncAbilLevelSC(lvl), (ServerPlayer) player);
-        ModNetworking.sendToPlayer(new SyncAbilMaxLevelSC(mxLvl), (ServerPlayer) player);
+        ForgeModNetworking.sendToPlayer(new SyncAbilLevelSC(lvl), (ServerPlayer) player);
+        ForgeModNetworking.sendToPlayer(new SyncAbilMaxLevelSC(mxLvl), (ServerPlayer) player);
 
         lvl = "deflectiveshield:" + deflectiveShield.level;
         mxLvl = "deflectiveshield:" + deflectiveShield.maxLevel;
-        ModNetworking.sendToPlayer(new SyncAbilLevelSC(lvl), (ServerPlayer) player);
-        ModNetworking.sendToPlayer(new SyncAbilMaxLevelSC(mxLvl), (ServerPlayer) player);
+        ForgeModNetworking.sendToPlayer(new SyncAbilLevelSC(lvl), (ServerPlayer) player);
+        ForgeModNetworking.sendToPlayer(new SyncAbilMaxLevelSC(mxLvl), (ServerPlayer) player);
 
-        ModNetworking.sendToPlayer(new SyncSelectedAbililtySC(primaryAbility + ":" + secondaryAbility), (ServerPlayer) player);
+        ForgeModNetworking.sendToPlayer(new SyncSelectedAbililtySC(primaryAbility + ":" + secondaryAbility), (ServerPlayer) player);
 
         int pointsToUpgrade = 1 + dash.level / 2 * dash.upgradeScale;
         if (dash.level == 0) {
             pointsToUpgrade = dash.purchaseCost;
         }
-        ModNetworking.sendToPlayer(new SyncAbilUpgCostSC("dash:" + pointsToUpgrade), (ServerPlayer) player);
+        ForgeModNetworking.sendToPlayer(new SyncAbilUpgCostSC("dash:" + pointsToUpgrade), (ServerPlayer) player);
 
         pointsToUpgrade = 1 + arrowSalvo.level / 2 * arrowSalvo.upgradeScale;
         if (arrowSalvo.level == 0) {
             pointsToUpgrade = arrowSalvo.purchaseCost;
         }
-        ModNetworking.sendToPlayer(new SyncAbilUpgCostSC("arrowsalvo:" + pointsToUpgrade), (ServerPlayer) player);
+        ForgeModNetworking.sendToPlayer(new SyncAbilUpgCostSC("arrowsalvo:" + pointsToUpgrade), (ServerPlayer) player);
 
         pointsToUpgrade = 1 + overshield.level / 2 * overshield.upgradeScale;
         if (overshield.level == 0) {
             pointsToUpgrade = overshield.purchaseCost;
         }
-        ModNetworking.sendToPlayer(new SyncAbilUpgCostSC("overshield:" + pointsToUpgrade), (ServerPlayer) player);
+        ForgeModNetworking.sendToPlayer(new SyncAbilUpgCostSC("overshield:" + pointsToUpgrade), (ServerPlayer) player);
 
         pointsToUpgrade = 1 + incendiaryLance.level / 2 * incendiaryLance.upgradeScale;
         if (incendiaryLance.level == 0) {
             pointsToUpgrade = incendiaryLance.purchaseCost;
         }
-        ModNetworking.sendToPlayer(new SyncAbilUpgCostSC("incendiarylance:" + pointsToUpgrade), (ServerPlayer) player);
+        ForgeModNetworking.sendToPlayer(new SyncAbilUpgCostSC("incendiarylance:" + pointsToUpgrade), (ServerPlayer) player);
 
         pointsToUpgrade = 1 + chainLightning.level / 2 * chainLightning.upgradeScale;
         if (chainLightning.level == 0) {
             pointsToUpgrade = chainLightning.purchaseCost;
         }
-        ModNetworking.sendToPlayer(new SyncAbilUpgCostSC("chainlightning:" + pointsToUpgrade), (ServerPlayer) player);
+        ForgeModNetworking.sendToPlayer(new SyncAbilUpgCostSC("chainlightning:" + pointsToUpgrade), (ServerPlayer) player);
 
         pointsToUpgrade = 1 + deflectiveShield.level / 2 * deflectiveShield.upgradeScale;
         if (deflectiveShield.level == 0) {
             pointsToUpgrade = deflectiveShield.purchaseCost;
         }
-        ModNetworking.sendToPlayer(new SyncAbilUpgCostSC("deflectiveshield:" + pointsToUpgrade), (ServerPlayer) player);
+        ForgeModNetworking.sendToPlayer(new SyncAbilUpgCostSC("deflectiveshield:" + pointsToUpgrade), (ServerPlayer) player);
 
 
         pointsToUpgrade = (int) ((fitness.level/5 + 1) * fitness.pointRequirementScale);
-        ModNetworking.sendToPlayer(new SyncAttrUpgCostSC("fitness:" + pointsToUpgrade), (ServerPlayer) player);
+        ForgeModNetworking.sendToPlayer(new SyncAttrUpgCostSC("fitness:" + pointsToUpgrade), (ServerPlayer) player);
 
         pointsToUpgrade = (int) ((resilience.level/5 + 1) * resilience.pointRequirementScale);
-        ModNetworking.sendToPlayer(new SyncAttrUpgCostSC("resilience:" + pointsToUpgrade), (ServerPlayer) player);
+        ForgeModNetworking.sendToPlayer(new SyncAttrUpgCostSC("resilience:" + pointsToUpgrade), (ServerPlayer) player);
 
         pointsToUpgrade = (int) ((combat.level/5 + 1) * combat.pointRequirementScale);
-        ModNetworking.sendToPlayer(new SyncAttrUpgCostSC("combat:" + pointsToUpgrade), (ServerPlayer) player);
+        ForgeModNetworking.sendToPlayer(new SyncAttrUpgCostSC("combat:" + pointsToUpgrade), (ServerPlayer) player);
 
         pointsToUpgrade = (int) ((strategy.level/5 + 1) * strategy.pointRequirementScale);
-        ModNetworking.sendToPlayer(new SyncAttrUpgCostSC("strategy:" + pointsToUpgrade), (ServerPlayer) player);
+        ForgeModNetworking.sendToPlayer(new SyncAttrUpgCostSC("strategy:" + pointsToUpgrade), (ServerPlayer) player);
 
         pointsToUpgrade = (int) ((nimbleness.level/5 + 1) * nimbleness.pointRequirementScale);
-        ModNetworking.sendToPlayer(new SyncAttrUpgCostSC("nimbleness:" + pointsToUpgrade), (ServerPlayer) player);
+        ForgeModNetworking.sendToPlayer(new SyncAttrUpgCostSC("nimbleness:" + pointsToUpgrade), (ServerPlayer) player);
 
         int isElite = dash.isEliteVersion ? 1 : 0;
-        ModNetworking.sendToPlayer(new SyncAbilEliteSC("dash:" + isElite), (ServerPlayer) player);
+        ForgeModNetworking.sendToPlayer(new SyncAbilEliteSC("dash:" + isElite), (ServerPlayer) player);
 
         isElite = arrowSalvo.isEliteVersion ? 1 : 0;
-        ModNetworking.sendToPlayer(new SyncAbilEliteSC("arrowsalvo:" + isElite), (ServerPlayer) player);
+        ForgeModNetworking.sendToPlayer(new SyncAbilEliteSC("arrowsalvo:" + isElite), (ServerPlayer) player);
 
         isElite = overshield.isEliteVersion ? 1 : 0;
-        ModNetworking.sendToPlayer(new SyncAbilEliteSC("overshield:" + isElite), (ServerPlayer) player);
+        ForgeModNetworking.sendToPlayer(new SyncAbilEliteSC("overshield:" + isElite), (ServerPlayer) player);
 
         isElite = incendiaryLance.isEliteVersion ? 1 : 0;
-        ModNetworking.sendToPlayer(new SyncAbilEliteSC("incendiarylance:" + isElite), (ServerPlayer) player);
+        ForgeModNetworking.sendToPlayer(new SyncAbilEliteSC("incendiarylance:" + isElite), (ServerPlayer) player);
 
         isElite = chainLightning.isEliteVersion ? 1 : 0;
-        ModNetworking.sendToPlayer(new SyncAbilEliteSC("chainlightning:" + isElite), (ServerPlayer) player);
+        ForgeModNetworking.sendToPlayer(new SyncAbilEliteSC("chainlightning:" + isElite), (ServerPlayer) player);
 
         isElite = deflectiveShield.isEliteVersion ? 1 : 0;
-        ModNetworking.sendToPlayer(new SyncAbilEliteSC("deflectiveshield:" + isElite), (ServerPlayer) player);
+        ForgeModNetworking.sendToPlayer(new SyncAbilEliteSC("deflectiveshield:" + isElite), (ServerPlayer) player);
 
-        ModNetworking.sendToPlayer(new SyncCooldownDataSC(abilityCooldown + ":" + currentMaxCooldown), (ServerPlayer) player);
+        ForgeModNetworking.sendToPlayer(new SyncCooldownDataSC(abilityCooldown + ":" + currentMaxCooldown), (ServerPlayer) player);
     }
 
     public boolean attemptLevelUpAttribute(String attribute) {

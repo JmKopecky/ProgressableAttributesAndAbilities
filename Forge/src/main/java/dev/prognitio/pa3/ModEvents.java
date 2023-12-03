@@ -129,12 +129,12 @@ public class ModEvents {
             event.player.getCapability(AttributesProvider.ATTRIBUTES).ifPresent(cap -> {
                 if (cap.getAbilityCooldown() > 0) {
                     cap.setAbilityCooldown(cap.getAbilityCooldown() - 1);
-                    ModNetworking.sendToPlayer(new SyncCooldownDataSC(cap.getAbilityCooldown() + ":" + cap.getCurrentMaxCooldown()), (ServerPlayer) event.player);
+                    ForgeModNetworking.sendToPlayer(new SyncCooldownDataSC(cap.getAbilityCooldown() + ":" + cap.getCurrentMaxCooldown()), (ServerPlayer) event.player);
                 }
                 cap.decreasePassiveTimers();
-                ModNetworking.sendToPlayer(new SyncPassiveProcSC("dodge:" + cap.getPassiveDodgeProc()), (ServerPlayer) event.player);
-                ModNetworking.sendToPlayer(new SyncPassiveProcSC("parry:" + cap.getPassiveParryProc()), (ServerPlayer) event.player);
-                ModNetworking.sendToPlayer(new SyncPassiveProcSC("doublestrike:" + cap.getPassiveDoubleStrikeProc()), (ServerPlayer) event.player);
+                ForgeModNetworking.sendToPlayer(new SyncPassiveProcSC("dodge:" + cap.getPassiveDodgeProc()), (ServerPlayer) event.player);
+                ForgeModNetworking.sendToPlayer(new SyncPassiveProcSC("parry:" + cap.getPassiveParryProc()), (ServerPlayer) event.player);
+                ForgeModNetworking.sendToPlayer(new SyncPassiveProcSC("doublestrike:" + cap.getPassiveDoubleStrikeProc()), (ServerPlayer) event.player);
             });
         }
     }

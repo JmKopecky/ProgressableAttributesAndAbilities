@@ -1,4 +1,4 @@
-package dev.prognitio.pa3.capabililty;
+package dev.prognitio.pa3;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -15,7 +15,7 @@ public class AttributeType {
     public int maxLevel;
     public int level;
     ArrayList<Double> perLevelScaleValue;
-    double pointRequirementScale;
+    public double pointRequirementScale;
 
     public AttributeType(String id, int maxLevel, String uuid, ArrayList<Double> perLevelScaleValue, double pointRequirementScale) {
         this.id = id;
