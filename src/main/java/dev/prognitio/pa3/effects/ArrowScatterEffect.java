@@ -20,7 +20,6 @@ public class ArrowScatterEffect extends MobEffect {
     public void applyEffectTick(@NotNull LivingEntity pLivingEntity, int pAmplifier) {
         Random random = new Random();
         for (int i = 0; i < 1 + pAmplifier; i++) {
-            System.out.println("spawning arrow");
             AbstractArrow arrow = new AbstractArrow(EntityType.ARROW, pLivingEntity, pLivingEntity.level) {
                 @Override
                 protected @NotNull ItemStack getPickupItem() {

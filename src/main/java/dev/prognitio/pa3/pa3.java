@@ -27,6 +27,7 @@ public class pa3
 
         EffectsRegister.EFFECTS.register(modEventBus);
         EntityRegister.ENTITY_TYPES.register(modEventBus);
+        ParticleRegister.PARTICLE_TYPES.register(modEventBus);
         // Register ourselves for server and other game events we are interested in
         MinecraftForge.EVENT_BUS.register(this);
     }

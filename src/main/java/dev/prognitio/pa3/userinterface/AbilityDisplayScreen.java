@@ -64,6 +64,11 @@ public class AbilityDisplayScreen extends Screen {
         this.addRenderableWidget(new Button(midX - 20 - 10, midY + 20 - 10 + font.lineHeight/2,
                 20, 20, Component.literal("+"),
                 (button) -> upgradeAbilityButtonOnClick("chainlightning"), (button, stack, mx, my) -> renderUpgradeButtonTooltip("chainlightning", stack, mx, my)));
+
+        this.addRenderableWidget(new Button(midX - 20 - 10, midY + 40 - 10 + font.lineHeight/2,
+                20, 20, Component.literal("+"),
+                (button) -> upgradeAbilityButtonOnClick("deflectiveshield"), (button, stack, mx, my) -> renderUpgradeButtonTooltip("deflectiveshield", stack, mx, my)));
+
     }
 
     @Override
@@ -90,6 +95,7 @@ public class AbilityDisplayScreen extends Screen {
         renderAbilityTitle("Overshield", midX - 80,  midY - 20, mouseX, mouseY, stack);
         renderAbilityTitle("Incendiary Lance", midX - 80, midY, mouseX, mouseY, stack);
         renderAbilityTitle("Chain Lightning", midX - 80,  midY + 20, mouseX, mouseY, stack);
+        renderAbilityTitle("Deflective Shield", midX - 80,  midY + 40, mouseX, mouseY, stack);
         super.render(stack, mouseX, mouseY, partialTicks);
     }
 
@@ -197,6 +203,9 @@ public class AbilityDisplayScreen extends Screen {
         }
         if (isInRange(pMouseX, pMouseY, (midX - 80) - (font.width("Chain Lightning")/2), font.width("Chain Lightning"), midY + 20, font.lineHeight)) {
             ability = "chainlightning";
+        }
+        if (isInRange(pMouseX, pMouseY, (midX - 80) - (font.width("Deflective Shield")/2), font.width("Deflective Shield"), midY + 40, font.lineHeight)) {
+            ability = "deflectiveshield";
         }
 
         if (!ability.equals("")) {

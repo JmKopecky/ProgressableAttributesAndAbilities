@@ -135,6 +135,9 @@ public class ClientDataStorage {
                 case "chainlightning" -> {
                     return "Release a powerful lightning that chains between enemies";
                 }
+                case "deflectiveshield" -> {
+                    return "Generate a shield around you that deflects projectiles";
+                }
             }
         }
         return "ERROR";

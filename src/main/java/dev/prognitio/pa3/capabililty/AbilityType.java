@@ -92,6 +92,7 @@ public class AbilityType {
                 case "overshield" -> overshield(player);
                 case "incendiarylance" -> incendiaryLance(player);
                 case "chainlightning" -> chainLightning(player);
+                case "deflectiveshield" -> deflectiveShield(player);
             }
 
             //add cooldown
@@ -104,7 +105,7 @@ public class AbilityType {
 
     public static boolean isValidAbility(String abilityString) {
         switch (abilityString) {
-            case "dash", "arrowsalvo", "overshield", "incendiarylance", "chainlightning" -> {return true;}
+            case "dash", "arrowsalvo", "overshield", "incendiarylance", "chainlightning", "deflectiveshield" -> {return true;}
             default -> {return false;}
         }
     }
@@ -125,7 +126,6 @@ public class AbilityType {
         Random random = new Random();
         int arrowCount = random.nextInt(12, 12 + (level * 7));
         for (int i = 0; i < arrowCount; i++) {
-            System.out.println("Spawning an arrow");
             AbstractArrow arrow = new AbstractArrow(EntityType.ARROW, player, player.level) {
                 @Override
                 protected @NotNull ItemStack getPickupItem() {
@@ -216,6 +216,13 @@ public class AbilityType {
         projectile.setOwner(player);
         projectile.shootFromRotation(player, lookRot.x, lookRot.y, 0, 0.75f, 1f);
         player.level.addFreshEntity(projectile);
+    }
+
+    public void deflectiveShield(Player player) {
+        int duration = 1 + level * 2;
+        duration *= 20;
+        int amplification = level - 1;
+        player.addEffect(new MobEffectInstance(EffectsRegister.DEFENSIVE_SHIELD_EFFECT.get(), duration, amplification));
     }
 
     public static AbilityType fromString(String GSON) {

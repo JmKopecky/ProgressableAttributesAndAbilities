@@ -20,6 +20,9 @@ public class EffectsRegister {
     public static final RegistryObject<MobEffect> ARROW_SCATTER_EFFECT = EFFECTS.register("arrow_scatter", () ->
             new ArrowScatterEffect(MobEffectCategory.BENEFICIAL, 0xff888888));
 
+    public static final RegistryObject<MobEffect> DEFENSIVE_SHIELD_EFFECT = EFFECTS.register("defensive_shield", () ->
+            new DeflectiveShieldEffect(MobEffectCategory.BENEFICIAL, 0xff888888));
+
     public static final RegistryObject<MobEffect> CHAIN_LIGHTNING_INVULNERABLE = EFFECTS.register("chain_lightning_invulnerable", () ->
             new NegateAttackEffect(MobEffectCategory.BENEFICIAL, 0xffA10000));
 }

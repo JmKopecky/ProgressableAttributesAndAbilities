@@ -84,6 +84,17 @@ public class LevelUpAbilityCS {
                                 cap.setAvailablePoints(cap.getAvailablePoints() - result);
                             }
                         }
+                        case "deflectiveshield" -> {
+                            int result;
+                            if (cap.deflectiveShield.level == 0) {
+                                result = cap.deflectiveShield.attemptPurchaseAbility(cap.getAvailablePoints());
+                            } else {
+                                result = cap.deflectiveShield.attemptLevelAbility(cap.getAvailablePoints());
+                            }
+                            if (cap.getAvailablePoints() - result <= cap.getAvailablePoints()) {
+                                cap.setAvailablePoints(cap.getAvailablePoints() - result);
+                            }
+                        }
                     }
                     cap.syncDataToPlayer(player);
                 });

@@ -74,6 +74,7 @@ public class AttributesCapability {
     public AbilityType overshield = new AbilityType("overshield", 5, 16, +2, 3, 2);
     public AbilityType incendiaryLance = new AbilityType("incendiarylance", 5, 15, -1, 3, 1);
     public AbilityType chainLightning = new AbilityType("chainlightning", 5, 15, -1, 3, 2);
+    public AbilityType deflectiveShield = new AbilityType("deflectiveshield", 5, 8, -1, 2, 1);
 
 
     String primaryAbility = "dash";
@@ -181,6 +182,11 @@ public class AttributesCapability {
         ModNetworking.sendToPlayer(new SyncAbilLevelSC(lvl), (ServerPlayer) player);
         ModNetworking.sendToPlayer(new SyncAbilMaxLevelSC(mxLvl), (ServerPlayer) player);
 
+        lvl = "deflectiveshield:" + deflectiveShield.level;
+        mxLvl = "deflectiveshield:" + deflectiveShield.maxLevel;
+        ModNetworking.sendToPlayer(new SyncAbilLevelSC(lvl), (ServerPlayer) player);
+        ModNetworking.sendToPlayer(new SyncAbilMaxLevelSC(mxLvl), (ServerPlayer) player);
+
         ModNetworking.sendToPlayer(new SyncSelectedAbililtySC(primaryAbility + ":" + secondaryAbility), (ServerPlayer) player);
 
         int pointsToUpgrade = 1 + dash.level / 2 * dash.upgradeScale;
@@ -213,6 +219,12 @@ public class AttributesCapability {
         }
         ModNetworking.sendToPlayer(new SyncAbilUpgCostSC("chainlightning:" + pointsToUpgrade), (ServerPlayer) player);
 
+        pointsToUpgrade = 1 + deflectiveShield.level / 2 * deflectiveShield.upgradeScale;
+        if (deflectiveShield.level == 0) {
+            pointsToUpgrade = deflectiveShield.purchaseCost;
+        }
+        ModNetworking.sendToPlayer(new SyncAbilUpgCostSC("deflectiveshield:" + pointsToUpgrade), (ServerPlayer) player);
+
 
         pointsToUpgrade = (int) ((fitness.level/5 + 1) * fitness.pointRequirementScale);
         ModNetworking.sendToPlayer(new SyncAttrUpgCostSC("fitness:" + pointsToUpgrade), (ServerPlayer) player);
@@ -243,6 +255,9 @@ public class AttributesCapability {
 
         isElite = chainLightning.isEliteVersion ? 1 : 0;
         ModNetworking.sendToPlayer(new SyncAbilEliteSC("chainlightning:" + isElite), (ServerPlayer) player);
+
+        isElite = deflectiveShield.isEliteVersion ? 1 : 0;
+        ModNetworking.sendToPlayer(new SyncAbilEliteSC("deflectiveshield:" + isElite), (ServerPlayer) player);
 
         ModNetworking.sendToPlayer(new SyncCooldownDataSC(abilityCooldown + ":" + currentMaxCooldown), (ServerPlayer) player);
     }
@@ -331,6 +346,12 @@ public class AttributesCapability {
                     setAvailablePoints(availablePoints - result);
                 }
             }
+            case "deflectiveshield" -> {
+                int result = deflectiveShield.attemptUnlockElite(availablePoints);
+                if (availablePoints - result <= availablePoints) {
+                    setAvailablePoints(availablePoints - result);
+                }
+            }
         }
     }
 
@@ -363,6 +384,7 @@ public class AttributesCapability {
             case "overshield" -> {return overshield;}
             case "incendiarylance" -> {return incendiaryLance;}
             case "chainlightning" -> {return chainLightning;}
+            case "deflectiveshield" -> {return deflectiveShield;}
         }
         return null;
     }
@@ -415,6 +437,7 @@ public class AttributesCapability {
         this.overshield = source.overshield;
         this.incendiaryLance = source.incendiaryLance;
         this.chainLightning = source.chainLightning;
+        this.deflectiveShield = source.deflectiveShield;
         this.lastTriggered = source.lastTriggered;
     }
 
@@ -438,6 +461,7 @@ public class AttributesCapability {
         nbt.putString("overshield", overshield.toString());
         nbt.putString("incendiarylance", incendiaryLance.toString());
         nbt.putString("chainlightning", chainLightning.toString());
+        nbt.putString("deflectiveshield", deflectiveShield.toString());
         nbt.putString("primaryability", primaryAbility);
         nbt.putString("secondaryability", secondaryAbility);
 
@@ -465,6 +489,7 @@ public class AttributesCapability {
         this.overshield = AbilityType.fromString(nbt.getString("overshield"));
         this.incendiaryLance = AbilityType.fromString(nbt.getString("incendiarylance"));
         this.chainLightning = AbilityType.fromString(nbt.getString("chainlightning"));
+        this.deflectiveShield = AbilityType.fromString(nbt.getString("deflectiveshield"));
     }
 
     public String getLastTriggered() {
