@@ -24,6 +24,7 @@ public class CommonClass {
     // This method serves as a hook to modify item tooltips. The vanilla game
     // has no mechanism to load tooltip listeners so this must be registered
     // by a mod loader like Forge or Fabric.
+    /* COULD BE USEFUL
     public static void onItemTooltip(ItemStack stack, TooltipFlag context, List<Component> tooltip) {
 
         if (!stack.isEmpty()) {
@@ -37,4 +38,6 @@ public class CommonClass {
             }
         }
     }
+
+     */
 }

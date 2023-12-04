@@ -50,6 +50,6 @@ public class Pa3 {
     // the Common listener.
     private void onItemTooltip(ItemTooltipEvent event) {
         
-        CommonClass.onItemTooltip(event.getItemStack(), event.getFlags(), event.getToolTip());
+        //CommonClass.onItemTooltip(event.getItemStack(), event.getFlags(), event.getToolTip());
     }
 }

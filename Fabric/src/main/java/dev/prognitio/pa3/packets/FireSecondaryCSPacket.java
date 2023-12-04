@@ -1,5 +1,6 @@
 package dev.prognitio.pa3.packets;
 
+import dev.prognitio.pa3.playerdata.PlayerDataInteraction;
 import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
 import net.fabricmc.fabric.api.networking.v1.PacketSender;
 import net.minecraft.network.FriendlyByteBuf;
@@ -13,6 +14,6 @@ public class FireSecondaryCSPacket {
                                FriendlyByteBuf buf, PacketSender responseSender) {
 
         //on server
-        System.out.println("Secondary fired on server");
+        PlayerDataInteraction.fireAbil(player, "primary");
     }
 }
