@@ -6,15 +6,15 @@
     "name": "Progressable Attributes and Abilities",
     "description": "This is an example description! Tell everyone what your mod is about!",
     "authors": [
-      "Me!"
+      "Kingbacon007 (Joseph Kopecky)"
     ],
     "contact": {
-      "homepage": "https://fabricmc.net/",
-      "sources": "https://github.com/FabricMC/fabric-example-mod"
+      "homepage": "",
+      "sources": "https://github.com/JmKopecky/ProgressableAttributesAndAbilities"
     },
   
-    "license": "CC0-1.0",
-    "icon": "assets/modid/icon.png",
+    "license": "GNU Lesser General Public License v3",
+    "icon": "assets/pa3/pa3logo.png",
   
     "environment": "*",
     "entrypoints": {
