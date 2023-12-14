@@ -457,12 +457,24 @@ public class AttributesCapability {
         nbt.putInt("dodgeproc", passiveDodgeProc);
         nbt.putInt("parryproc", passiveParryProc);
         nbt.putInt("doublestrikeproc", passiveDoubleStrikeProc);
-        nbt.putString("dash", dash.toString());
-        nbt.putString("arrowsalvo", arrowSalvo.toString());
-        nbt.putString("overshield", overshield.toString());
-        nbt.putString("incendiarylance", incendiaryLance.toString());
-        nbt.putString("chainlightning", chainLightning.toString());
-        nbt.putString("deflectiveshield", deflectiveShield.toString());
+        if (dash != null) {
+            nbt.putString("dash", dash.toString());
+        }
+        if (arrowSalvo != null) {
+            nbt.putString("arrowsalvo", arrowSalvo.toString());
+        }
+        if (overshield != null) {
+            nbt.putString("overshield", overshield.toString());
+        }
+        if (incendiaryLance != null) {
+            nbt.putString("incendiarylance", incendiaryLance.toString());
+        }
+        if (chainLightning != null) {
+            nbt.putString("chainlightning", chainLightning.toString());
+        }
+        if (deflectiveShield != null) {
+            nbt.putString("deflectiveshield", deflectiveShield.toString());
+        }
         nbt.putString("primaryability", primaryAbility);
         nbt.putString("secondaryability", secondaryAbility);
 
@@ -483,14 +495,42 @@ public class AttributesCapability {
         this.passiveDodgeProc = nbt.getInt("dodgeproc");
         this.passiveParryProc = nbt.getInt("parryproc");
         this.passiveDoubleStrikeProc = nbt.getInt("doublestrikeproc");
-        this.primaryAbility = nbt.getString("primaryability");
-        this.secondaryAbility = nbt.getString("secondaryability");
-        this.dash = AbilityType.fromString(nbt.getString("dash"));
-        this.arrowSalvo = AbilityType.fromString(nbt.getString("arrowsalvo"));
-        this.overshield = AbilityType.fromString(nbt.getString("overshield"));
-        this.incendiaryLance = AbilityType.fromString(nbt.getString("incendiarylance"));
-        this.chainLightning = AbilityType.fromString(nbt.getString("chainlightning"));
-        this.deflectiveShield = AbilityType.fromString(nbt.getString("deflectiveshield"));
+        String primary = nbt.getString("primaryability");
+        if (primary.equals("")) {
+            primaryAbility = "dash";
+        } else {
+            primaryAbility = primary;
+        }
+        String secondary = nbt.getString("secondaryability");
+        if (secondary.equals("")) {
+            secondaryAbility = "arrowsalvo";
+        } else {
+            secondaryAbility = secondary;
+        }
+        String dashString = nbt.getString("dash");
+        if (!dashString.equals("")) {
+            this.dash = AbilityType.fromString(dashString);
+        }
+        String arrowSalvoString = nbt.getString("arrowsalvo");
+        if (!arrowSalvoString.equals("")) {
+            this.arrowSalvo = AbilityType.fromString(arrowSalvoString);
+        }
+        String overshieldString = nbt.getString("overshield");
+        if (!overshieldString.equals("")) {
+            this.overshield = AbilityType.fromString(overshieldString);
+        }
+        String incendiaryLanceString = nbt.getString("incendiarylance");
+        if (!incendiaryLanceString.equals("")) {
+            this.incendiaryLance = AbilityType.fromString(incendiaryLanceString);
+        }
+        String chainLightningString = nbt.getString("chainlightning");
+        if (!chainLightningString.equals("")) {
+            this.chainLightning = AbilityType.fromString(chainLightningString);
+        }
+        String deflectiveShieldString = nbt.getString("deflectiveshield");
+        if (!deflectiveShieldString.equals("")) {
+            this.deflectiveShield = AbilityType.fromString(deflectiveShieldString);
+        }
     }
 
     public String getLastTriggered() {
